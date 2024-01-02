@@ -1,30 +1,90 @@
 <script setup>
-import HelloWorld from './components/HelloWorld.vue'
+import { onMounted, ref } from 'vue';
+import { testData } from './common/const';
+const random = (data) => {
+  // 获取对象的所有属性
+  const properties = Object.keys(data);
+  // 随机选择一个属性
+  const randomProperty = properties[Math.floor(Math.random() * properties.length)];
+
+  // 获取随机选择的属性的数组
+  const randomArray = data[randomProperty];
+  // 随机获取数组中的一项
+  const randomItem = randomArray[Math.floor(Math.random() * randomArray.length)];
+
+  console.log(randomItem);
+  return randomItem
+}
+const cardItem = ref({});
+const showRomaji = ref(false)
+
+let startX = 0;
+let offsetX = 0;
+
+const onTouchStart = (e) => {
+  startX = e.touches[0].clientX;
+};
+
+const onTouchMove = (e) => {
+  offsetX = e.touches[0].clientX - startX;
+};
+
+const onTouchEnd = () => {
+  if (offsetX > 50) {
+    // Swipe right, show previous card
+    // if (currentIndex.value > 0) {
+      getCartItem()
+    // }
+  } else if (offsetX < -50) {
+    // Swipe left, show next card
+    // if (currentIndex.value < cards.value.length - 1) {
+      getCartItem()
+    // }
+  }
+  offsetX = 0;
+};
+
+const getCartItem = () => {
+  showRomaji.value = false
+  cardItem.value = random(testData)
+}
+
+const onShowRomaji = () => {
+  showRomaji.value = true
+}
+
+onMounted(()=>{
+  getCartItem()
+})
+
 </script>
 
 <template>
-  <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://vuejs.org/" target="_blank">
-      <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-    </a>
+  <div class="page">
+    <!-- <button @click="getCartItem">《</button> -->
+    <div class="swipe-card" @touchstart="onTouchStart" @touchmove="onTouchMove" @touchend="onTouchEnd">
+      <div class="card" :style="{ transform: `translateX(${offsetX}px)` }">
+        <h2>{{ cardItem.hiragana }}</h2>
+        <br />
+        <h3>{{ cardItem.katakana }}</h3>
+        <p @click="onShowRomaji">{{ showRomaji ? cardItem.romaji :'🙈点击显示' }}</p>
+        <p>{{ cardItem.meaning }}</p>
+      </div>
+    </div>
+    <button @click="getCartItem">》</button>
   </div>
-  <HelloWorld msg="Vite + Vue" />
+  <p>词库总数：x</p>
 </template>
 
-<style scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
+<style>
+.page {
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
+.swipe-card {
+  /* height: 100vh; */
+  text-align: center;
+  margin: 0 auto;
 }
 </style>

@@ -24,7 +24,11 @@ body {
   display: flex;
   place-items: center;
   min-width: 320px;
-  min-height: 100vh;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
 }
 
 h1 {
@@ -46,6 +50,7 @@ button {
 
 #app {
   max-width: 1280px;
+  height: 100%;
   width: 100%;
 }
 

@@ -28,9 +28,9 @@ const onPreItem = () => {
 </script>
 
 <template>
-  <button @click="onPreItem">《</button>
-  <div class="swipe-card" @click="onShowRomaji">
-    <div class="card">
+  <div class="btn h-full" @click="onPreItem">◀︎</div>
+  <div class="flex-1 flex-center h-full" @click="onShowRomaji">
+    <div class="text-center">
       <h2>{{ cardItem.hiragana }}</h2>
       <h3>{{ cardItem.katakana }}</h3>
       <p @click="onShowRomaji">
@@ -39,5 +39,5 @@ const onPreItem = () => {
       <p>{{ cardItem.meaning || "" }}</p>
     </div>
   </div>
-  <button @click="onNextItem">》</button>
+  <div class="btn h-full" @click="onNextItem">▶︎</div>
 </template>

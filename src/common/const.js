@@ -254,3 +254,22 @@ export const testData = {
     { "hiragana": "けんきゅう", "katakana": "ケンキュウ", "romaji": "kenkyuu", "meaning": "研究 - 研究" }
   ]
 }
+
+
+export const TAB_CONST = [
+  {
+    name: "五十音",
+    value: "tab1",
+    allValues: Japenese50yin,
+    remainingValues: Object.keys(Japenese50yin),
+    obtainedValues: [],
+    currentIndex: -1
+  },
+  {
+    name: "单词",
+    value: "tab2",
+    remainingValues: [],
+    obtainedValues: [],
+    currentIndex: -1
+  },
+];

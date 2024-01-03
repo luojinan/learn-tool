@@ -1,111 +1,69 @@
 <script setup>
-import { onMounted, ref } from "vue";
-import { Japenese50yin, testData } from "./common/const";
-const random = (data) => {
-  // 获取对象的所有属性
-  const properties = Object.keys(data);
-  // 随机选择一个属性
-  const randomProperty =
-    properties[Math.floor(Math.random() * properties.length)];
+import { ref, reactive, onMounted, computed } from "vue";
+import CardItem from "./components/CardItem/index.vue";
+import TabList from "./components/TabList/index.vue";
+import { TAB_CONST } from "./common/const";
 
-  // 获取随机选择的属性的数组
-  const randomArray = data[randomProperty];
-  // 随机获取数组中的一项
-  const randomItem =
-    randomArray[Math.floor(Math.random() * randomArray.length)];
-
-  console.log(randomItem);
-  return randomItem;
-};
-const cardItem = ref({});
-const showRomaji = ref(false);
 const active = ref("tab1");
+const tabList = reactive(TAB_CONST);
+const tabItem = computed(()=>{
+  return tabList.find(item=>item.value === active.value)
+})
+const cardItem = computed(()=>{
+  const currentKey = tabItem.value.obtainedValues[tabItem.value.currentIndex]
+  return tabItem.value.allValues[currentKey]
+})
 
-// 已获取的值
-let obtainedValues = ref([]);
-
-// 剩下未获取的值
-let remainingValues = ref(Object.keys(Japenese50yin));
-
-const total = Object.keys(Japenese50yin).length;
-
-// 随机获取一个值并记录
-const getRandomValue = () => {
-  if (remainingValues.value.length > 0) {
-    let randomIndex = Math.floor(Math.random() * remainingValues.value.length);
-    let randomValue = remainingValues.value[randomIndex];
-    obtainedValues.value.push(randomValue);
-    remainingValues.value.splice(randomIndex, 1);
-    return Japenese50yin[randomValue];
+const getListInfo = (tabItem) => {
+  const { remainingValues, obtainedValues, allValues } = tabItem
+  if (remainingValues.length > 0) {
+    let randomIndex = Math.floor(Math.random() * remainingValues.length);
+    let randomValue = remainingValues[randomIndex];
+    tabItem.obtainedValues.push(randomValue);
+    tabItem.remainingValues.splice(randomIndex, 1);
+    tabItem.currentIndex = obtainedValues.length - 1
+    return allValues[randomValue];
   } else {
     return "已经获取完所有值";
   }
 };
 
-const getCartItem = () => {
-  showRomaji.value = false;
-  if (active.value === "tab1") {
-    cardItem.value = getRandomValue();
-    return;
+const onNext = () => {
+  const tabItem = tabList.find(item => item.value === active.value)
+  if(tabItem.currentIndex === Object.keys(tabItem.allValues).length-1) {
+    alert('背完啦')
+    return
   }
-  cardItem.value = random(testData);
+  if(tabItem.currentIndex === tabItem.obtainedValues.length-1) {
+    getListInfo(tabItem)
+    return
+  }
+  tabItem.currentIndex +=1
 };
 
-const onShowRomaji = () => {
-  showRomaji.value = true;
-};
+const onPreItem = () =>{
+  const tabItem = tabList.find(item => item.value === active.value)
+  if(tabItem.currentIndex > 0) {
+    tabItem.currentIndex = tabItem.currentIndex -1
+  }
+}
 
-onMounted(() => {
-  getCartItem();
-});
+onMounted(()=>{
+  onNext(tabList[0].value, tabList)
+})
 
-const tabList = [
-  {
-    name: "五十音",
-    value: "tab1",
-  },
-  {
-    name: "单词",
-    value: "tab2",
-  },
-];
-
-const onTab = (tab) => {
-  active.value = tab;
-  getCartItem();
-};
 </script>
 
 <template>
   <div class="main-page">
-    <div class="tab">
-      <div
-        v-for="tab in tabList"
-        :key="{ tab }"
-        class="tab-item"
-        :class="{ active: active === tab.value }"
-        @click="onTab(tab.value)"
-      >
-        {{ tab.name }}
+    <TabList :tabList="tabList" :model-active="active" @onTabChange="onNext">
+      <div class="page">
+        <CardItem :cardItem="cardItem" @nextItem="onNext" @preItem="onPreItem" />
       </div>
-    </div>
-    <div class="page">
-      <button @click="() => {}">《</button>
-      <div class="swipe-card" @click="onShowRomaji">
-        <div class="card">
-          <h2>{{ cardItem.hiragana }}</h2>
-          <h3>{{ cardItem.katakana }}</h3>
-          <p @click="onShowRomaji">
-            {{ showRomaji ? cardItem.romaji : "🙈点击显示" }}
-          </p>
-          <p>{{ cardItem.meaning || "" }}</p>
-        </div>
-      </div>
-      <button @click="getCartItem">》</button>
-    </div>
-    <p class="footer">
-      {{ active === "tab1" ? `${obtainedValues.length} /${total}` : "" }}
-    </p>
+      <p class="footer">
+        {{ `${tabItem.currentIndex+1}/${Object.keys(tabItem.allValues).length}` }}
+      </p>
+    </TabList>
   </div>
 </template>
 
@@ -147,9 +105,7 @@ const onTab = (tab) => {
 }
 
 .swipe-card {
-  /* height: 100vh; */
   text-align: center;
-  /* margin: 0 auto; */
   flex: 1;
 }
 

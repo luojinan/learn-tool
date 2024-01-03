@@ -82,10 +82,12 @@ watch(tabList, (value) => {
       <div class="page w-full flex-center">
         <CardItem :cardItem="cardItem" @nextItem="onNext" @preItem="onPreItem" />
       </div>
-      <div class="btn" @click="onReset">重置</div>
-      <p class="text-center">
-        {{ `${tabItem.currentIndex + 1}/${Object.keys(tabItem.allValues).length}` }}
-      </p>
+      <div>
+        <div class="btn" @click="onReset">重置</div>
+        <p class="text-center">
+          {{ `${tabItem.currentIndex + 1}/${Object.keys(tabItem.allValues).length}` }}
+        </p>
+      </div>
     </TabList>
   </div>
 </template>

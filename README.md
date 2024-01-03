@@ -5,3 +5,13 @@ This template should help get you started developing with Vue 3 in Vite. The tem
 ## Recommended IDE Setup
 
 - [VS Code](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+
+todo:
+
+- [ ] 进度数据缓存，有效期3天
+- [ ] 数据来源OSS
+- [ ] toast、烟花动画
+- [ ] ios双击放大问题
+- [ ] 手势功能
+- [ ] 单词库数据生成
+- [ ] 白板根据罗马音/听默写功能

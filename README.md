@@ -15,6 +15,7 @@ todo:
 - [ ] feat: toast、烟花动画
 - [ ] feat: 白板根据罗马音/听默写功能
 - [ ] feat: 手势功能
+- [ ] feat: 虚拟键盘
 
 - [ ] dev: 数据来源OSS
 - [ ] dev: pwa缓存

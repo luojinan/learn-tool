@@ -31,7 +31,7 @@ const getListInfo = (tabItem) => {
 const onNext = () => {
   const tabItem = tabList.find(item => item.value === active.value)
   if (tabItem.currentIndex === Object.keys(tabItem.allValues).length - 1) {
-    alert('背完啦')
+    confetti()
     return
   }
   if (tabItem.currentIndex === tabItem.obtainedValues.length - 1) {

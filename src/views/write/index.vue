@@ -67,13 +67,14 @@ const onNext = () => {
   }
 
   if (tabItem.value.currentIndex === tabItem.value?.total - 1) {
-    alert('背完啦')
+    confetti()
     return
   }
   if (tabItem.value.currentIndex === tabItem.value.obtainedValues.length - 1) {
     // 获取下一个前先校验
     const isPass = !tabItem.value.obtainedValues.length || checkAnswer()
-    isPass && getRandomItem(tabList[testindex])
+    if(!isPass) return
+    getRandomItem(tabList[testindex])
     resetAnswer()
     return
   }
@@ -93,6 +94,17 @@ const onReset = () => {
   onNext()
 }
 
+const isShaking = ref(false)
+const shakeIt = () => {
+  isShaking.value = true
+  showBubble.value = true
+  setTimeout(()=>{
+    isShaking.value = false
+  },1000)
+}
+
+const showBubble = ref(false)
+
 const showAnswer = ref(false)
 const resetAnswer = () => {
   showAnswer.value = false
@@ -103,7 +115,7 @@ const youAnswer = ref('')
 const checkAnswer = () => {
   const { answer } = currentItem.value
   const isPass = youAnswer.value && answer === youAnswer.value
-  !isPass && alert('再回忆一下')
+  !isPass && shakeIt()
   return isPass
 }
 const onSubmit = () => {
@@ -146,9 +158,13 @@ watch(tabList, (value) => {
   <div class="main-page">
     <TabList :tabList="tabList" :model-active="active">
       <div>
-        <h1 class="text-center">{{ currentItem?.question }} {{ showAnswer ? currentItem?.answer : ''}}</h1>
+        <div class="font-size-10 pb text-center relative" :class="isShaking?'apply-shake' : ''">
+          {{ currentItem?.question }}
+          <span class="font-size-4">{{ showAnswer ? currentItem?.answer : '' }}</span>
+          <div v-show="showBubble" class="bubble text-center font-size-3">{{ youAnswer ? `我不是${youAnswer}` : '猜猜看'}}</div>
+        </div>
         <div class="btn" @click="showAnswer = true">答案</div>
-        <input type="text" v-model="youAnswer" @keyup.enter="onSubmit">
+        <input type="text" v-model="youAnswer" @keyup.enter="onSubmit" @input="showBubble = false">
         <div class="flex justify-between">
           <div class="btn" @click="onPre">◀︎</div>
           <div class="btn" @click="onNext">▶︎</div>
@@ -197,5 +213,52 @@ watch(tabList, (value) => {
 
 .page {
   min-height: 40%;
+}
+
+@keyframes shake {
+  10%,
+  90% {
+    transform: translate3d(-1px, 0, 0);
+  }
+
+  20%,
+  80% {
+    transform: translate3d(2px, 0, 0);
+  }
+
+  30%,
+  50%,
+  70% {
+    transform: translate3d(-4px, 0, 0);
+  }
+
+  40%,
+  60% {
+    transform: translate3d(4px, 0, 0);
+  }
+}
+
+.apply-shake {
+  animation: shake 0.82s cubic-bezier(.36, .07, .19, .97) both;
+}
+.bubble {
+  position: absolute;
+  top: -50%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #000;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.bubble::before {
+  content: "";
+  position: absolute;
+  bottom: -16px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 10px;
+  border-style: solid;
+  border-color: #000 transparent transparent transparent;
 }
 </style>

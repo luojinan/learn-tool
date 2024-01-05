@@ -9,7 +9,7 @@ import {
 export default defineConfig({
   shortcuts: [
     {
-      'btn': 'bg-black flex items-center py-2 px-6 rounded-lg shadow-md',
+      'btn': 'bg-black flex items-center justify-center py-2 px-6 rounded-lg shadow-md',
       'flex-center': 'flex items-center justify-center'
     },
   ],

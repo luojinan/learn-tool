@@ -29,6 +29,14 @@ const routes: Array<RouteRecordRaw> = [
         meta: {
           title: "工具"
         }
+      },
+      {
+        path: "income",
+        name: "income",
+        component: () => import("@/views/income/index.vue"),
+        meta: {
+          title: "工具"
+        }
       }
     ]
   }

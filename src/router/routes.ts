@@ -51,7 +51,8 @@ const routes: Array<RouteRecordRaw> = [
         name: "readghdetail",
         component: () => import("@/views/readgh/detail/index.vue"),
         meta: {
-          title: "readgh"
+          title: "readgh",
+          noCache: true
         }
       }
     ]

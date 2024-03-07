@@ -49,6 +49,7 @@ const init = (odata) => {
     xField: 'time',
     yField: 'value',
     seriesField: 'type',
+    theme: 'dark',
     label: {
       callback: (text) => {
         if (+text > 10000) {
@@ -61,7 +62,7 @@ const init = (odata) => {
         const res = originalItems.reduce((pre, next) => {
           return pre + +(next.value);
         }, 0);
-        return [...originalItems, { color: '#FF6B3B', name: "税前收入", value: res }];
+        return [...originalItems, { name: "税前收入", value: res }];
       }
     }
   });
@@ -90,13 +91,14 @@ const initLostRef = (odata) => {
     data: list,
     xField: 'time',
     yField: 'value',
+    theme: 'dark',
     seriesField: 'type',
     tooltip: {
       customItems: (originalItems) => {
         const res = originalItems.reduce((pre, next) => {
           return pre + +(next.value);
         }, 0);
-        return [...originalItems, { color: '#FF6B3B', name: "总支出", value: res }];
+        return [...originalItems, { name: "总支出", value: res }];
       }
     }
   });
@@ -126,6 +128,7 @@ const initAllInRef = (odata) => {
     xField: 'time',
     yField: 'value',
     seriesField: 'type',
+    theme: 'dark',
     yAxis: {
       min: 20000
     },
@@ -134,7 +137,7 @@ const initAllInRef = (odata) => {
         const res = originalItems.reduce((pre, next) => {
           return pre + +(next.value);
         }, 0);
-        return [...originalItems, { color: '#FF6B3B', name: "税前收入", value: res }];
+        return [...originalItems, { name: "税前收入", value: res }];
       }
     }
   });

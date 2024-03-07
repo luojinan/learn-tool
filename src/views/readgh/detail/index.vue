@@ -10,13 +10,12 @@ const md = markdownit()
 
 const isLoading = ref(true)
 
-// 拉取文件 目录，点击进入 渲染器
 const init = async () => {
-  const { isFetching, error, data } = await useFetch(action.value).text()
-  const result = md.render(data.value);
+  const { data } = await useFetch(action.value).text()
+  const result = md.render(data.value.replace(/!\[(.*?)\]\((.*?)\)/g, '').replace('**版权说明：** 该作品版权归原作者所有。中国数字时代仅对原作进行存档，以对抗中国的网络审查。[详细版权说明](https://chinadigitaltimes.net/chinese/copyright)。','')); // 删除图片
   const container = document.getElementById("container");
   container.innerHTML = result;
-  isLoading.value = isFetching.value
+  isLoading.value = false
 }
 
 onMounted(() => {
@@ -25,6 +24,6 @@ onMounted(() => {
 </script>
 
 <template>
-  <div id="container"></div>
-  <div class="mt-50 text-center text-white">{{ isLoading ? 'loading...' : '' }}</div>
+  <div v-show="isLoading" class="mt-50 text-center text-white">loading...</div>
+  <div id="container" class="px-2 pb-6"></div>
 </template>

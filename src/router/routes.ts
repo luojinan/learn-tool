@@ -37,6 +37,22 @@ const routes: Array<RouteRecordRaw> = [
         meta: {
           title: "工具"
         }
+      },
+      {
+        path: "readgh",
+        name: "readgh",
+        component: () => import("@/views/readgh/index.vue"),
+        meta: {
+          title: "readgh"
+        }
+      },
+      {
+        path: "readgh/detail",
+        name: "readghdetail",
+        component: () => import("@/views/readgh/detail/index.vue"),
+        meta: {
+          title: "readgh"
+        }
       }
     ]
   }

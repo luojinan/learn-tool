@@ -2,6 +2,7 @@ lockfileVersion: 5.4
 
 specifiers:
   '@antv/g2plot': ^2.4.31
+  '@iconify-json/logos': ^1.1.42
   '@types/node': ^20.10.6
   '@unocss/preset-attributify': ^0.58.3
   '@unocss/preset-icons': ^0.58.3
@@ -24,6 +25,7 @@ dependencies:
   vue-router: 4.3.0_vue@3.4.21
 
 devDependencies:
+  '@iconify-json/logos': 1.1.42
   '@types/node': 20.11.25
   '@unocss/preset-attributify': 0.58.5
   '@unocss/preset-icons': 0.58.5
@@ -756,6 +758,12 @@ packages:
     requiresBuild: true
     dev: true
     optional: true
+
+  /@iconify-json/logos/1.1.42:
+    resolution: {integrity: sha512-/f+frtPm3m3Z30oy8Pk+QqRDkbmAiIaWGPl5CmsCXm15MVfvw9a/V/gD7WzdyuSGAZcFuQaqbHXj92y/n+2ifg==}
+    dependencies:
+      '@iconify/types': 2.0.0
+    dev: true
 
   /@iconify/types/2.0.0:
     resolution: {integrity: sha512-+wluvCrRhXrhyOmRDJ3q8mux9JkKy5SJ/v8ol2tu4FVjyYvtEzkc/3pK15ET6RKg4b4w4BmTk1+gsCUhf21Ykg==}

@@ -273,3 +273,6 @@ export const TAB_CONST = [
     currentIndex: -1
   },
 ];
+
+
+export const ossDataUrl = "https://kingan-md-img.oss-cn-guangzhou.aliyuncs.com/data"

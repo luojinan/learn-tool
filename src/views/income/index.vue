@@ -1,6 +1,8 @@
 <script setup lang="ts">
+import { ossDataUrl } from '@/common/const';
+import { loadScript } from '@/common/utils';
 import { Area } from '@antv/g2plot';
-import { onMounted, ref } from 'vue';
+import { onBeforeMount, ref } from 'vue';
 
 interface DataItem {
   time: string;
@@ -144,10 +146,25 @@ const initAllInRef = (odata) => {
   area.render();
 }
 
-onMounted(() => {
+const getIncomeData = async () => {
+  const dataPath = 'incomeData'
+  const dataName = 'incomeDataList'
+  console.log(window[dataName],dataName,'incomeDataList')
+  if(!window[dataName]){
+    const dataUrl = `${ossDataUrl}/${dataPath}.js`
+    await loadScript(dataUrl)
+  }
+}
+
+const onCreated = async () =>{
+  await getIncomeData()
   init(window.incomeDataList)
   initLostRef(window.incomeDataList)
   initAllInRef(window.incomeDataList)
+}
+
+onBeforeMount(()=>{
+  onCreated()
 })
 </script>
 

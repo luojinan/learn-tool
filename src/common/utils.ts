@@ -55,3 +55,13 @@ export function loadCdnEsmModule(url: string, globalVariableName: string): Promi
   document.head.appendChild(script);
 })
 }
+
+export function copyToClipboard(text: string): boolean {
+  const textarea = document.createElement('textarea');
+  textarea.value = text;
+  document.body.appendChild(textarea);
+  textarea.select();
+  const successful = document.execCommand('copy');
+  document.body.removeChild(textarea);
+  return successful;
+}

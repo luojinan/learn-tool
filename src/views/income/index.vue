@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ossDataUrl } from '@/common/const';
 import { loadScript } from '@/common/utils';
+import JsonToTable from '@/components/jsonToTable/index.vue';
 import { Area } from '@antv/g2plot';
 import { onBeforeMount, ref } from 'vue';
 
@@ -156,8 +157,13 @@ const getIncomeData = async () => {
   }
 }
 
+const showtable = ref(false)
+
 const onCreated = async () =>{
   await getIncomeData()
+  setTimeout(()=>{
+    showtable.value = true
+  }, 0)
   init(window.incomeDataList)
   initLostRef(window.incomeDataList)
   initAllInRef(window.incomeDataList)
@@ -177,4 +183,7 @@ onBeforeMount(()=>{
     <h3 class="px-2">收入情况</h3>
     <p class="px-2 font-size-3">包含提取公积金、饭补</p>
     <div class="mb-12" ref="allInRef" />
+    <p>2024-2 年终 52,374 (换算为月均 4,364.5)</p>
+    <p>2024-3 退税 875.16</p>
+    <json-to-table v-if="showtable" />
 </template>

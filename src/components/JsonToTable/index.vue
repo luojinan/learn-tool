@@ -8,7 +8,7 @@ const rows = ref([])
 
 // 解析 JSON 数据，获取表头和行数据
 const parseJsonData = () => {
-  const lengthList = incomeDataList.map(item => {
+  const lengthList = window.incomeDataList.map(item => {
     const labelList = Object.keys(item)
     return labelList.length
   })
@@ -16,7 +16,7 @@ const parseJsonData = () => {
   const maxLength = Math.max(...lengthList)
   const index = lengthList.findIndex(item => item === maxLength)
   headers.value = Object.keys(window.incomeDataList[index])
-  rows.value = incomeDataList.map(item => {
+  rows.value = window.incomeDataList.map(item => {
     return headers.value.reduce((res, next) => {
       res[next] = item[next] || '-'
       return res
@@ -32,7 +32,7 @@ const exportImage = () => {
     const link = document.createElement('a')
     link.href = image
     
-    link.download = `${incomeDataList[0].time}-${incomeDataList[incomeDataList.length-1].time}.png`
+    link.download = `${window.incomeDataList[0].time}-${window.incomeDataList[window.incomeDataList.length-1].time}.png`
     link.click()
   })
 }

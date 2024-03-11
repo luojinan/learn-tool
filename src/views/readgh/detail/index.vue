@@ -27,7 +27,7 @@ const getPostMdStr = async () => {
 
 const init = async () => {
   const [, data] = await Promise.all([loadMdIt(), getPostMdStr()])
-  const md = window.markdownit()
+  const md = window.markdownit!()
   const result = md.render(data?.value?.replace(/!\[(.*?)\]\((.*?)\)/g, '').replace(ignoreText1,'').replace(ignoreText2, ''))
   const container = document.getElementById("container");
   container!.innerHTML = result;

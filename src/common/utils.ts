@@ -31,6 +31,26 @@ export function loadScript(url: string): Promise<void> {
   })
 }
 
+export const cacheDataOrUmd = async (globalName: string, url: string)=>{
+  const cacheData = localStorage.getItem(globalName)
+  if(cacheData) {
+    return Promise.resolve({
+      data: JSON.parse(cacheData),
+      msg: '来源缓存'
+    })
+  }
+  try {
+    await loadScript(url)
+    localStorage.setItem(globalName, JSON.stringify(window[globalName]))
+    return Promise.resolve({
+      data: window[globalName],
+      msg: '来源网络'
+    })
+  } catch (error) {
+    return Promise.reject(error)
+  }
+}
+
 // 使用ts加载一个esm的cdn资源-会跨域
 // 创建一个工具函数用于通过<script>标签加载CDN上的ES模块并解决跨域问题
 export function loadCdnEsmModule(url: string, globalVariableName: string): Promise<void> {

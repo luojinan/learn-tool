@@ -1,9 +1,9 @@
 <template>
   <router-view v-slot="{ Component }">
-    <keep-alive>
-      <component v-if="!$route.meta.noCache" :is="Component" />
-    </keep-alive>
-    <component v-if="$route.meta.noCache" :is="Component" />
+    <transition>
+      <keep-alive>
+        <component :is="Component" />
+      </keep-alive>
+    </transition>
   </router-view>
-
 </template>

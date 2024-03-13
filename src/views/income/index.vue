@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ossDataUrl } from '@/common/const';
-import { loadScript } from '@/common/utils';
-import JsonToTable from '@/components/jsonToTable/index.vue';
+import { cacheDataOrUmd } from '@/common/utils';
+import JsonToTable from '@/components/JsonToTable/index.vue';
 import { Area } from '@antv/g2plot';
 import { onBeforeMount, ref } from 'vue';
 
@@ -147,26 +147,24 @@ const initAllInRef = (odata) => {
   area.render();
 }
 
+const dataMsg = ref('')
+const incomeDataList = ref([])
+
 const getIncomeData = async () => {
   const dataPath = 'incomeData'
   const dataName = 'incomeDataList'
-  console.log(window[dataName],dataName,'incomeDataList')
-  if(!window[dataName]){
-    const dataUrl = `${ossDataUrl}/${dataPath}.js`
-    await loadScript(dataUrl)
-  }
+  const dataUrl = `${ossDataUrl}/${dataPath}.js`
+  const {data, msg} = await cacheDataOrUmd(dataName,dataUrl)
+  dataMsg.value = msg
+  incomeDataList.value = data
+  return data
 }
 
-const showtable = ref(false)
-
 const onCreated = async () =>{
-  await getIncomeData()
-  setTimeout(()=>{
-    showtable.value = true
-  }, 0)
-  init(window.incomeDataList)
-  initLostRef(window.incomeDataList)
-  initAllInRef(window.incomeDataList)
+  const incomeDataList = await getIncomeData()
+  init(incomeDataList)
+  initLostRef(incomeDataList)
+  initAllInRef(incomeDataList)
 }
 
 onBeforeMount(()=>{
@@ -175,15 +173,20 @@ onBeforeMount(()=>{
 </script>
 
 <template>
+  {{ dataMsg }}
     <h3 class="px-2">总到手情况</h3>
     <p class="px-2 font-size-3">收入包含提取公积金、饭补。支出包含五险一金、房租支出</p>
     <div ref="totalRef" />
+
     <h3 class="px-2">硬性支出情况</h3>
     <div ref="lostRef" />
+
     <h3 class="px-2">收入情况</h3>
     <p class="px-2 font-size-3">包含提取公积金、饭补</p>
     <div class="mb-12" ref="allInRef" />
+
     <p>2024-2 年终 52,374 (换算为月均 4,364.5)</p>
     <p>2024-3 退税 875.16</p>
-    <json-to-table v-if="showtable" />
+
+    <json-to-table :incomeDataList v-if="incomeDataList.length" />
 </template>

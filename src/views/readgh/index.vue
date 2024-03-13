@@ -1,9 +1,10 @@
 <script setup lang="ts">
 // TODO: 按文件大小排序，以及持久化缓存hook 目前是全局变量刷新/休眠即丢失
-import { ref } from 'vue';
-import { useRouter } from 'vue-router';
 import { ossDataUrl } from '@/common/const.js';
-import { loadScript } from '@/common/utils.js';
+import { cacheDataOrUmd } from '@/common/utils.js';
+import { useStorage } from '@vueuse/core';
+import { onMounted, ref } from 'vue';
+import { useRouter } from 'vue-router';
 const router = useRouter();
 
 const ghHost = 'https://raw.gitmirror.com/'
@@ -18,18 +19,26 @@ function getMonth() {
   return date.toISOString().slice(0, 7)
 }
 // 月份选择器
-const month = ref(getMonth())
+
+const cacheMonth = useStorage('readgh-month', '')
+
+const month = ref(cacheMonth.value || getMonth())
 
 const datalist = ref([])
+const dataMsg = ref('')
 
 const getList = async () => {
   const dataPath = `ghnew-${month.value}`
-  if(!window[dataPath]){
-    const dataUrl = `${ossDataUrl}/${dataPath}.js`
-    await loadScript(dataUrl, dataPath)
-  }
-  datalist.value = window[dataPath]
+  const dataUrl = `${ossDataUrl}/${dataPath}.js`
+  const {data, msg} = await cacheDataOrUmd(dataPath,dataUrl)
+  datalist.value = data
+  dataMsg.value = msg
+  cacheMonth.value = month.value
 }
+
+onMounted(() => {
+  getList()
+})
 
 const toDetail = (item) => {
   const action = encodeURIComponent(`${ghurl.value}/${month.value}/${item}`)
@@ -39,13 +48,14 @@ const toDetail = (item) => {
 
 <template>
   <div class="flex-col">
+    {{ dataMsg }}
     <div>
       <div class="i-logos-github-icon?mask text-red-300 text-3xl" /><input class="w-90vw" v-model="ghurl">
     </div>
     <div><input type="month" v-model="month" /></div>
     <button @click="getList">获取</button>
     <div class="my-2" v-for="(item, index) in datalist" :key="index" @click="toDetail(item.title)">
-      {{ index + 1 }}、{{ item.title }}({{ item.size }}b)
+      {{ index + 1 }}、{{ item.size/1000 }}kb 🤏 {{ item.title }}
     </div>
   </div>
 </template>

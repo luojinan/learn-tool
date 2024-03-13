@@ -5,18 +5,22 @@ import { onMounted, ref } from 'vue';
 
 const headers = ref([])
 const rows = ref([])
+interface Props {
+  incomeDataList: any[]
+}
+const { incomeDataList } = defineProps<Props>()
 
 // 解析 JSON 数据，获取表头和行数据
 const parseJsonData = () => {
-  const lengthList = window.incomeDataList.map(item => {
+  const lengthList = incomeDataList.map(item => {
     const labelList = Object.keys(item)
     return labelList.length
   })
   // 找出数组中最大项的index
   const maxLength = Math.max(...lengthList)
   const index = lengthList.findIndex(item => item === maxLength)
-  headers.value = Object.keys(window.incomeDataList[index])
-  rows.value = window.incomeDataList.map(item => {
+  headers.value = Object.keys(incomeDataList[index])
+  rows.value = incomeDataList.map(item => {
     return headers.value.reduce((res, next) => {
       res[next] = item[next] || '-'
       return res
@@ -32,7 +36,7 @@ const exportImage = () => {
     const link = document.createElement('a')
     link.href = image
     
-    link.download = `${window.incomeDataList[0].time}-${window.incomeDataList[window.incomeDataList.length-1].time}.png`
+    link.download = `${incomeDataList[0].time}-${incomeDataList[incomeDataList.length-1].time}.png`
     link.click()
   })
 }

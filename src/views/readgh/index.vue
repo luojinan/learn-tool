@@ -24,16 +24,49 @@ const cacheMonth = useStorage('readgh-month', '')
 
 const month = ref(cacheMonth.value || getMonth())
 
-const datalist = ref([])
+interface PostItem {
+  title: string
+  size: number
+  name: string
+  from: string
+  id: number
+}
+
+const datalist = ref<PostItem[]>([])
 const dataMsg = ref('')
 
 const getList = async () => {
   const dataPath = `ghnew-${month.value}`
   const dataUrl = `${ossDataUrl}/${dataPath}.js`
-  const {data, msg} = await cacheDataOrUmd(dataPath,dataUrl)
-  datalist.value = data
+  const {data, msg} = await cacheDataOrUmd(dataPath,dataUrl) as {data: PostItem[], msg: string}
+  datalist.value = data.filter(({title})=> !title.includes('每日一语')).map(({title, size},index) => {
+    let from,name
+    [from, name] = title.split('｜') 
+    if(!name) {
+      [from, name] = title.split('】') 
+      from+='】'
+    }
+    return {
+      id: index,
+      from,
+      name,
+      title,
+      size: +(size/1000).toFixed(2)
+    }
+  })
   dataMsg.value = msg
   cacheMonth.value = month.value
+}
+
+// 根据size大小排序对象数组
+const sortList = () => {
+  const newList = datalist.value.sort((a, b) => b.size - a.size)
+  datalist.value = newList
+}
+
+const backList = () => {
+  const newList = datalist.value.sort((a, b) => a.id - b.id)
+  datalist.value = newList
 }
 
 onMounted(() => {
@@ -47,15 +80,18 @@ const toDetail = (item) => {
 </script>
 
 <template>
-  <div class="flex-col">
+  <div class="flex-col px-2">
     {{ dataMsg }}
     <div>
       <div class="i-logos-github-icon?mask text-red-300 text-3xl" /><input class="w-90vw" v-model="ghurl">
     </div>
     <div><input type="month" v-model="month" /></div>
     <button @click="getList">获取</button>
-    <div class="my-2" v-for="(item, index) in datalist" :key="index" @click="toDetail(item.title)">
-      {{ index + 1 }}、{{ item.size/1000 }}kb 🤏 {{ item.title }}
+    <button @click="sortList">排序</button>
+    <button @click="backList">还原</button>
+    <div class="my-2 bg-gray-9 p-2" v-for="(item, index) in datalist" :key="item.id" @click="toDetail(item.title)">
+      <p class="my-1">{{ index + 1 }}.  {{ item.name || '-' }}</p>
+      <p class="text-gray-500 my-1 text-right text-sm">[{{ item.from || '-' }}] {{ item.size }}kb</p>
     </div>
   </div>
 </template>

@@ -1,5 +1,7 @@
 <script lang="ts" setup>
 import { useRouter } from 'vue-router';
+// TODO: 从路由配置中读取
+// 动态路由目录生成
 const entryList = [
   {
     name: 'jap50yin',

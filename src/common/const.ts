@@ -276,3 +276,9 @@ export const TAB_CONST = [
 
 
 export const ossDataUrl = "https://kingan-md-img.oss-cn-guangzhou.aliyuncs.com/data"
+
+const cnpmCdn = 'https://registry.npmmirror.com'
+
+export const CDN_ESM_CANVAS = `${cnpmCdn}/html2canvas/1.4.1/files/dist/html2canvas.esm.js`
+
+export const CDN_UMD_ANTV = `${cnpmCdn}/@antv/g2plot/2.4.31/files/dist/g2plot.min.js`

@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { ossDataUrl } from '@/common/const';
-import { cacheDataOrUmd } from '@/common/utils';
+import { CDN_UMD_ANTV, ossDataUrl } from '@/common/const';
+import { cacheDataOrUmd, loadScript } from '@/common/utils';
 import JsonToTable from '@/components/JsonToTable/index.vue';
-import { Area } from '@antv/g2plot';
 import { onBeforeMount, ref } from 'vue';
 
 interface DataItem {
@@ -47,7 +46,7 @@ const init = (odata) => {
     };
   });
   const data = [...lostList, ...realIncomeList]
-  const area = new Area(totalRef.value, {
+  const area = new G2Plot.Area(totalRef.value, {
     data,
     xField: 'time',
     yField: 'value',
@@ -90,7 +89,7 @@ const initLostRef = (odata) => {
     list[0] = list[1];
     list[1] = first;
   }
-  const area = new Area(lostRef.value, {
+  const area = new G2Plot.Area(lostRef.value, {
     data: list,
     xField: 'time',
     yField: 'value',
@@ -126,7 +125,7 @@ const initAllInRef = (odata) => {
     list[0] = list[1];
     list[1] = first;
   }
-  const area = new Area(allInRef.value, {
+  const area = new G2Plot.Area(allInRef.value, {
     data: list,
     xField: 'time',
     yField: 'value',
@@ -160,8 +159,15 @@ const getIncomeData = async () => {
   return data
 }
 
+const loadAntv = async () => {
+  if(window.G2Plot) {
+    return
+  }
+  await loadScript(CDN_UMD_ANTV)
+}
+
 const onCreated = async () =>{
-  const incomeDataList = await getIncomeData()
+  const [incomeDataList] = await Promise.all([getIncomeData(),loadAntv()])
   init(incomeDataList)
   initLostRef(incomeDataList)
   initAllInRef(incomeDataList)

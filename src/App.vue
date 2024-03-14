@@ -1,10 +1,12 @@
 <template>
   <router-view v-slot="{ Component }">
-    <template v-if="!$route.meta.noCache">
+    <template key="cache" v-if="!$route.meta.noCache">
       <keep-alive>
         <component :is="Component" />
       </keep-alive>
     </template>
     <component v-else :is="Component" />
+    <!-- 从不缓存路由->缓存路由 因为 ifelse 触发重新渲染导致丢失状态 -->
+    <!-- v-show 在router-view中无效 不能同时挂载同一个路由组件? -->
   </router-view>
 </template>

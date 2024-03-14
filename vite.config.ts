@@ -1,7 +1,7 @@
 // import { fileURLToPath, URL } from "node:url";
 import vue from '@vitejs/plugin-vue';
 import path from "path";
-import { visualizer } from "rollup-plugin-visualizer";
+// import { visualizer } from "rollup-plugin-visualizer";
 import { presetAttributify, presetIcons, presetUno } from 'unocss';
 import Unocss from 'unocss/vite';
 import { defineConfig } from 'vite';
@@ -19,7 +19,7 @@ export default defineConfig({
         presetIcons()
       ],
     }),
-    visualizer(),
+    // visualizer(),
   ],
   resolve: {
     alias: {

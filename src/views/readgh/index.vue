@@ -49,7 +49,7 @@ const getList = async () => {
     return {
       id: index,
       from,
-      name,
+      name: name && name.replace('.md',''),
       title,
       size: +(size/1000).toFixed(2)
     }

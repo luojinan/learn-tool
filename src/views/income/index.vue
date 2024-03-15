@@ -22,9 +22,32 @@ function sumObj(obj: any) {
   }
   return sum;
 }
+
+function sumNumArr(list: number[]): number {
+  return list.reduce((pre, next) => {
+    return pre + next;
+  }, 0)
+}
+
 const totalRef = ref()
 const lostRef = ref()
-const allInRef = ref()
+const inRef = ref()
+
+interface TotalInfo {
+  '至今税前总收入'?: number
+  '至今税金房租总支出'?: number
+  '至今到手总收入'?: number
+  '至今平均到手月入'?: number
+  '年终'?: number
+  '年终换算为月均'?: number
+  '年终后到手总收入'?: number
+  '年终后平均到手月入'?: number
+  '预计税前年入'?: number
+  '预计到手年入'?: number
+  '年终后预计到手年入'?: number
+}
+
+const totalInfo = ref<TotalInfo>({})
 
 const init = (odata) => {
   const realIncomeList = odata.map((item) => {
@@ -46,6 +69,14 @@ const init = (odata) => {
     };
   });
   const data = [...lostList, ...realIncomeList]
+
+  totalInfo.value.至今到手总收入 = sumNumArr(realIncomeList.map(item => item.value))
+  totalInfo.value.至今税金房租总支出 = sumNumArr(lostList.map(item => item.value))
+  totalInfo.value.至今税前总收入 = totalInfo.value.至今税金房租总支出 + totalInfo.value.至今到手总收入
+  totalInfo.value.至今平均到手月入 = totalInfo.value.至今到手总收入 / odata.length
+  totalInfo.value.预计税前年入 = (totalInfo.value.至今税前总收入 / odata.length) * 12
+  totalInfo.value.预计到手年入 = totalInfo.value.至今平均到手月入 * 12
+
   const area = new G2Plot.Area(totalRef.value, {
     data,
     xField: 'time',
@@ -106,7 +137,7 @@ const initLostRef = (odata) => {
   });
   area.render();
 }
-const initAllInRef = (odata) => {
+const initInRef = (odata) => {
   const list: DataItem[] = []
   odata.forEach(element => {
     Object.entries(element).sort((item, nextItem) => item[1] - nextItem[1]).forEach(([key, val]) => {
@@ -125,7 +156,7 @@ const initAllInRef = (odata) => {
     list[0] = list[1];
     list[1] = first;
   }
-  const area = new G2Plot.Area(allInRef.value, {
+  const area = new G2Plot.Area(inRef.value, {
     data: list,
     xField: 'time',
     yField: 'value',
@@ -148,38 +179,43 @@ const initAllInRef = (odata) => {
 
 const dataMsg = ref('')
 const incomeDataList = ref([])
+const otherIncomeList = ref([{ time: '2024-1', 年终奖: '100', 换算为月均: 4364.5 }, { time: '2024-3', 退税: 875.16 }])
 
 const getIncomeData = async () => {
   const dataPath = 'incomeData'
   const dataName = 'incomeDataList'
   const dataUrl = `${ossDataUrl}/${dataPath}.js`
-  const {data, msg} = await cacheDataOrUmd(dataName,dataUrl)
+  const { data, msg } = await cacheDataOrUmd(dataName, dataUrl)
   dataMsg.value = msg
   incomeDataList.value = data
   return data
 }
 
 const loadAntv = async () => {
-  if(window.G2Plot) {
-    return
-  }
+  if (window.G2Plot) return
   await loadScript(CDN_UMD_ANTV)
 }
 
-const onCreated = async () =>{
-  const [incomeDataList] = await Promise.all([getIncomeData(),loadAntv()])
+const onCreated = async () => {
+  const [incomeDataList] = await Promise.all([getIncomeData(), loadAntv()])
   init(incomeDataList)
   initLostRef(incomeDataList)
-  initAllInRef(incomeDataList)
+  initInRef(incomeDataList)
 }
 
-onBeforeMount(()=>{
+onBeforeMount(() => {
   onCreated()
 })
 </script>
 
 <template>
   {{ dataMsg }}
+  <template v-if="incomeDataList.length">
+    <p>{{ incomeDataList[0].time }}~{{ incomeDataList[incomeDataList.length - 1].time }} ({{ incomeDataList.length }})
+    </p>
+    <ul>
+      <li v-for="(val, key) in totalInfo">{{ key }}: {{ val?.toLocaleString() }}</li>
+    </ul>
     <h3 class="px-2">总到手情况</h3>
     <p class="px-2 font-size-3">收入包含提取公积金、饭补。支出包含五险一金、房租支出</p>
     <div ref="totalRef" />
@@ -189,10 +225,13 @@ onBeforeMount(()=>{
 
     <h3 class="px-2">收入情况</h3>
     <p class="px-2 font-size-3">包含提取公积金、饭补</p>
-    <div class="mb-12" ref="allInRef" />
+    <div ref="inRef" />
 
-    <p>2024-2 年终 52,374 (换算为月均 4,364.5)</p>
-    <p>2024-3 退税 875.16</p>
+    <ul>
+      <li v-for="item in otherIncomeList"> {{ Object.keys(item).map(key => key === 'time' ? item[key] : `${key}
+        ${item[key]}`).join(' ') }} </li>
+    </ul>
 
     <json-to-table :incomeDataList v-if="incomeDataList.length" />
+  </template>
 </template>

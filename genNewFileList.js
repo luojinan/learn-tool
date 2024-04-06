@@ -1,8 +1,9 @@
-// 使用nodejs读取当前目录下名为resp的json文件，并取出tree的值
+// 1. https://uutool.cn/github-file-download/ 在线读取仓库https://github.com/tomyangsh/news-backup/tree/master/2024-04文件清单，在network拷贝请求结果
+// 2. 请求结果不用格式化，保存到当前根目录 resp.json
+// 3. 运行node genNe....js ，即使用nodejs读取当前目录下名为resp的json文件，并取出tree的值
 import fs from 'fs';
 import path from 'path';
 
-// https://uutool.cn/github-file-download/ 在线读取仓库文件清单，在控制台拷贝请求结果
 const resp = JSON.parse(fs.readFileSync(path.resolve('./', 'resp.json'), 'utf8'));
 const tree = resp.tree;
 
@@ -28,9 +29,9 @@ if(!fs.existsSync(outputDir)) {
   fs.mkdirSync(outputDir);
 }
 
-// const wantlist = { '2024-02': treeObj['2024-02'] }
-// Object.keys(wantlist).forEach(key => {
-Object.keys(treeObj).forEach(key => {
+const wantlist = { '2024-03': treeObj['2024-03'] }
+Object.keys(wantlist).forEach(key => {
+// Object.keys(treeObj).forEach(key => {
   const output = path.resolve(outputDir, `ghnew-${key}.js`);
   const content = `((g)=>{g['ghnew-${key}'] = ${JSON.stringify(treeObj[key])}})(window)`;
   fs.writeFileSync(output, content);

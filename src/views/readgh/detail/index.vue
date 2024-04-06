@@ -22,6 +22,10 @@ const loadMdIt = async () => {
 
 const getPostMdStr = async () => {
   const { data } = await useFetch(action.value).text()
+  if(!data.value) {
+    const res = await useFetch(action.value.replace('gitmirror','githubusercontent')).text()
+    return res.data
+  }
   return data
 }
 

@@ -7,7 +7,7 @@ import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 const router = useRouter();
 
-const ghHost = 'https://raw.gitmirror.com/'
+const ghHost = 'https://mirror.ghproxy.com/https://raw.githubusercontent.com/'
 const url = 'tomyangsh/news-backup/master'
 
 const ghurl = ref(`${ghHost}${url}`)

@@ -28,6 +28,12 @@ const entryList = [
     desc: '文章阅读',
     path: '/readgh',
   },
+  {
+    name: 'wumei',
+    title: '🛍️ buy buy buy',
+    desc: '物美传单',
+    path: '/wumei',
+  },
 ]
 const router = useRouter()
 

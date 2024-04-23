@@ -6,7 +6,7 @@ const list = ref([])
 
 const init = async () => {
   const res = await fetch(WUMEI_URL).then(r => r.text())
-  list.value = JSON.parse(res.split('"fliphtml5_pages":')[1].split(',"loadingConfig')[0])
+  list.value = JSON.parse(res.split('"fliphtml5_pages":')[1].split(',"search_pages')[0])
 }
 
 onMounted(() => {
@@ -17,6 +17,6 @@ onMounted(() => {
 <template>
   <div>
     <h3 class="text-center">物美传单</h3>
-    <img width="50%" v-for="(item, index) in list" :key="index" :src="`https://book.yunzhan365.com/kpoyq/uipu/files/large/${item.n[0]}?x-oss-process=image/resize,h_1272,w_828/sharpen,70`" alt="">
+    <img width="50%" v-for="(item, index) in list" :key="index" :src="`https://book.yunzhan365.com/kpoyq/uipu/files/large/${item.n[0].split('/large/')[1]}`" alt="">
   </div>
 </template>

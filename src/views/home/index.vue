@@ -58,6 +58,8 @@ onMounted(() => {
     } else {
       weiboList.value = [{ name: '加载失败' }]
     }
+  }).catch(()=>{
+    weiboList.value = [{ name: '加载失败' }]
   })
 })
 
@@ -66,13 +68,17 @@ onMounted(() => {
 <template>
   <div class="py-2 px-2 grip-layout">
     <div v-for="(item, index) in entryList" :key="index">
-      <div class="btn flex-col" @click="go(item)">
+      <div class="w-full btn btn-primary flex-col" @click="go(item)">
         <div>{{ item.title }}</div>
         <div class="font-size-3">{{ item.desc }}</div>
       </div>
     </div>
   </div>
-  <div class="py-2 pl-4" v-for="(weibo, index) in weiboList" :key="index" @click="goout(weibo)"> {{index+1}}、{{ weibo.name }}</div>
+  <div v-if="!weiboList.length">loading weibo🔥</div>
+  <ul v-else class="mx-2 my-2 menu-md bg-base-200 rounded-box">
+  <div class="py-2 px-2" v-for="(weibo, index) in weiboList" :key="index" @click="goout(weibo)"> {{index+1}}、{{ weibo.name }}</div>
+</ul>
+
 </template>
 
 <style scoped>

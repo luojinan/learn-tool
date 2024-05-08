@@ -216,7 +216,7 @@ onBeforeMount(() => {
 
 <template>
   {{ dataMsg }}
-  <div class="btn" @click="onRefresh">刷新</div>
+  <div class="btn btn-primary" @click="onRefresh">刷新</div>
   <template v-if="incomeDataList.length">
     <p>{{ incomeDataList[0].time }}~{{ incomeDataList[incomeDataList.length - 1].time }} ({{ incomeDataList.length }})
     </p>

@@ -44,8 +44,8 @@ onMounted(() => {
 </script>
 
 <template>
-  <div v-show="isLoading" class="mt-50 text-center text-white">
+  <div v-show="isLoading" class="mt-10 text-center text-white">
     loading...
   </div>
-  <div id="container" class="px-2 pb-6" />
+  <div id="container" class="px-2 py-6" />
 </template>

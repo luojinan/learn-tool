@@ -86,14 +86,14 @@ onMounted(() => {
       </div>
     </div>
   </div>
-  <div v-if="!weiboList.length">
-    loading weibo🔥
+  <div v-if="!weiboList.length" class="text-center">
+    loading weibo🔥 ...
   </div>
-  <ul v-else class="mx-2 my-2 menu-md bg-base-200 rounded-box">
+  <ul v-else class="mx-2 my-2 menu-md bg-base-200 divide-y divide-slate-700 rounded-box">
     <div
       v-for="(weibo, index) in weiboList"
       :key="index"
-      class="py-2 px-2"
+      class="py-3 px-2"
       @click="goout(weibo)"
     >
       {{ index + 1 }}、{{ weibo.name }}

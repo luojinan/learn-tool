@@ -1,7 +1,7 @@
 <script setup lang="ts">
 // TODO: 按文件大小排序，以及持久化缓存hook 目前是全局变量刷新/休眠即丢失
 import { useStorage } from '@vueuse/core'
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { cacheDataOrUmd } from '@/common/utils.js'
 import { ossDataUrl } from '@/common/const.js'
@@ -35,6 +35,7 @@ interface PostItem {
 
 const datalist = ref<PostItem[]>([])
 const dataMsg = ref('')
+const hasSize = computed(() => datalist.value[0]?.size)
 
 async function getList() {
   const dataPath = `ghnew-${month.value}`
@@ -83,25 +84,29 @@ function toDetail(item) {
 <template>
   <div class="flex-col px-2">
     {{ dataMsg }}
-    <div>
-      <div class="i-logos-github-icon?mask text-red-300 text-3xl" /><input v-model="ghurl" class="w-90vw">
+    <div class="px-4">
+      <input v-model="ghurl" class="w-full">
     </div>
-    <div><input v-model="month" type="month"></div>
-    <button @click="getList">
-      获取
-    </button>
-    <button @click="sortList">
-      排序
-    </button>
-    <button @click="backList">
-      还原
-    </button>
+    <div class="my-4 flex justify-center">
+      <input v-model="month" type="month">
+    </div>
+    <div class="flex place-content-evenly">
+      <button class="btn btn-primary" @click="getList">
+        获取
+      </button>
+      <button v-if="hasSize" class="btn btn-primary" @click="sortList">
+        排序
+      </button>
+      <button v-if="hasSize" class="btn btn-primary" @click="backList">
+        还原
+      </button>
+    </div>
     <div v-for="(item, index) in datalist" :key="item.id" class="my-2 bg-gray-9 p-2" @click="toDetail(item.title)">
       <p class="my-1">
         {{ index + 1 }}.  {{ item.name || '-' }}
       </p>
       <p class="text-gray-500 my-1 text-right text-sm">
-        [{{ item.from || '-' }}] {{ item.size }}kb
+        [{{ item.from || '-' }}] {{ item.size || '-' }}kb
       </p>
     </div>
   </div>

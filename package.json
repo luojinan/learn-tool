@@ -1,11 +1,12 @@
 {
   "name": "learn-tool",
-  "private": true,
-  "version": "0.0.0",
   "type": "module",
+  "version": "0.0.0",
+  "private": true,
   "scripts": {
     "dev": "vite --host",
     "build": "vite build",
+    "lint": "oxlint --fix && eslint 'src/**/*.{ts,vue}' --fix",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -15,10 +16,15 @@
     "vue-router": "^4.2.5"
   },
   "devDependencies": {
+    "@antfu/eslint-config": "^2.16.3",
     "@iconify-json/logos": "^1.1.42",
     "@types/node": "^20.10.6",
     "@vitejs/plugin-vue": "^4.5.2",
+    "eslint": "^9.2.0",
+    "eslint-plugin-oxlint": "^0.2.9",
+    "oxlint": "^0.3.2",
     "typescript": "^5.3.3",
+    "unplugin-oxlint": "^0.5.5",
     "vite": "^5.0.8",
     "vue-tsc": "^1.8.27"
   }

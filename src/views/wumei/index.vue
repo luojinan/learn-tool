@@ -20,6 +20,7 @@ onMounted(() => {
     <h3 class="text-center">
       物美传单
     </h3>
-    <img v-for="(item, index) in list" :key="index" width="50%" :src="`https://book.yunzhan365.com/kpoyq/uipu/files/large/${item.n[0].split('/large/')[1]}`" alt="">
+    <a href="https://book.yunzhan365.com/kpoyq/uipu" target="_blank" class="link link-primary block">https://book.yunzhan365.com/kpoyq/uipu</a>
+    <img v-for="(item, index) in list" :key="index" class="inline-block" width="50%" :src="`https://book.yunzhan365.com/kpoyq/uipu/files/large/${item.n[0].split('/large/')[1]}`" alt="">
   </div>
 </template>

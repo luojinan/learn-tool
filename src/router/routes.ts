@@ -62,7 +62,15 @@ const routes: Array<RouteRecordRaw> = [
           title: "readgh",
           noCache: true
         }
-      }
+      },
+      {
+        path: "book",
+        name: "book",
+        component: () => import("@/views/book/index.vue"),
+        meta: {
+          title: "图书信息"
+        }
+      },
     ]
   }
 ];

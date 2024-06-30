@@ -1,18 +1,17 @@
 <script setup lang="ts">
-import { CDN_ESM_CANVAS } from '@/common/const';
-import { copyToClipboard } from '@/common/utils';
-import { onMounted, ref } from 'vue';
+import { onMounted, ref } from 'vue'
+import { CDN_ESM_CANVAS } from '@/common/const'
+import { copyToClipboard } from '@/common/utils'
 
-const headers = ref([])
+const { incomeDataList } = defineProps<Props>()
+const headers = ref<string[]>([])
 const rows = ref([])
 interface Props {
   incomeDataList: any[]
 }
-const { incomeDataList } = defineProps<Props>()
-
 // 解析 JSON 数据，获取表头和行数据
-const parseJsonData = () => {
-  const lengthList = incomeDataList.map(item => {
+function parseJsonData() {
+  const lengthList = incomeDataList.map((item) => {
     const labelList = Object.keys(item)
     return labelList.length
   })
@@ -20,7 +19,7 @@ const parseJsonData = () => {
   const maxLength = Math.max(...lengthList)
   const index = lengthList.findIndex(item => item === maxLength)
   headers.value = Object.keys(incomeDataList[index])
-  rows.value = incomeDataList.map(item => {
+  rows.value = incomeDataList.map((item) => {
     return headers.value.reduce((res, next) => {
       res[next] = item[next] || '-'
       return res
@@ -29,10 +28,10 @@ const parseJsonData = () => {
 }
 
 // 导出表格为图片
-const exportImage = () => {
+function exportImage() {
   const table = document.querySelector('table')
-  import(CDN_ESM_CANVAS).then(({default: html2canvas}) => {
-    html2canvas(table).then(canvas => {
+  import(CDN_ESM_CANVAS).then(({ default: html2canvas }) => {
+    html2canvas(table).then((canvas) => {
       const image = canvas.toDataURL('image/png')
       const link = document.createElement('a')
       link.href = image
@@ -44,13 +43,13 @@ const exportImage = () => {
 }
 
 // 导出表格为 Markdown
-const exportMarkdown = () => {
-  let markdown = '| ' + headers.value.join(' | ') + ' |\n'
-  markdown += '| ' + headers.value.map(() => '---').join(' | ') + ' |\n'
+function exportMarkdown() {
+  let markdown = `| ${headers.value.join(' | ')} |\n`
+  markdown += `| ${headers.value.map(() => '---').join(' | ')} |\n`
 
-  rows.value.forEach(row => {
+  rows.value.forEach((row) => {
     const values = Object.values(row)
-    markdown += '| ' + values.join(' | ') + ' |\n'
+    markdown += `| ${values.join(' | ')} |\n`
   })
   copyToClipboard(markdown)
 }
@@ -62,21 +61,31 @@ onMounted(() => {
 
 <template>
   <div class="flex flex-justify-end">
-    <button @click="exportImage">下载图片</button>
-    <button @click="exportMarkdown">复制md</button>
+    <button @click="exportImage">
+      下载图片
+    </button>
+    <button @click="exportMarkdown">
+      复制md
+    </button>
   </div>
   <div class="width-full p-4 overflow-auto">
-    <table class="border-collapse border border-slate-500"
-      style="background-color: #141414;color: rgba(255, 255, 255, 0.87);">
+    <table
+      class="border-collapse border border-slate-500"
+      style="background-color: #141414;color: rgba(255, 255, 255, 0.87);"
+    >
       <thead>
         <tr>
-          <th class="border-solid border-slate-700" v-for="(header, index) in headers" :key="index">{{ header }}</th>
+          <th v-for="(header, index) in headers" :key="index" class="border-solid border-slate-700">
+            {{ header }}
+          </th>
         </tr>
       </thead>
       <tbody>
         <tr v-for="(row, index) in rows" :key="index">
-          <td class="border-solid border-slate-700 px-2 text-center" v-for="(value, key) in row" :key="key">{{
-      value.toLocaleString() }}</td>
+          <td v-for="(value, key) in row" :key="key" class="border-solid border-slate-700 px-2 text-center">
+            {{
+              value.toLocaleString() }}
+          </td>
         </tr>
       </tbody>
     </table>

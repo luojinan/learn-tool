@@ -1,19 +1,20 @@
 <script lang="ts" setup>
-import TabList from "@/components/TabList/index.vue";
-import { Japenese50yin } from "@/common/const"
-import { getRandomItem } from "@/common/utils"
-import { computed, onMounted, reactive, ref, watch } from 'vue';
+import { computed, onMounted, reactive, ref, watch } from 'vue'
+import TabList from '@/components/TabList/index.vue'
+import { Japenese50yin } from '@/common/const'
+import { getRandomItem } from '@/common/utils'
+
 const STORAGE_KEY = 'write-tablist'
-const dealList = () => {
-  let list: { question: string, answer: string }[] = []
+function dealList() {
+  const list: { question: string, answer: string }[] = []
   for (const [, item] of Object.entries(Japenese50yin)) {
     list.push({
       question: item.hiragana,
-      answer: item.romaji
+      answer: item.romaji,
     })
     list.push({
       question: item.katakana,
-      answer: item.romaji
+      answer: item.romaji,
     })
   }
   return list
@@ -21,12 +22,12 @@ const dealList = () => {
 
 const TAB_CONST = [
   {
-    name: "五十音",
-    value: "tab1",
+    name: '五十音',
+    value: 'tab1',
     remainingValues: [],
     obtainedValues: [],
     total: 0,
-    currentIndex: -1
+    currentIndex: -1,
   },
   // {
   //   name: "单词",
@@ -36,10 +37,10 @@ const TAB_CONST = [
   //   total: 0,
   //   currentIndex: -1
   // },
-];
+]
 
-const active = ref("tab1");
-const tabList = reactive(TAB_CONST);
+const active = ref('tab1')
+const tabList = reactive(TAB_CONST)
 const tabItem = computed(() => {
   return tabList.find(item => item.value === active.value)
 })
@@ -47,22 +48,22 @@ const currentItem = computed(() => {
   return tabItem.value.obtainedValues[tabItem.value.currentIndex]
 })
 
-const initData = () => {
+function initData() {
   const list = dealList()
   return {
     allValues: list,
-    total: list.length
+    total: list.length,
   }
 }
 
-const onNext = () => {
+function onNext() {
   const testindex = tabList.findIndex(item => item.value === active.value)
   if (!tabItem.value?.obtainedValues.length && !tabItem.value?.remainingValues.length) {
     const { allValues, total } = initData()
     tabList[testindex] = {
       ...tabList[testindex],
       remainingValues: allValues,
-      total: total
+      total,
     }
   }
 
@@ -73,7 +74,8 @@ const onNext = () => {
   if (tabItem.value.currentIndex === tabItem.value.obtainedValues.length - 1) {
     // 获取下一个前先校验
     const isPass = !tabItem.value.obtainedValues.length || checkAnswer()
-    if(!isPass) return
+    if (!isPass)
+      return
     getRandomItem(tabList[testindex])
     resetAnswer()
     return
@@ -82,52 +84,52 @@ const onNext = () => {
   resetAnswer()
 }
 
-const onReset = () => {
+function onReset() {
   const testindex = tabList.findIndex(item => item.value === active.value)
   tabList[testindex] = {
     ...tabList[testindex],
     remainingValues: [],
     obtainedValues: [],
     total: 0,
-    currentIndex: -1
+    currentIndex: -1,
   }
   onNext()
 }
 
+const showBubble = ref(false)
 const isShaking = ref(false)
-const shakeIt = () => {
+function shakeIt() {
   isShaking.value = true
   showBubble.value = true
-  setTimeout(()=>{
+  setTimeout(() => {
     isShaking.value = false
-  },1000)
+  }, 1000)
 }
 
-const showBubble = ref(false)
-
 const showAnswer = ref(false)
-const resetAnswer = () => {
+const youAnswer = ref('')
+function resetAnswer() {
   showAnswer.value = false
   youAnswer.value = ''
 }
 
-const youAnswer = ref('')
-const checkAnswer = () => {
+function checkAnswer() {
   const { answer } = currentItem.value
   const isPass = youAnswer.value && answer === youAnswer.value
   !isPass && shakeIt()
   return isPass
 }
-const onSubmit = () => {
+function onSubmit() {
   const isPass = checkAnswer()
-  if (!isPass) return
+  if (!isPass)
+    return
   onNext()
 }
 
-const onPre = () => {
-  if (tabItem.value.currentIndex <= 0) {
+function onPre() {
+  if (tabItem.value.currentIndex <= 0)
     return
-  }
+
   const testindex = tabList.findIndex(item => item.value === active.value)
   tabList[testindex].currentIndex -= 1
   resetAnswer()
@@ -143,8 +145,8 @@ onMounted(() => {
   // 取缓存
   try {
     Object.assign(tabList, JSON.parse(store))
-  } catch (error) {
-    alert('初始化数据失败')
+  }
+  catch (error) {
     console.log(error)
   }
 })
@@ -156,22 +158,32 @@ watch(tabList, (value) => {
 
 <template>
   <div class="main-page">
-    <TabList :tabList="tabList" :model-active="active">
+    <TabList :tab-list="tabList" :model-active="active">
       <div>
-        <div class="font-size-10 pb text-center relative" :class="isShaking?'apply-shake' : ''">
+        <div class="font-size-10 pb text-center relative" :class="isShaking ? 'apply-shake' : ''">
           {{ currentItem?.question }}
           <span class="font-size-4">{{ showAnswer ? currentItem?.answer : '' }}</span>
-          <div v-show="showBubble" class="bubble text-center font-size-3">{{ youAnswer ? `我不是${youAnswer}` : '猜猜看'}}</div>
+          <div v-show="showBubble" class="bubble text-center font-size-3">
+            {{ youAnswer ? `我不是${youAnswer}` : '猜猜看' }}
+          </div>
         </div>
-        <div class="btn" @click="showAnswer = true">答案</div>
-        <input type="text" v-model="youAnswer" @keyup.enter="onSubmit" @input="showBubble = false">
+        <div class="btn" @click="showAnswer = true">
+          答案
+        </div>
+        <input v-model="youAnswer" type="text" @keyup.enter="onSubmit" @input="showBubble = false">
         <div class="flex justify-between">
-          <div class="btn" @click="onPre">◀︎</div>
-          <div class="btn" @click="onNext">▶︎</div>
+          <div class="btn" @click="onPre">
+            ◀︎
+          </div>
+          <div class="btn" @click="onNext">
+            ▶︎
+          </div>
         </div>
       </div>
       <div>
-        <div class="btn" @click="onReset">重置</div>
+        <div class="btn" @click="onReset">
+          重置
+        </div>
         <p class="text-center">
           {{ `${tabItem.currentIndex + 1}/${tabItem?.total}` }}
         </p>

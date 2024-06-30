@@ -1,18 +1,18 @@
 interface RandomInfo {
-  remainingValues: any[], // 剩余未获取
-  obtainedValues: any[], // 已获取
+  remainingValues: any[] // 剩余未获取
+  obtainedValues: any[] // 已获取
   currentIndex: number
 }
 
 // 从对象内字段剩余项目数组中随机取1项，并设置进字段已获取数组
 export function getRandomItem(info: RandomInfo) {
   const { remainingValues, obtainedValues } = info
-  let randomIndex = Math.floor(Math.random() * remainingValues.length);
-  const item = remainingValues[randomIndex];
-  remainingValues.splice(randomIndex, 1);
-  obtainedValues.push(item);
+  const randomIndex = Math.floor(Math.random() * remainingValues.length)
+  const item = remainingValues[randomIndex]
+  remainingValues.splice(randomIndex, 1)
+  obtainedValues.push(item)
   // item.currentIndex = obtainedValues.length - 1
-  Object.assign(info, {currentIndex: obtainedValues.length - 1})
+  Object.assign(info, { currentIndex: obtainedValues.length - 1 })
   // console.log(info,randomIndex)
 }
 
@@ -24,19 +24,19 @@ export function loadScript(url: string): Promise<void> {
     script.onload = () => {
       resolve()
     }
-    script.onerror = () => {
-      reject()
+    script.onerror = (error) => {
+      reject(error)
     }
     document.body.appendChild(script)
   })
 }
 
-export const cacheDataOrUmd = async (globalName: string, url: string)=>{
+export async function cacheDataOrUmd(globalName: string, url: string) {
   const cacheData = localStorage.getItem(globalName)
-  if(cacheData) {
+  if (cacheData) {
     return Promise.resolve({
       data: JSON.parse(cacheData),
-      msg: '来源缓存'
+      msg: '来源缓存',
     })
   }
   try {
@@ -44,9 +44,10 @@ export const cacheDataOrUmd = async (globalName: string, url: string)=>{
     localStorage.setItem(globalName, JSON.stringify(window[globalName]))
     return Promise.resolve({
       data: window[globalName],
-      msg: '来源网络'
+      msg: '来源网络',
     })
-  } catch (error) {
+  }
+  catch (error) {
     return Promise.reject(error)
   }
 }
@@ -56,32 +57,32 @@ export const cacheDataOrUmd = async (globalName: string, url: string)=>{
 export function loadCdnEsmModule(url: string, globalVariableName: string): Promise<void> {
   return new Promise((resolve, reject) => {
     // 创建一个新的script元素
-  const script = document.createElement('script');
-  script.type = 'module';
+    const script = document.createElement('script')
+    script.type = 'module'
 
-  script.onload = () => {
+    script.onload = () => {
     // 如果模块导出了default属性，则将default属性或整个模块对象赋值给全局变量
-    (window as any)[globalVariableName] = window[globalVariableName]?.default || window[globalVariableName];
-    console.log(`${globalVariableName} loaded successfully`);
-    resolve()
-  }
-  script.onerror = () => {
-    console.error(`Failed to load CDN module from ${url}:`, error);
-    reject()
-  }
+      (window as any)[globalVariableName] = window[globalVariableName]?.default || window[globalVariableName]
+      console.log(`${globalVariableName} loaded successfully`)
+      resolve()
+    }
+    script.onerror = (error) => {
+      console.error(`Failed to load CDN module from ${url}:`, error)
+      reject(error)
+    }
 
-  // 将src属性设置为CDN资源地址，并将脚本添加到文档中以开始加载
-  script.src = url;
-  document.head.appendChild(script);
-})
+    // 将src属性设置为CDN资源地址，并将脚本添加到文档中以开始加载
+    script.src = url
+    document.head.appendChild(script)
+  })
 }
 
 export function copyToClipboard(text: string): boolean {
-  const textarea = document.createElement('textarea');
-  textarea.value = text;
-  document.body.appendChild(textarea);
-  textarea.select();
-  const successful = document.execCommand('copy');
-  document.body.removeChild(textarea);
-  return successful;
+  const textarea = document.createElement('textarea')
+  textarea.value = text
+  document.body.appendChild(textarea)
+  textarea.select()
+  const successful = document.execCommand('copy')
+  document.body.removeChild(textarea)
+  return successful
 }

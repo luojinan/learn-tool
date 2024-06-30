@@ -1,11 +1,11 @@
 <script lang="ts" setup>
-import { ref, reactive, onMounted, computed, watch } from "vue";
-import CardItem from "@/components/CardItem/index.vue";
-import TabList from "@/components/TabList/index.vue";
-import { TAB_CONST } from "@/common/const";
+import { computed, onMounted, reactive, ref, watch } from 'vue'
+import CardItem from '@/components/CardItem/index.vue'
+import TabList from '@/components/TabList/index.vue'
+import { TAB_CONST } from '@/common/const'
 
-const active = ref("tab1");
-const tabList = reactive(TAB_CONST);
+const active = ref('tab1')
+const tabList = reactive(TAB_CONST)
 const tabItem = computed(() => {
   return tabList.find(item => item.value === active.value)
 })
@@ -14,21 +14,22 @@ const cardItem = computed(() => {
   return tabItem.value.allValues[currentKey]
 })
 
-const getListInfo = (tabItem) => {
+function getListInfo(tabItem) {
   const { remainingValues, obtainedValues, allValues } = tabItem
   if (remainingValues.length > 0) {
-    let randomIndex = Math.floor(Math.random() * remainingValues.length);
-    let randomValue = remainingValues[randomIndex];
-    tabItem.obtainedValues.push(randomValue);
-    tabItem.remainingValues.splice(randomIndex, 1);
+    const randomIndex = Math.floor(Math.random() * remainingValues.length)
+    const randomValue = remainingValues[randomIndex]
+    tabItem.obtainedValues.push(randomValue)
+    tabItem.remainingValues.splice(randomIndex, 1)
     tabItem.currentIndex = obtainedValues.length - 1
-    return allValues[randomValue];
-  } else {
-    return "已经获取完所有值";
+    return allValues[randomValue]
   }
-};
+  else {
+    return '已经获取完所有值'
+  }
+}
 
-const onNext = () => {
+function onNext() {
   const tabItem = tabList.find(item => item.value === active.value)
   if (tabItem.currentIndex === Object.keys(tabItem.allValues).length - 1) {
     confetti()
@@ -39,16 +40,15 @@ const onNext = () => {
     return
   }
   tabItem.currentIndex += 1
-};
-
-const onPreItem = () => {
-  const tabItem = tabList.find(item => item.value === active.value)
-  if (tabItem.currentIndex > 0) {
-    tabItem.currentIndex = tabItem.currentIndex - 1
-  }
 }
 
-const onReset = () => {
+function onPreItem() {
+  const tabItem = tabList.find(item => item.value === active.value)
+  if (tabItem.currentIndex > 0)
+    tabItem.currentIndex = tabItem.currentIndex - 1
+}
+
+function onReset() {
   const tabItem = tabList.find(item => item.value === active.value)
   tabItem.currentIndex = -1
   tabItem.obtainedValues = []
@@ -65,8 +65,8 @@ onMounted(() => {
   // 取缓存
   try {
     Object.assign(tabList, JSON.parse(store))
-  } catch (error) {
-    alert('初始化数据失败')
+  }
+  catch (error) {
     console.log(error)
   }
 })
@@ -78,12 +78,14 @@ watch(tabList, (value) => {
 
 <template>
   <div class="main-page">
-    <TabList :tabList="tabList" :model-active="active">
+    <TabList :tab-list="tabList" :model-active="active">
       <div class="page w-full flex-center">
-        <CardItem :cardItem="cardItem" @nextItem="onNext" @preItem="onPreItem" />
+        <CardItem :card-item="cardItem" @next-item="onNext" @pre-item="onPreItem" />
       </div>
       <div>
-        <div class="btn" @click="onReset">重置</div>
+        <div class="btn" @click="onReset">
+          重置
+        </div>
         <p class="text-center">
           {{ `${tabItem.currentIndex + 1}/${Object.keys(tabItem.allValues).length}` }}
         </p>

@@ -26,12 +26,20 @@ const resp = JSON.parse(fs.readFileSync(path.resolve('./', 'resp.json'), 'utf8')
 //   return acc
 // }, {})
 
-const treeObj = Object.keys(resp).map((titleKey) => {
-  const cur = resp[titleKey]
-  const { date } = cur
+// const treeObj = Object.keys(resp).map((titleKey) => {
+//   const cur = resp[titleKey]
+//   const { date } = cur
+//   return {
+//     date,
+//     title: titleKey,
+//   }
+// })
+
+// github 改为了ssr数据，需要从html中找到数据js
+const treeObj = resp.tree.items.map((item) => {
   return {
-    date,
-    title: titleKey,
+    // date,
+    title: item.name,
   }
 })
 
@@ -41,7 +49,7 @@ if (!fs.existsSync(outputDir))
   fs.mkdirSync(outputDir)
 
 // const wantlist = { '2024-03': treeObj['2024-03'] }
-const wantlist = { '2024-04': treeObj }
+const wantlist = { '2024-06': treeObj }
 Object.keys(wantlist).forEach((key) => {
 // Object.keys(treeObj).forEach(key => {
   const output = path.resolve(outputDir, `ghnew-${key}.js`)

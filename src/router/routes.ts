@@ -59,20 +59,20 @@ const routes: Array<RouteRecordRaw> = [
         name: 'readghdetail',
         component: () => import('@/views/readgh/detail/index.vue'),
         meta: {
-          title: "readgh",
-          noCache: true
-        }
+          title: 'readgh',
+          noCache: true,
+        },
       },
       {
-        path: "book",
-        name: "book",
-        component: () => import("@/views/book/index.vue"),
+        path: 'book',
+        name: 'book',
+        component: () => import('@/views/book/index.vue'),
         meta: {
-          title: "图书信息"
-        }
+          title: '图书信息',
+        },
       },
-    ]
-  }
-];
+    ],
+  },
+]
 
 export default routes

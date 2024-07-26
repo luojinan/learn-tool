@@ -1,12 +1,112 @@
-# Vue 3 + Vite
+# 移动端 vue3 项目
 
-This template should help get you started developing with Vue 3 in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+## 搭建
 
-## Recommended IDE Setup
+[tailwindcss 组件库 daisyui](https://daisyui.com/components/button/)
 
-- [VS Code](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+```bash
+pnpm create vite
+cd my-vite-project
+pnpm i
+pnpm dev
 
-todo:
+pnpm add -D tailwindcss postcss autoprefixer
+pnpx tailwindcss init -p
+
+pnpm add daisyui
+```
+
+👇 `tailwind.config.cjs`
+
+```js
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  content: [
+    './index.html',
+    './src/**/*.{vue,js,ts,jsx,tsx}',
+  ],
+  theme: {
+    extend: {},
+  },
+  plugins: [require('daisyui')],
+}
+```
+
+👇 `main.ts`
+
+```ts
+import './reset.css'
+import './style.css'
+```
+
+👇 `style.css`
+
+```css
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+```
+
+## 基建
+
+`oxlint` + `eslint`，需要安装对应的 [IDE插件](https://oxc.rs/docs/guide/usage/linter.html#vscode-extension)
+
+```json
+// .vscode/settings.json
+{
+  "prettier.enable": false,
+  "editor.formatOnSave": false,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit",
+    "source.organizeImports": "never"
+  }
+}
+```
+
+[unplugin-oxlint github](https://github.com/tmg0/unplugin-oxlint)
+
+`unplugin-oxlint` based on oxlint [vite-plugin-oxlint](https://github.com/52-entertainment/vite-plugin-oxlint)
+
+🤔 unplugin-oxlint 只是抹平了vite-plugin-oxlint在其他构建工具上使用？
+
+```bash
+pnpm add -D oxlint unplugin-oxlint
+```
+
+```ts
+// vite.config.ts
+import Oxlint from 'unplugin-oxlint/vite'
+
+export default defineConfig({
+  plugins: [Oxlint()],
+})
+```
+
+oxlint 只有一小部分规则，因此仍然需要eslint，并且我们使用`@antfu/eslint-config`的eslint规则
+
+```bash
+pnpm add -D @antfu/eslint-config eslint eslint-plugin-oxlint
+```
+
+```js
+// eslint.config.js
+import antfu from '@antfu/eslint-config'
+import oxlint from 'eslint-plugin-oxlint'
+
+export default antfu({
+  ...oxlint.configs['flat/recommended'],
+})
+```
+
+👆 如果你以前研究过eslint的配置文件，会发现没见过这种语法，这是 [eslint9版本](https://zh-hans.eslint.org/docs/latest/use/configure/configuration-files) 支持的所谓 `flat` 语法
+
+[flat config eslint blog post](https://eslint.org/blog/2022/08/new-config-system-part-2/)
+
+> eslint 和 oxlint 协同的方式，仅仅是通过插件匹配 [oxlint 支持的规则](https://oxc.rs/docs/guide/usage/linter/rules.html)，然后在 eslint 中关闭校验
+>
+> 实现在最终的执行里，2个校验工具都执行。相当于优先使用 oxlint，并且让eslint不要重复执行
+
+## todo
 
 - [x] feat: 进度数据缓存
 - [ ] feat: 进度缓存有效期3天，过期强制从头开始背

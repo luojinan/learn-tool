@@ -18,7 +18,7 @@ function back() {
         </div>
       </button>
     </div>
-    <div class="navbar-center">
+    <div class="navbar-center" @click="router.push('/')">
       <a class="btn btn-ghost text-xl">🌸</a>
     </div>
     <div class="navbar-end">

@@ -1,11 +1,8 @@
-// import { fileURLToPath, URL } from "node:url";
-import path from 'path'
+import { resolve } from 'node:path'
 import vue from '@vitejs/plugin-vue'
 // import { visualizer } from "rollup-plugin-visualizer";
 import { defineConfig } from 'vite'
 import Oxlint from 'unplugin-oxlint/vite'
-
-const projectRootDir = path.resolve(__dirname)
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -19,7 +16,7 @@ export default defineConfig({
   ],
   resolve: {
     alias: {
-      '@': path.resolve(projectRootDir, 'src'),
+      '@': resolve(__dirname, 'src'),
     },
   },
 })

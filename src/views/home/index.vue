@@ -34,6 +34,12 @@ const entryList = [
     desc: '物美传单',
     path: '/wumei',
   },
+  {
+    name: 'book',
+    title: '📚 book',
+    desc: '拥有图书',
+    path: '/book',
+  },
 ]
 const router = useRouter()
 

@@ -121,3 +121,4 @@ export default antfu({
 - [ ] dev: pwa缓存
 - [ ] dev: gitee
 - [ ] dev: 静态资源来源OSS
+- [ ] dev: 使用 pwa 缓存静态资源

@@ -18,7 +18,7 @@ export default defineConfig({
         name: 'tool',
         short_name: 'tool',
         description: 'tool APP',
-        theme_color: '#fafafa',
+        theme_color: '#141414',
         icons: [
           {
             src: '/learn-tool/192.png',

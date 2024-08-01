@@ -26,22 +26,22 @@ const resp = JSON.parse(fs.readFileSync(path.resolve('./', 'resp.json'), 'utf8')
 //   return acc
 // }, {})
 
-// const treeObj = Object.keys(resp).map((titleKey) => {
-//   const cur = resp[titleKey]
-//   const { date } = cur
-//   return {
-//     date,
-//     title: titleKey,
-//   }
-// })
-
-// github 改为了ssr数据，需要从html中找到数据js
-const treeObj = resp.tree.items.map((item) => {
+const treeObj = Object.keys(resp).map((titleKey) => {
+  const cur = resp[titleKey]
+  const { date } = cur
   return {
-    // date,
-    title: item.name,
+    date,
+    title: titleKey,
   }
 })
+
+// // github 改为了ssr数据，需要从html中找到数据js
+// const treeObj = resp.tree.items.map((item) => {
+//   return {
+//     // date,
+//     title: item.name,
+//   }
+// })
 
 // 检查没有output目录时，创建output目录，并遍历treeObj对象生成以key为名的js文件，文件内容为esm抛出数组数据
 const outputDir = './output'
@@ -49,7 +49,7 @@ if (!fs.existsSync(outputDir))
   fs.mkdirSync(outputDir)
 
 // const wantlist = { '2024-03': treeObj['2024-03'] }
-const wantlist = { '2024-06': treeObj }
+const wantlist = { '2024-07': treeObj }
 Object.keys(wantlist).forEach((key) => {
 // Object.keys(treeObj).forEach(key => {
   const output = path.resolve(outputDir, `ghnew-${key}.js`)

@@ -1,21 +1,8 @@
 <script lang="ts" setup>
-import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 // TODO: 从路由配置中读取
 // 动态路由目录生成
 const entryList = [
-  {
-    name: 'jap50yin',
-    title: '读',
-    desc: '五十音/单词',
-    path: '/jap50yin',
-  },
-  {
-    name: 'jap50yin',
-    title: '写',
-    desc: '五十音/单词',
-    path: '/write',
-  },
   {
     name: 'income',
     title: '💰 income',
@@ -23,16 +10,10 @@ const entryList = [
     path: '/income',
   },
   {
-    name: 'readgh',
-    title: '📖 404 post',
-    desc: '文章阅读',
-    path: '/readgh',
-  },
-  {
-    name: 'wumei',
-    title: '🛍️ buy buy buy',
-    desc: '物美传单',
-    path: '/wumei',
+    name: 'incomeXin',
+    title: '💰 incomeXin',
+    desc: '图表数据',
+    path: '/incomeXin',
   },
   {
     name: 'book',
@@ -47,38 +28,30 @@ function go(item: any) {
   router.push(item.path)
 }
 
-function goout(item: Weibo) {
-  window.open(item.url)
-}
+// const weiboList = ref<Weibo[]>([])
 
-interface Weibo {
-  name: string
-  url?: string
-  hot?: string
-}
-
-const weiboList = ref<Weibo[]>([])
-
-onMounted(() => {
-  fetch('https://tenapi.cn/v2/weibohot')
-    .then(r => r.json())
-    .then((res) => {
-      if (res.code === 200) {
-        weiboList.value = res.data.filter((item: Weibo) => {
-          return !(
-            /剧集|综艺|电影/.test(item.hot!)
-            || /肖战|易烊千玺|白鹿|华晨宇/.test(item.name)
-          )
-        })
-      }
-      else {
-        weiboList.value = [{ name: '加载失败' }]
-      }
-    })
-    .catch(() => {
-      weiboList.value = [{ name: '加载失败' }]
-    })
-})
+// onMounted(() => {
+//   // https://hot.imsyy.top/#/list?type=weibo&page=1
+//   // fetch('https://weibo.com/ajax/side/hotSearch') // 😡 跨域
+//   fetch('https://api-hot.imsyy.top/weibo?cache=true') // 😡 跨域
+//     .then(r => r.json())
+//     .then((res) => {
+//       if (res.code === 200) {
+//         weiboList.value = res.data.realtime.filter((item: Weibo) => {
+//           return !(
+//             /剧集|综艺|电影/.test(item?.flag_desc!)
+//             || /肖战|易烊千玺|白鹿|华晨宇/.test(item.word)
+//           )
+//         })
+//       }
+//       else {
+//         weiboList.value = [{ word: '加载失败' }]
+//       }
+//     })
+//     .catch(() => {
+//       weiboList.value = [{ word: '加载失败' }]
+//     })
+// })
 </script>
 
 <template>
@@ -92,7 +65,7 @@ onMounted(() => {
       </div>
     </div>
   </div>
-  <div v-if="!weiboList.length" class="text-center">
+  <!-- <div v-if="!weiboList.length" class="text-center">
     loading weibo🔥 ...
   </div>
   <ul v-else class="mx-2 my-2 menu-md bg-base-200 divide-y divide-slate-700 rounded-box">
@@ -102,9 +75,9 @@ onMounted(() => {
       class="py-3 px-2"
       @click="goout(weibo)"
     >
-      {{ index + 1 }}、{{ weibo.name }}
+      {{ index + 1 }}、{{ weibo.word }}
     </div>
-  </ul>
+  </ul> -->
 </template>
 
 <style scoped>

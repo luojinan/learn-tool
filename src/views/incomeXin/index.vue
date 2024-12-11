@@ -37,17 +37,13 @@ interface TotalInfo {
   至今税金房租总支出?: number
   至今到手总收入?: number
   至今平均到手月入?: number
-  年终?: number
-  年终换算为月均?: number
-  年终后到手总收入?: number
-  年终后平均到手月入?: number
   预计税前年入?: number
   预计到手年入?: number
-  年终后预计到手年入?: number
 }
 
 const totalInfo = ref<TotalInfo>({})
 
+let area3 = null
 function init(odata) {
   const realIncomeList = odata.map((item) => {
     return {
@@ -68,7 +64,6 @@ function init(odata) {
     }
   })
   const data = [...lostList, ...realIncomeList]
-
   totalInfo.value.至今到手总收入 = sumNumArr(realIncomeList.map(item => item.value))
   totalInfo.value.至今税前总收入 = totalInfo.value.至今到手总收入 + sumNumArr(lostList.map(item => item.value))
   totalInfo.value.至今税金房租总支出 = totalInfo.value.至今税前总收入 - totalInfo.value.至今到手总收入
@@ -76,7 +71,12 @@ function init(odata) {
   totalInfo.value.预计到手年入 = totalInfo.value.至今平均到手月入 * 12
   totalInfo.value.预计税前年入 = (totalInfo.value.至今税前总收入 / odata.length) * 12
 
-  const area = new G2Plot.Area(totalRef.value, {
+  if (area3) {
+    area3.changeData(data)
+    return
+  }
+
+  area3 = new G2Plot.Area(totalRef.value, {
     data,
     xField: 'time',
     yField: 'value',
@@ -97,8 +97,10 @@ function init(odata) {
       },
     },
   })
-  area.render()
+  area3.render()
 }
+
+let area1 = null
 function initLostRef(odata) {
   const list: DataItem[] = []
   odata.forEach((element) => {
@@ -112,29 +114,28 @@ function initLostRef(odata) {
       }
     })
   })
-  // 数组的第一和第二项交换位置
-  if (list.length > 1) {
-    const first = list[0]
-    list[0] = list[1]
-    list[1] = first
-  }
-  const area = new G2Plot.Area(lostRef.value, {
-    data: list,
-    xField: 'time',
-    yField: 'value',
-    theme: 'dark',
-    seriesField: 'type',
-    tooltip: {
-      customItems: (originalItems) => {
-        const res = originalItems.reduce((pre, next) => {
-          return pre + +(next.value)
-        }, 0)
-        return [...originalItems, { name: '总支出', value: res }]
+  if (!area1) {
+    area1 = new G2Plot.Area(lostRef.value, {
+      data: list,
+      xField: 'time',
+      yField: 'value',
+      theme: 'dark',
+      seriesField: 'type',
+      tooltip: {
+        customItems: (originalItems) => {
+          const res = originalItems.reduce((pre, next) => {
+            return pre + +(next.value)
+          }, 0)
+          return [...originalItems, { name: '总支出', value: res }]
+        },
       },
-    },
-  })
-  area.render()
+    })
+    area1.render()
+    return
+  }
+  area1.changeData(list)
 }
+let area2 = null
 function initInRef(odata) {
   const list: DataItem[] = []
   odata.forEach((element) => {
@@ -154,14 +155,18 @@ function initInRef(odata) {
     list[0] = list[1]
     list[1] = first
   }
-  const area = new G2Plot.Area(inRef.value, {
+  if (area2) {
+    area2.changeData(list)
+    return
+  }
+  area2 = new G2Plot.Area(inRef.value, {
     data: list,
     xField: 'time',
     yField: 'value',
     seriesField: 'type',
     theme: 'dark',
     yAxis: {
-      min: 20000,
+      min: 5000,
     },
     tooltip: {
       customItems: (originalItems) => {
@@ -172,16 +177,15 @@ function initInRef(odata) {
       },
     },
   })
-  area.render()
+  area2.render()
 }
 
 const dataMsg = ref('')
 const incomeDataList = ref([])
-const otherIncomeList = ref([{ time: '2024-1', 年终奖: '100', 换算为月均: 4364.5 }, { time: '2024-3', 退税: 875.16 }])
 
 async function getIncomeData() {
-  const dataPath = 'incomeData'
-  const dataName = 'incomeDataList'
+  const dataPath = 'incomeDataXin'
+  const dataName = 'incomeDataXinList'
   const dataUrl = `${ossDataUrl}/${dataPath}.js`
   const { data, msg } = await cacheDataOrUmd(dataName, dataUrl)
   dataMsg.value = msg
@@ -203,7 +207,7 @@ async function onCreated() {
 }
 
 function onRefresh() {
-  const dataName = 'incomeDataList'
+  const dataName = 'incomeDataXinList'
   localStorage.removeItem(dataName)
   onCreated()
 }
@@ -227,23 +231,23 @@ onBeforeMount(() => {
       </h2>
       <ul>
         <li v-for="(val, key) in totalInfo" :key="key">
-          {{ key }}：<span class="text-primary font-bold">{{ val?.toLocaleString() }}</span>
+          {{ key }}：  <span class="text-primary font-bold">{{ val?.toLocaleString() }}</span>
         </li>
       </ul>
-      <h3 class="text-center">
+      <h3 class="px-2 text-center">
         1. 到手情况
       </h3>
       <p class="px-2 font-size-3">
-        收入包含提取公积金、饭补。支出包含五险一金、房租支出
+        收入包含提取公积金、补贴。支出包含五险一金、房租支出
       </p>
       <div ref="totalRef" />
 
-      <h3 class="text-center">
+      <h3 class="px-2 text-center">
         2. 硬性支出情况
       </h3>
       <div ref="lostRef" />
 
-      <h3 class="text-center">
+      <h3 class="px-2 text-center">
         3. 收入情况
       </h3>
       <p class="px-2 font-size-3">
@@ -251,14 +255,7 @@ onBeforeMount(() => {
       </p>
       <div ref="inRef" />
 
-      <ul>
-        <li v-for="(item, i) in otherIncomeList" :key="i">
-          {{ Object.keys(item).map(key => key === 'time' ? item[key] : `${key}
-        ${item[key]}`).join(' ') }}
-        </li>
-      </ul>
-
-      <h3 class="text-center">
+      <h3 class="px-2 text-center">
         4. 表格数据
       </h3>
       <JsonToTable v-if="incomeDataList.length" :income-data-list />

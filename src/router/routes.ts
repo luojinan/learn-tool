@@ -39,6 +39,14 @@ const routes: Array<RouteRecordRaw> = [
         },
       },
       {
+        path: 'incomeXin',
+        name: 'incomeXin',
+        component: () => import('@/views/incomeXin/index.vue'),
+        meta: {
+          title: 'income',
+        },
+      },
+      {
         path: 'wumei',
         name: 'wumei',
         component: () => import('@/views/wumei/index.vue'),

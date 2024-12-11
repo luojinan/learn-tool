@@ -278,5 +278,6 @@ export const ossDataUrl = 'https://kingan-md-img.oss-cn-guangzhou.aliyuncs.com/d
 const cnpmCdn = 'https://registry.npmmirror.com'
 
 export const CDN_ESM_CANVAS = `${cnpmCdn}/html2canvas/1.4.1/files/dist/html2canvas.esm.js` as const
+export const CDN_ESM_HTML_TO_IMAGE = `${cnpmCdn}/html-to-image/1.11.11/files/dist/html-to-image.js` as const
 
 export const CDN_UMD_ANTV = `${cnpmCdn}/@antv/g2plot/2.4.31/files/dist/g2plot.min.js`

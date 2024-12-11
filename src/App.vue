@@ -8,7 +8,7 @@ function back() {
 </script>
 
 <template>
-  <div class="navbar bg-base-100 fixed top-0">
+  <div class="navbar bg-base-100 fixed top-0 z-50">
     <div class="navbar-start">
       <button class="btn btn-ghost btn-circle" @click="back">
         <div class="indicator">

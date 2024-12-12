@@ -214,7 +214,7 @@ onBeforeMount(() => {
 </script>
 
 <template>
-  <article class="prose">
+  <article class="prose max-w-full">
     <div class="text-right mr-2">
       {{ dataMsg }}
       <div class="btn btn-primary btn-square btn-sm" @click="onRefresh">

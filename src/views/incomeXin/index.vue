@@ -16,16 +16,17 @@ function sumObj(obj: any) {
   for (const key in obj) {
     if (obj.hasOwnProperty(key)) {
       if (typeof obj[key] === 'number')
-        sum += obj[key]
+        sum += Math.round(obj[key] * 100)
     }
   }
-  return sum
+  return sum / 100
 }
 
 function sumNumArr(list: number[]): number {
-  return list.reduce((pre, next) => {
-    return pre + next
+  const total = list.reduce((pre, next) => {
+    return pre + Math.round(next * 100)
   }, 0)
+  return total / 100
 }
 
 const totalRef = ref()
@@ -84,7 +85,7 @@ function init(odata) {
     theme: 'dark',
     label: {
       callback: (text) => {
-        if (+text > 10000)
+        if (+text > 5000)
           return { content: text }
       },
     },
@@ -218,7 +219,7 @@ onBeforeMount(() => {
 </script>
 
 <template>
-  <article class="prose">
+  <article class="prose max-w-full">
     <div class="text-right mr-2">
       {{ dataMsg }}
       <div class="btn btn-primary btn-square btn-sm" @click="onRefresh">
@@ -235,7 +236,7 @@ onBeforeMount(() => {
         </li>
       </ul>
       <h3 class="px-2 text-center">
-        1. 到手情况
+        到手情况
       </h3>
       <p class="px-2 font-size-3">
         收入包含提取公积金、补贴。支出包含五险一金、房租支出
@@ -243,12 +244,12 @@ onBeforeMount(() => {
       <div ref="totalRef" />
 
       <h3 class="px-2 text-center">
-        2. 硬性支出情况
+        硬性支出情况
       </h3>
       <div ref="lostRef" />
 
       <h3 class="px-2 text-center">
-        3. 收入情况
+        收入情况
       </h3>
       <p class="px-2 font-size-3">
         包含提取公积金、饭补
@@ -256,7 +257,7 @@ onBeforeMount(() => {
       <div ref="inRef" />
 
       <h3 class="px-2 text-center">
-        4. 表格数据
+        表格数据
       </h3>
       <JsonToTable v-if="incomeDataList.length" :income-data-list />
     </template>

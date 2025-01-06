@@ -36,10 +36,21 @@ type Weibo = {
   url?: string
   author?: string
 }
+function search(work: string, keyworklist: string[]) {
+  return keyworklist.some((keywork) => {
+    return work.includes(keywork)
+  })
+}
 
 const weiboList = ref<Weibo[]>([])
 
-onMounted(() => {
+function filterKeywork() {
+  return fetch('https://kingan-md-img.oss-cn-guangzhou.aliyuncs.com/data/startKeyWorks.json').then(r => r.json())
+}
+
+onMounted(async () => {
+  const filterKeyworkList = await filterKeywork()
+
   // https://hot.imsyy.top/#/list?type=weibo&page=1
   // fetch('https://weibo.com/ajax/side/hotSearch') // 😡 跨域
   // fetch('https://api-hot.imsyy.top/weibo?cache=true') // 😡 跨域
@@ -51,7 +62,7 @@ onMounted(() => {
         weiboList.value = res.data.filter((item: Weibo) => {
           return !(
             /剧集|综艺|电影/.test(item?.author || '')
-            || /肖战|易烊千玺|白鹿|华晨宇/.test(item.title)
+            || search(item.title, filterKeyworkList)
           )
         })
       }

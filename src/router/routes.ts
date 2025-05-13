@@ -47,14 +47,6 @@ const routes: Array<RouteRecordRaw> = [
         },
       },
       {
-        path: 'wumei',
-        name: 'wumei',
-        component: () => import('@/views/wumei/index.vue'),
-        meta: {
-          title: '物美传单',
-        },
-      },
-      {
         path: 'readgh',
         name: 'readgh',
         component: () => import('@/views/readgh/index.vue'),

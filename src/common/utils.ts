@@ -40,10 +40,14 @@ export async function cacheDataOrUmd(globalName: string, url: string) {
     })
   }
   try {
-    await loadScript(url)
-    localStorage.setItem(globalName, JSON.stringify(window[globalName]))
+    const response = await fetch(url)
+    if (!response.ok)
+      throw new Error(`HTTP error! status: ${response.status}`)
+
+    const data = await response.json()
+    localStorage.setItem(globalName, JSON.stringify(data))
     return Promise.resolve({
-      data: window[globalName],
+      data,
       msg: '来源网络',
     })
   }

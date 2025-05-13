@@ -3,30 +3,39 @@ import { onMounted, ref } from 'vue'
 import { CDN_ESM_HTML_TO_IMAGE } from '@/common/const'
 import { loadScript } from '@/common/utils'
 
-const { incomeDataList } = defineProps<Props>()
-const headers = ref<string[]>([])
-const rows = ref([])
 interface Props {
   incomeDataList: any[]
+  excludeFields?: string[]
+  fieldTranslations?: Record<string, string>
 }
 
+const props = withDefaults(defineProps<Props>(), {
+  excludeFields: () => [],
+  fieldTranslations: () => ({}),
+})
+
+const headers = ref<string[]>([])
+const rows = ref<Record<string, any>[]>([])
 const isShowToast = ref(false)
 
 // 解析 JSON 数据，获取表头和行数据
 function parseJsonData() {
-  const lengthList = incomeDataList.map((item) => {
-    const labelList = Object.keys(item)
-    return labelList.length
-  })
-  // 找出数组中最大项的index
-  const maxLength = Math.max(...lengthList)
-  const index = lengthList.findIndex(item => item === maxLength)
-  headers.value = Object.keys(incomeDataList[index])
-  rows.value = incomeDataList.map((item) => {
-    return headers.value.reduce((res, next) => {
-      res[next] = item[next] || '-'
+  if (!props.incomeDataList.length)
+    return
+
+  // 获取第一个数据项的所有字段，并过滤掉不需要的字段
+  const allFields = Object.keys(props.incomeDataList[0])
+    .filter(field => !props.excludeFields.includes(field))
+
+  // 使用翻译后的字段名作为表头
+  headers.value = allFields.map(field => props.fieldTranslations[field] || field)
+
+  // 处理行数据
+  rows.value = props.incomeDataList.map((item) => {
+    return allFields.reduce((res, field) => {
+      res[field] = item[field] ?? '-'
       return res
-    }, {})
+    }, {} as Record<string, any>)
   })
 }
 
@@ -41,7 +50,7 @@ async function exportImage() {
 
   const link = document.createElement('a')
   link.href = dataUrl
-  link.download = `${incomeDataList[0].time}-${incomeDataList[incomeDataList.length - 1].time}.png`
+  link.download = `${props.incomeDataList[0].time}-${props.incomeDataList[props.incomeDataList.length - 1].time}.png`
 
   link.click()
 }
@@ -52,7 +61,12 @@ function exportMarkdown() {
   markdown += `| ${headers.value.map(() => '---').join(' | ')} |\n`
 
   rows.value.forEach((row) => {
-    const values = Object.values(row)
+    const values = Object.values(row).map((value) => {
+      if (typeof value === 'number')
+        return value.toLocaleString()
+
+      return value
+    })
     markdown += `| ${values.join(' | ')} |\n`
   })
   // 复制
@@ -89,8 +103,7 @@ onMounted(() => {
       <tbody>
         <tr v-for="(row, index) in rows" :key="index">
           <td v-for="(value, key) in row" :key="key" class="border-solid text-white border-slate-700 px-2 text-center">
-            {{
-              value.toLocaleString() }}
+            {{ typeof value === 'number' ? value.toLocaleString() : value }}
           </td>
         </tr>
       </tbody>

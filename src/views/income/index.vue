@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onBeforeMount, ref } from 'vue'
-import { CDN_UMD_ANTV, ossDataUrl } from '@/common/const'
+import { CDN_UMD_ANTV } from '@/common/const'
 import { cacheDataOrUmd, loadScript } from '@/common/utils'
 import JsonToTable from '@/components/JsonToTable/index.vue'
 
@@ -8,6 +8,31 @@ interface DataItem {
   time: string
   value: number
   type: string
+}
+
+interface IncomeData {
+  id: string
+  owner: string
+  time: string
+  baseSalary: number
+  overtimeMeal: number
+  housingFund: number
+  leaveDeduction: number
+  housingFundDeduction: number
+  medicalInsurance: number
+  pensionInsurance: number
+  unemploymentInsurance: number
+  tax: number
+  rent: number
+  createdAt: string
+  updatedAt: string
+}
+
+interface OtherIncomeItem {
+  time: string
+  yearEndBonus?: string
+  yearEndBonusMonthly?: number
+  taxRefund?: number
 }
 
 // 遍历对象，并且数字类型的值累加
@@ -33,48 +58,85 @@ const lostRef = ref()
 const inRef = ref()
 
 interface TotalInfo {
-  至今税前总收入?: number
-  至今税金房租总支出?: number
-  至今到手总收入?: number
-  至今平均到手月入?: number
-  年终?: number
-  年终换算为月均?: number
-  年终后到手总收入?: number
-  年终后平均到手月入?: number
-  预计税前年入?: number
-  预计到手年入?: number
-  年终后预计到手年入?: number
+  totalIncomeBeforeTax?: number
+  totalExpenses?: number
+  totalIncomeAfterTax?: number
+  averageMonthlyIncome?: number
+  yearEndBonus?: number
+  yearEndBonusMonthly?: number
+  totalIncomeAfterYearEnd?: number
+  averageMonthlyIncomeAfterYearEnd?: number
+  estimatedAnnualIncomeBeforeTax?: number
+  estimatedAnnualIncomeAfterTax?: number
+  estimatedAnnualIncomeAfterYearEnd?: number
 }
 
 const totalInfo = ref<TotalInfo>({})
 
-function init(odata) {
-  const realIncomeList = odata.map((item) => {
+const keyTranslations = {
+  totalIncomeBeforeTax: '至今税前总收入',
+  totalExpenses: '至今税金房租总支出',
+  totalIncomeAfterTax: '至今到手总收入',
+  averageMonthlyIncome: '至今平均到手月入',
+  yearEndBonus: '年终',
+  yearEndBonusMonthly: '年终换算为月均',
+  totalIncomeAfterYearEnd: '年终后到手总收入',
+  averageMonthlyIncomeAfterYearEnd: '年终后平均到手月入',
+  estimatedAnnualIncomeBeforeTax: '预计税前年入',
+  estimatedAnnualIncomeAfterTax: '预计到手年入',
+  estimatedAnnualIncomeAfterYearEnd: '年终后预计到手年入',
+}
+
+const fieldTranslations = {
+  baseSalary: '基本工资',
+  overtimeMeal: '加班餐补',
+  housingFund: '公积金',
+  leaveDeduction: '请假扣款',
+  housingFundDeduction: '公积金扣款',
+  medicalInsurance: '医疗保险',
+  pensionInsurance: '养老保险',
+  unemploymentInsurance: '失业保险',
+  tax: '个人所得税',
+  rent: '房租',
+}
+
+function formatTime(isoTime: string): string {
+  const date = new Date(isoTime)
+  const year = date.getFullYear()
+  const month = String(date.getMonth() + 1).padStart(2, '0')
+  return `${year}-${month}`
+}
+
+function init(odata: IncomeData[]) {
+  // 将数据按时间正序排序
+  const sortedData = [...odata].sort((a, b) => new Date(a.time).getTime() - new Date(b.time).getTime())
+
+  const realIncomeList = sortedData.map((item) => {
     return {
-      time: item.time,
+      time: formatTime(item.time),
       value: sumObj(item),
       type: '实际收入',
     }
   })
-  const lostList = odata.map((item) => {
-    const list = Object.entries(item).filter(([_, val]) => val < 0)
-    const loastRes = list.reduce((pre, [, nextVal]) => {
-      return pre + nextVal
+  const lostList = sortedData.map((item) => {
+    const list = Object.entries(item).filter(([_, val]) => typeof val === 'number' && val < 0)
+    const lostRes = list.reduce((pre, [, nextVal]) => {
+      return pre + (nextVal as number)
     }, 0)
     return {
-      time: item.time,
-      value: -loastRes,
+      time: formatTime(item.time),
+      value: -lostRes,
       type: '硬性支出',
     }
   })
   const data = [...lostList, ...realIncomeList]
 
-  totalInfo.value.至今到手总收入 = sumNumArr(realIncomeList.map(item => item.value))
-  totalInfo.value.至今税前总收入 = totalInfo.value.至今到手总收入 + sumNumArr(lostList.map(item => item.value))
-  totalInfo.value.至今税金房租总支出 = totalInfo.value.至今税前总收入 - totalInfo.value.至今到手总收入
-  totalInfo.value.至今平均到手月入 = totalInfo.value.至今到手总收入 / odata.length
-  totalInfo.value.预计到手年入 = totalInfo.value.至今平均到手月入 * 12
-  totalInfo.value.预计税前年入 = (totalInfo.value.至今税前总收入 / odata.length) * 12
+  totalInfo.value.totalIncomeAfterTax = sumNumArr(realIncomeList.map(item => item.value))
+  totalInfo.value.totalIncomeBeforeTax = totalInfo.value.totalIncomeAfterTax + sumNumArr(lostList.map(item => item.value))
+  totalInfo.value.totalExpenses = totalInfo.value.totalIncomeBeforeTax - totalInfo.value.totalIncomeAfterTax
+  totalInfo.value.averageMonthlyIncome = totalInfo.value.totalIncomeAfterTax / odata.length
+  totalInfo.value.estimatedAnnualIncomeAfterTax = totalInfo.value.averageMonthlyIncome * 12
+  totalInfo.value.estimatedAnnualIncomeBeforeTax = (totalInfo.value.totalIncomeBeforeTax / odata.length) * 12
 
   const area = new G2Plot.Area(totalRef.value, {
     data,
@@ -83,14 +145,14 @@ function init(odata) {
     seriesField: 'type',
     theme: 'dark',
     label: {
-      callback: (text) => {
+      callback: (text: string) => {
         if (+text > 10000)
           return { content: text }
       },
     },
     tooltip: {
-      customItems: (originalItems) => {
-        const res = originalItems.reduce((pre, next) => {
+      customItems: (originalItems: any[]) => {
+        const res = originalItems.reduce((pre: number, next: any) => {
           return pre + +(next.value)
         }, 0)
         return [...originalItems, { name: '税前收入', value: res }]
@@ -99,18 +161,25 @@ function init(odata) {
   })
   area.render()
 }
-function initLostRef(odata) {
+
+function initLostRef(odata: IncomeData[]) {
+  // 将数据按时间正序排序
+  const sortedData = [...odata].sort((a, b) => new Date(a.time).getTime() - new Date(b.time).getTime())
+
   const list: DataItem[] = []
-  odata.forEach((element) => {
-    Object.entries(element).sort((item, nextItem) => nextItem[1] - item[1]).forEach(([key, val]) => {
-      if (typeof val === 'number' && val < 0) {
-        list.push({
-          time: element.time,
-          value: -val,
-          type: key,
-        })
-      }
-    })
+  sortedData.forEach((element) => {
+    Object.entries(element)
+      .filter(([key]) => !['id', 'owner', 'time', 'createdAt', 'updatedAt'].includes(key))
+      .sort(([, val1], [, val2]) => (val2 as number) - (val1 as number))
+      .forEach(([key, val]) => {
+        if (typeof val === 'number' && val < 0) {
+          list.push({
+            time: formatTime(element.time),
+            value: -val,
+            type: fieldTranslations[key as keyof typeof fieldTranslations] || key,
+          })
+        }
+      })
   })
   // 数组的第一和第二项交换位置
   if (list.length > 1) {
@@ -125,8 +194,8 @@ function initLostRef(odata) {
     theme: 'dark',
     seriesField: 'type',
     tooltip: {
-      customItems: (originalItems) => {
-        const res = originalItems.reduce((pre, next) => {
+      customItems: (originalItems: any[]) => {
+        const res = originalItems.reduce((pre: number, next: any) => {
           return pre + +(next.value)
         }, 0)
         return [...originalItems, { name: '总支出', value: res }]
@@ -135,18 +204,25 @@ function initLostRef(odata) {
   })
   area.render()
 }
-function initInRef(odata) {
+
+function initInRef(odata: IncomeData[]) {
+  // 将数据按时间正序排序
+  const sortedData = [...odata].sort((a, b) => new Date(a.time).getTime() - new Date(b.time).getTime())
+
   const list: DataItem[] = []
-  odata.forEach((element) => {
-    Object.entries(element).sort((item, nextItem) => item[1] - nextItem[1]).forEach(([key, val]) => {
-      if (typeof val === 'number' && val >= 0) {
-        list.push({
-          time: element.time,
-          value: val,
-          type: key,
-        })
-      }
-    })
+  sortedData.forEach((element) => {
+    Object.entries(element)
+      .filter(([key]) => !['id', 'owner', 'time', 'createdAt', 'updatedAt', 'leaveDeduction'].includes(key))
+      .sort(([, val1], [, val2]) => (val1 as number) - (val2 as number))
+      .forEach(([key, val]) => {
+        if (typeof val === 'number' && val >= 0) {
+          list.push({
+            time: formatTime(element.time),
+            value: val,
+            type: fieldTranslations[key as keyof typeof fieldTranslations] || key,
+          })
+        }
+      })
   })
   // 数组的第一和第二项交换位置
   if (list.length > 1) {
@@ -164,8 +240,8 @@ function initInRef(odata) {
       min: 20000,
     },
     tooltip: {
-      customItems: (originalItems) => {
-        const res = originalItems.reduce((pre, next) => {
+      customItems: (originalItems: any[]) => {
+        const res = originalItems.reduce((pre: number, next: any) => {
           return pre + +(next.value)
         }, 0)
         return [...originalItems, { name: '税前收入', value: res }]
@@ -176,13 +252,15 @@ function initInRef(odata) {
 }
 
 const dataMsg = ref('')
-const incomeDataList = ref([])
-const otherIncomeList = ref([{ time: '2024-1', 年终奖: '100', 换算为月均: 4364.5 }, { time: '2024-3', 退税: 875.16 }])
+const incomeDataList = ref<IncomeData[]>([])
+const otherIncomeList = ref<OtherIncomeItem[]>([
+  { time: '2024-1', yearEndBonus: '100', yearEndBonusMonthly: 4364.5 },
+  { time: '2024-3', taxRefund: 875.16 },
+])
 
 async function getIncomeData() {
-  const dataPath = 'incomeData'
   const dataName = 'incomeDataList'
-  const dataUrl = `${ossDataUrl}/${dataPath}.js`
+  const dataUrl = 'https://monkey.5675675.xyz/api/income/?owner=luo'
   const { data, msg } = await cacheDataOrUmd(dataName, dataUrl)
   dataMsg.value = msg
   incomeDataList.value = data
@@ -223,11 +301,11 @@ onBeforeMount(() => {
     </div>
     <template v-if="incomeDataList.length">
       <h2 class="mt-1 text-center">
-        {{ incomeDataList[0].time }}~{{ incomeDataList[incomeDataList.length - 1].time }} ({{ incomeDataList.length }})
+        {{ formatTime(incomeDataList[0].time) }}~{{ formatTime(incomeDataList[incomeDataList.length - 1].time) }} ({{ incomeDataList.length }})
       </h2>
       <ul>
         <li v-for="(val, key) in totalInfo" :key="key">
-          {{ key }}：<span class="text-primary font-bold">{{ val?.toLocaleString() }}</span>
+          {{ keyTranslations[key as keyof typeof keyTranslations] }}：<span class="text-primary font-bold">{{ val?.toLocaleString() }}</span>
         </li>
       </ul>
       <h3 class="text-center">
@@ -253,15 +331,28 @@ onBeforeMount(() => {
 
       <ul>
         <li v-for="(item, i) in otherIncomeList" :key="i">
-          {{ Object.keys(item).map(key => key === 'time' ? item[key] : `${key}
-        ${item[key]}`).join(' ') }}
+          {{ item.time }}
+          <template v-if="item.yearEndBonus">
+            年终奖 {{ item.yearEndBonus }} 换算为月均 {{ item.yearEndBonusMonthly }}
+          </template>
+          <template v-if="item.taxRefund">
+            退税 {{ item.taxRefund }}
+          </template>
         </li>
       </ul>
 
       <h3 class="text-center">
         4. 表格数据
       </h3>
-      <JsonToTable v-if="incomeDataList.length" :income-data-list />
+      <JsonToTable
+        v-if="incomeDataList.length"
+        :income-data-list="incomeDataList.map(item => ({
+          ...item,
+          time: formatTime(item.time),
+        }))"
+        :exclude-fields="['id', 'owner', 'createdAt', 'updatedAt']"
+        :field-translations="fieldTranslations"
+      />
     </template>
   </article>
 </template>

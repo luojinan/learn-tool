@@ -4,5 +4,7 @@
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "explicit",
     "source.organizeImports": "never"
-  }
+  },
+  "oxc.enable": true,
+  "typescript.tsdk": "node_modules/typescript/lib"
 }

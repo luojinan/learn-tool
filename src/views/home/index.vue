@@ -22,6 +22,12 @@ const entryList = [
     desc: '拥有图书',
     path: '/book',
   },
+  {
+    name: 'WorkVisualization',
+    title: '📊 工时统计',
+    desc: '工时数据可视化',
+    path: '/work-visualization',
+  },
 ]
 const router = useRouter()
 

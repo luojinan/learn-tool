@@ -71,6 +71,14 @@ const routes: Array<RouteRecordRaw> = [
           title: '图书信息',
         },
       },
+      {
+        path: 'work-visualization',
+        name: 'WorkVisualization',
+        component: () => import('@/views/work-visualization/index.vue'),
+        meta: {
+          title: '工时数据可视化',
+        },
+      },
     ],
   },
 ]

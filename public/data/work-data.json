@@ -1,0 +1,1298 @@
+[
+  {
+    "date": "2024-5-29",
+    "timestamp": 1716912000000,
+    "hours": 2,
+    "project": "课程后台系统",
+    "description": "【开发】后台项目搭建",
+    "personnel": ""
+  },
+  {
+    "date": "2024-5-30",
+    "timestamp": 1716998400000,
+    "hours": 2,
+    "project": "课程后台系统",
+    "description": "【开发】后台项目服务器环境搭建",
+    "personnel": ""
+  },
+  {
+    "date": "2024-5-31",
+    "timestamp": 1717084800000,
+    "hours": 2,
+    "project": "课程后台系统",
+    "description": "【开发】修改模板无用功能(国际化、演示功能)",
+    "personnel": ""
+  },
+  {
+    "date": "2024-5-31",
+    "timestamp": 1717084800000,
+    "hours": 2,
+    "project": "课程后台系统",
+    "description": "【开发】修改模版样式",
+    "personnel": ""
+  },
+  {
+    "date": "2024-6-1",
+    "timestamp": 1717171200000,
+    "hours": 2,
+    "project": "课程后台系统",
+    "description": "【开发】会员管理列表开发",
+    "personnel": ""
+  },
+  {
+    "date": "2024-6-1",
+    "timestamp": 1717171200000,
+    "hours": 4,
+    "project": "课程后台系统",
+    "description": "【开发】订单、优惠券、讲师列表开发",
+    "personnel": ""
+  },
+  {
+    "date": "2024-6-1",
+    "timestamp": 1717171200000,
+    "hours": 1,
+    "project": "课程后台系统",
+    "description": "【开发】积分规则、会员等级配置（废弃）",
+    "personnel": ""
+  },
+  {
+    "date": "2024-6-2",
+    "timestamp": 1717257600000,
+    "hours": 1,
+    "project": "课程后台系统",
+    "description": "【开发】菜单配置",
+    "personnel": ""
+  },
+  {
+    "date": "2024-6-2",
+    "timestamp": 1717257600000,
+    "hours": 4,
+    "project": "课程后台系统",
+    "description": "【开发】用户列表、详情联调测试",
+    "personnel": ""
+  },
+  {
+    "date": "2024-6-3",
+    "timestamp": 1717344000000,
+    "hours": 4,
+    "project": "课程后台系统",
+    "description": "【开发】用户详情开发",
+    "personnel": ""
+  },
+  {
+    "date": "2024-6-4",
+    "timestamp": 1717430400000,
+    "hours": 2,
+    "project": "课程后台系统",
+    "description": "【开发】用户管理发放优惠券、充值金币开发",
+    "personnel": ""
+  },
+  {
+    "date": "2024-6-5",
+    "timestamp": 1717516800000,
+    "hours": 4,
+    "project": "课程后台系统",
+    "description": "【开发】最终方案等级积分规则管理开发",
+    "personnel": ""
+  },
+  {
+    "date": "2024-6-5",
+    "timestamp": 1717516800000,
+    "hours": 2,
+    "project": "物业后台系统",
+    "description": "【开发】物业管理系统搭建",
+    "personnel": ""
+  },
+  {
+    "date": "2024-6-9",
+    "timestamp": 1717862400000,
+    "hours": 4,
+    "project": "物业后台系统",
+    "description": "【开发联调】小区管理",
+    "personnel": ""
+  },
+  {
+    "date": "2024-6-10",
+    "timestamp": 1717948800000,
+    "hours": 4,
+    "project": "物业后台系统",
+    "description": "【开发】业主管理",
+    "personnel": ""
+  },
+  {
+    "date": "2024-6-10",
+    "timestamp": 1717948800000,
+    "hours": 2,
+    "project": "物业后台系统",
+    "description": "【联调】业主管理",
+    "personnel": ""
+  },
+  {
+    "date": "2024-6-14",
+    "timestamp": 1718294400000,
+    "hours": 8,
+    "project": "物业后台系统",
+    "description": "【开发、联调】小区管理增加字段、工单管理、常用电话、文章管理",
+    "personnel": ""
+  },
+  {
+    "date": "2024-6-15",
+    "timestamp": 1718380800000,
+    "hours": 4,
+    "project": "物业后台系统",
+    "description": "【开发】缴费管理",
+    "personnel": ""
+  },
+  {
+    "date": "2024-6-15",
+    "timestamp": 1718380800000,
+    "hours": 4,
+    "project": "课程后台系统",
+    "description": "【开发、联调】优惠券管理",
+    "personnel": ""
+  },
+  {
+    "date": "2024-6-16",
+    "timestamp": 1718467200000,
+    "hours": 4,
+    "project": "物业后台系统",
+    "description": "【联调】下载模版、导入小区、附件上传回显",
+    "personnel": ""
+  },
+  {
+    "date": "2024-6-17",
+    "timestamp": 1718553600000,
+    "hours": 2,
+    "project": "课程后台系统",
+    "description": "【开发】优惠券字段调整、操作按钮交互统一调整",
+    "personnel": ""
+  },
+  {
+    "date": "2024-6-18",
+    "timestamp": 1718640000000,
+    "hours": 4,
+    "project": "课程后台系统",
+    "description": "【开发】讲师编辑",
+    "personnel": ""
+  },
+  {
+    "date": "2024-7-4",
+    "timestamp": 1720022400000,
+    "hours": 2,
+    "project": "课程后台系统",
+    "description": "【开发】讲师列表",
+    "personnel": ""
+  },
+  {
+    "date": "2024-7-5",
+    "timestamp": 1720108800000,
+    "hours": 2,
+    "project": "课程后台系统",
+    "description": "【开发】讲师详情封装",
+    "personnel": ""
+  },
+  {
+    "date": "2024-7-7",
+    "timestamp": 1720281600000,
+    "hours": 4,
+    "project": "课程后台系统",
+    "description": "【联调】讲师详情",
+    "personnel": ""
+  },
+  {
+    "date": "2024-7-12",
+    "timestamp": 1720713600000,
+    "hours": 1,
+    "project": "课程后台系统",
+    "description": "【开发、联调】机构、组织字段调整",
+    "personnel": ""
+  },
+  {
+    "date": "2024-7-13",
+    "timestamp": 1720800000000,
+    "hours": 4,
+    "project": "课程后台系统",
+    "description": "【开发】讲师详情细节调整，优化表格表单组件",
+    "personnel": ""
+  },
+  {
+    "date": "2024-7-14",
+    "timestamp": 1720886400000,
+    "hours": 4,
+    "project": "课程后台系统",
+    "description": "【开发】oss上传、基建表格表单完善、逐步替换页面组件",
+    "personnel": ""
+  },
+  {
+    "date": "2024-7-18",
+    "timestamp": 1721232000000,
+    "hours": 4,
+    "project": "课程后台系统",
+    "description": "【开发联调】讲师可用时间录入",
+    "personnel": ""
+  },
+  {
+    "date": "2024-7-19",
+    "timestamp": 1721318400000,
+    "hours": 2,
+    "project": "课程后台系统",
+    "description": "【开发】约课管理列表页面",
+    "personnel": ""
+  },
+  {
+    "date": "2024-7-19",
+    "timestamp": 1721318400000,
+    "hours": 2,
+    "project": "课程后台系统",
+    "description": "【开发】前端基建通用表格表单组件、接口定义完善",
+    "personnel": ""
+  },
+  {
+    "date": "2024-7-20",
+    "timestamp": 1721404800000,
+    "hours": 2,
+    "project": "课程后台系统",
+    "description": "【开发】基建能力，切换页签不刷新页面",
+    "personnel": ""
+  },
+  {
+    "date": "2024-7-21",
+    "timestamp": 1721491200000,
+    "hours": 2,
+    "project": "课程后台系统",
+    "description": "【开发联调】约课管理审批操作",
+    "personnel": ""
+  },
+  {
+    "date": "2024-7-27",
+    "timestamp": 1722009600000,
+    "hours": 2,
+    "project": "课程后台系统",
+    "description": "【调研】日历组件",
+    "personnel": ""
+  },
+  {
+    "date": "2024-8-28",
+    "timestamp": 1724774400000,
+    "hours": 6,
+    "project": "课程后台系统",
+    "description": "【开发】引入日历基础能力",
+    "personnel": ""
+  },
+  {
+    "date": "2024-8-28",
+    "timestamp": 1724774400000,
+    "hours": 4,
+    "project": "课程后台系统",
+    "description": "【开发】日历自定义表单交互",
+    "personnel": ""
+  },
+  {
+    "date": "2024-8-1",
+    "timestamp": 1722441600000,
+    "hours": 1,
+    "project": "课程后台系统",
+    "description": "【开发联调】用户讲师列表显示后台登录账号",
+    "personnel": ""
+  },
+  {
+    "date": "2024-8-3",
+    "timestamp": 1722614400000,
+    "hours": 8,
+    "project": "课程后台系统",
+    "description": "【开发】日历排班开发、操作状态流转开发",
+    "personnel": ""
+  },
+  {
+    "date": "2024-8-4",
+    "timestamp": 1722700800000,
+    "hours": 6,
+    "project": "课程后台系统",
+    "description": "【开发】日历交互引入大课排班",
+    "personnel": ""
+  },
+  {
+    "date": "2024-8-17",
+    "timestamp": 1723824000000,
+    "hours": 2,
+    "project": "课程后台系统",
+    "description": "【基建】表格支持多选操作",
+    "personnel": ""
+  },
+  {
+    "date": "2024-8-18",
+    "timestamp": 1723910400000,
+    "hours": 2,
+    "project": "课程后台系统",
+    "description": "【开发】日历样式调整",
+    "personnel": ""
+  },
+  {
+    "date": "2024-8-20",
+    "timestamp": 1724083200000,
+    "hours": 4,
+    "project": "微信小程序",
+    "description": "【开发】已购课程列表页面绘制",
+    "personnel": ""
+  },
+  {
+    "date": "2024-8-21",
+    "timestamp": 1724169600000,
+    "hours": 4,
+    "project": "微信小程序",
+    "description": "【开发】预约课时页面绘制，减小包体积静态资源替换oss",
+    "personnel": ""
+  },
+  {
+    "date": "2024-8-22",
+    "timestamp": 1724256000000,
+    "hours": 4,
+    "project": "微信小程序",
+    "description": "【开发】已约课程页面绘制",
+    "personnel": ""
+  },
+  {
+    "date": "2024-8-23",
+    "timestamp": 1724342400000,
+    "hours": 4,
+    "project": "微信小程序",
+    "description": "【开发】讲师详情页面绘制",
+    "personnel": ""
+  },
+  {
+    "date": "2024-8-23",
+    "timestamp": 1724342400000,
+    "hours": 2,
+    "project": "微信小程序",
+    "description": "【开发】课程预约逻辑开发",
+    "personnel": ""
+  },
+  {
+    "date": "2024-8-24",
+    "timestamp": 1724428800000,
+    "hours": 8,
+    "project": "微信小程序",
+    "description": "【开发联调】我的收藏讲师/课程页面，收藏取消逻辑联调",
+    "personnel": ""
+  },
+  {
+    "date": "2024-8-31",
+    "timestamp": 1725033600000,
+    "hours": 2,
+    "project": "微信小程序",
+    "description": "【联调】约课完整流程验证补充",
+    "personnel": ""
+  },
+  {
+    "date": "2024-9-1",
+    "timestamp": 1725120000000,
+    "hours": 4,
+    "project": "微信小程序",
+    "description": "【开发】预约课程切换视图",
+    "personnel": ""
+  },
+  {
+    "date": "2024-9-2",
+    "timestamp": 1725206400000,
+    "hours": 3,
+    "project": "微信小程序",
+    "description": "【开发联调】课程评价",
+    "personnel": ""
+  },
+  {
+    "date": "2024-9-3",
+    "timestamp": 1725292800000,
+    "hours": 2,
+    "project": "微信小程序",
+    "description": "【开发联调】我的课程页面",
+    "personnel": ""
+  },
+  {
+    "date": "2024-9-4",
+    "timestamp": 1725379200000,
+    "hours": 3,
+    "project": "微信小程序",
+    "description": "【开发联调】文章列表页面",
+    "personnel": ""
+  },
+  {
+    "date": "2024-9-5",
+    "timestamp": 1725465600000,
+    "hours": 3,
+    "project": "微信小程序",
+    "description": "【开发联调】搜索页面",
+    "personnel": ""
+  },
+  {
+    "date": "2024-9-6",
+    "timestamp": 1725552000000,
+    "hours": 3,
+    "project": "微信小程序",
+    "description": "【开发联调】首页优化、讲师列表",
+    "personnel": ""
+  },
+  {
+    "date": "2024-9-7",
+    "timestamp": 1725638400000,
+    "hours": 4,
+    "project": "微信小程序",
+    "description": "【开发】课程列表、图片懒加载",
+    "personnel": ""
+  },
+  {
+    "date": "2024-9-8",
+    "timestamp": 1725724800000,
+    "hours": 4,
+    "project": "微信小程序",
+    "description": "【开发】列表页面添加下拉刷新触底分页",
+    "personnel": ""
+  },
+  {
+    "date": "2024-9-9",
+    "timestamp": 1725811200000,
+    "hours": 3,
+    "project": "微信小程序",
+    "description": "【开发联调】积分、钱包页面",
+    "personnel": ""
+  },
+  {
+    "date": "2024-9-12",
+    "timestamp": 1726070400000,
+    "hours": 1,
+    "project": "课程后台系统",
+    "description": "【开发联调】合作机构和学校",
+    "personnel": ""
+  },
+  {
+    "date": "2024-9-13",
+    "timestamp": 1726156800000,
+    "hours": 2,
+    "project": "课程后台系统",
+    "description": "【联调】约课流程",
+    "personnel": ""
+  },
+  {
+    "date": "2024-10-26",
+    "timestamp": 1729872000000,
+    "hours": 2,
+    "project": "课程后台系统",
+    "description": "【开发联调】佣金管理功能",
+    "personnel": ""
+  },
+  {
+    "date": "2024-9-27",
+    "timestamp": 1727366400000,
+    "hours": 2,
+    "project": "课程后台系统",
+    "description": "【基建】按钮权限条件控制",
+    "personnel": ""
+  },
+  {
+    "date": "2024-10-6",
+    "timestamp": 1728144000000,
+    "hours": 3,
+    "project": "课程后台系统",
+    "description": "【开发联调】新增会员功能",
+    "personnel": ""
+  },
+  {
+    "date": "2024-10-8",
+    "timestamp": 1728316800000,
+    "hours": 1,
+    "project": "课程后台系统",
+    "description": "【开发】讲师排课入口改为菜单",
+    "personnel": ""
+  },
+  {
+    "date": "2024-10-9",
+    "timestamp": 1728403200000,
+    "hours": 2,
+    "project": "课程后台系统",
+    "description": "【调研开发联调】经纬度功能-跳转腾讯地图",
+    "personnel": ""
+  },
+  {
+    "date": "2024-10-9",
+    "timestamp": 1728403200000,
+    "hours": 1,
+    "project": "课程后台系统",
+    "description": "【开发】排课详情支持跳转对应讲师、会员详情",
+    "personnel": ""
+  },
+  {
+    "date": "2024-10-12",
+    "timestamp": 1728662400000,
+    "hours": 4,
+    "project": "课程后台系统",
+    "description": "【开发】优化课程编辑页、复制功能优化",
+    "personnel": ""
+  },
+  {
+    "date": "2024-10-13",
+    "timestamp": 1728748800000,
+    "hours": 1,
+    "project": "课程后台系统",
+    "description": "【开发】优化会员详情页，头像回显等",
+    "personnel": ""
+  },
+  {
+    "date": "2024-10-18",
+    "timestamp": 1729180800000,
+    "hours": 6,
+    "project": "课程后台系统",
+    "description": "【开发联调】修改登录人、讲师密码功能",
+    "personnel": ""
+  },
+  {
+    "date": "2024-10-20",
+    "timestamp": 1729353600000,
+    "hours": 5,
+    "project": "课程后台系统",
+    "description": "【开发联调】指定学生排课功能",
+    "personnel": ""
+  },
+  {
+    "date": "2024-10-21",
+    "timestamp": 1729440000000,
+    "hours": 1,
+    "project": "课程后台系统",
+    "description": "排课-课程颜色枚举、课程年龄范围由选择改为自由输入",
+    "personnel": ""
+  },
+  {
+    "date": "2024-10-22",
+    "timestamp": 1729526400000,
+    "hours": 4,
+    "project": "微信小程序",
+    "description": "【开发】我的课表",
+    "personnel": ""
+  },
+  {
+    "date": "2024-10-23",
+    "timestamp": 1729612800000,
+    "hours": 4,
+    "project": "微信小程序",
+    "description": "【开发联调】我的课表",
+    "personnel": ""
+  },
+  {
+    "date": "2024-10-24",
+    "timestamp": 1729699200000,
+    "hours": 1,
+    "project": "微信小程序",
+    "description": "【开发】完善我的课表样式、农历",
+    "personnel": ""
+  },
+  {
+    "date": "2024-10-27",
+    "timestamp": 1729958400000,
+    "hours": 3,
+    "project": "微信小程序",
+    "description": "【开发联调】父账号支持查看子账号课表",
+    "personnel": ""
+  },
+  {
+    "date": "2024-10-27",
+    "timestamp": 1729958400000,
+    "hours": 1,
+    "project": "课程后台系统",
+    "description": "【开发】课程年龄范围由选择改为自由输入去除必填 允许不输入时为不限制",
+    "personnel": ""
+  },
+  {
+    "date": "2024-10-27",
+    "timestamp": 1729958400000,
+    "hours": 2,
+    "project": "课程后台系统",
+    "description": "【开发】全局表格图片优化、重构文章管理、重构机构管理",
+    "personnel": ""
+  },
+  {
+    "date": "2024-10-28",
+    "timestamp": 1730044800000,
+    "hours": 2,
+    "project": "课程后台系统",
+    "description": "【开发】排课添加权限区分，渲染已被占用等样式",
+    "personnel": ""
+  },
+  {
+    "date": "2024-10-28",
+    "timestamp": 1730044800000,
+    "hours": 1,
+    "project": "课程后台系统",
+    "description": "新增会员积分输入",
+    "personnel": ""
+  },
+  {
+    "date": "2024-10-29",
+    "timestamp": 1730131200000,
+    "hours": 2,
+    "project": "课程后台系统",
+    "description": "会员管理-新增编辑功能、修改订单管理信息",
+    "personnel": ""
+  },
+  {
+    "date": "2024-10-29",
+    "timestamp": 1730131200000,
+    "hours": 1,
+    "project": "课程后台系统",
+    "description": "重构轮播图",
+    "personnel": ""
+  },
+  {
+    "date": "2024-10-30",
+    "timestamp": 1730217600000,
+    "hours": 1,
+    "project": "课程后台系统",
+    "description": "订单排课入口、提供排课订单内部课程列表数据",
+    "personnel": ""
+  },
+  {
+    "date": "2024-10-30",
+    "timestamp": 1730217600000,
+    "hours": 2,
+    "project": "课程后台系统",
+    "description": "会员管理分为线下会员、线上会员",
+    "personnel": ""
+  },
+  {
+    "date": "2024-10-31",
+    "timestamp": 1730304000000,
+    "hours": 1,
+    "project": "课程后台系统",
+    "description": "颜色选择器自动确认功能",
+    "personnel": ""
+  },
+  {
+    "date": "2024-11-1",
+    "timestamp": 1730390400000,
+    "hours": 1,
+    "project": "课程后台系统",
+    "description": "订单管理新增会员搜索项、讲师、课程管理补全搜索项",
+    "personnel": ""
+  },
+  {
+    "date": "2024-11-2",
+    "timestamp": 1730476800000,
+    "hours": 1,
+    "project": "微信小程序",
+    "description": "【开发】调整首页文案、订单、课程不显示详细地址",
+    "personnel": ""
+  },
+  {
+    "date": "2024-11-2",
+    "timestamp": 1730476800000,
+    "hours": 2,
+    "project": "微信小程序",
+    "description": "【开发联调】新增课程标签功能",
+    "personnel": ""
+  },
+  {
+    "date": "2024-11-2",
+    "timestamp": 1730476800000,
+    "hours": 2,
+    "project": "课程后台系统",
+    "description": "课程管理-新增课程标签联动表单功能",
+    "personnel": ""
+  },
+  {
+    "date": "2024-11-3",
+    "timestamp": 1730563200000,
+    "hours": 1,
+    "project": "课程后台系统",
+    "description": "讲师管理-新增讲师标签功能",
+    "personnel": ""
+  },
+  {
+    "date": "2024-11-3",
+    "timestamp": 1730563200000,
+    "hours": 2,
+    "project": "微信小程序",
+    "description": "【开发】新增讲师标签功能、分享课表功能，登录校验功能",
+    "personnel": ""
+  },
+  {
+    "date": "2024-11-3",
+    "timestamp": 1730563200000,
+    "hours": 2,
+    "project": "微信小程序",
+    "description": "【开发联调】新增省市区功能",
+    "personnel": ""
+  },
+  {
+    "date": "2024-11-3",
+    "timestamp": 1730563200000,
+    "hours": 1,
+    "project": "课程后台系统",
+    "description": "学生排课-机构不支持手输排课",
+    "personnel": ""
+  },
+  {
+    "date": "2024-11-4",
+    "timestamp": 1730649600000,
+    "hours": 2,
+    "project": "课程后台系统",
+    "description": "讲师编辑调整字段，并重构样式交互",
+    "personnel": ""
+  },
+  {
+    "date": "2024-11-4",
+    "timestamp": 1730649600000,
+    "hours": 4,
+    "project": "课程后台系统",
+    "description": "会员管理，新增转为子账号、转为线下/线上账号功能、权限控制",
+    "personnel": ""
+  },
+  {
+    "date": "2024-11-6",
+    "timestamp": 1730822400000,
+    "hours": 4,
+    "project": "课程后台系统",
+    "description": "学生排课，新增任意时间排课功能、15分钟格子",
+    "personnel": ""
+  },
+  {
+    "date": "2024-11-8",
+    "timestamp": 1730995200000,
+    "hours": 1,
+    "project": "课程后台系统",
+    "description": "全局添加表单通用loading",
+    "personnel": ""
+  },
+  {
+    "date": "2024-11-9",
+    "timestamp": 1731081600000,
+    "hours": 4,
+    "project": "微信小程序",
+    "description": "【开发】我的课表v2",
+    "personnel": ""
+  },
+  {
+    "date": "2024-11-10",
+    "timestamp": 1731168000000,
+    "hours": 4,
+    "project": "微信小程序",
+    "description": "【开发】我的课表周视图",
+    "personnel": ""
+  },
+  {
+    "date": "2024-11-10",
+    "timestamp": 1731168000000,
+    "hours": 4,
+    "project": "微信小程序",
+    "description": "【开发】我的课表周、月、日视图+账号+日期选择器切换",
+    "personnel": ""
+  },
+  {
+    "date": "2024-11-14",
+    "timestamp": 1731513600000,
+    "hours": 2,
+    "project": "课程后台系统",
+    "description": "拖拽功能调研",
+    "personnel": ""
+  },
+  {
+    "date": "2024-11-17",
+    "timestamp": 1731772800000,
+    "hours": 4,
+    "project": "课程后台系统",
+    "description": "拖拽常用课程功能开发",
+    "personnel": ""
+  },
+  {
+    "date": "2024-11-18",
+    "timestamp": 1731859200000,
+    "hours": 4,
+    "project": "课程后台系统",
+    "description": "拖拽常用课程功能开发",
+    "personnel": ""
+  },
+  {
+    "date": "2024-11-19",
+    "timestamp": 1731945600000,
+    "hours": 4,
+    "project": "课程后台系统",
+    "description": "常用课程增删改查",
+    "personnel": ""
+  },
+  {
+    "date": "2024-11-20",
+    "timestamp": 1732032000000,
+    "hours": 4,
+    "project": "课程后台系统",
+    "description": "历史排课信息拖拽功能",
+    "personnel": ""
+  },
+  {
+    "date": "2024-12-12",
+    "timestamp": 1733932800000,
+    "hours": 2,
+    "project": "课程后台系统",
+    "description": "讲师地址、讲师头衔",
+    "personnel": ""
+  },
+  {
+    "date": "2024-12-16",
+    "timestamp": 1734278400000,
+    "hours": 2,
+    "project": "课程后台系统",
+    "description": "排课显示学生名称，导出显示学生名称",
+    "personnel": ""
+  },
+  {
+    "date": "2025-1-6",
+    "timestamp": 1736092800000,
+    "hours": 1,
+    "project": "课程后台系统",
+    "description": "课程多选讲师",
+    "personnel": ""
+  },
+  {
+    "date": "2025-1-8",
+    "timestamp": 1736265600000,
+    "hours": 3,
+    "project": "物业后台系统",
+    "description": "物业系统梳理开发",
+    "personnel": ""
+  },
+  {
+    "date": "2025-1-11",
+    "timestamp": 1736524800000,
+    "hours": 1,
+    "project": "课程后台系统",
+    "description": "课程编辑",
+    "personnel": ""
+  },
+  {
+    "date": "2025-1-13",
+    "timestamp": 1736697600000,
+    "hours": 1,
+    "project": "课程后台系统",
+    "description": "订单选择导师功能",
+    "personnel": ""
+  },
+  {
+    "date": "2025-1-15",
+    "timestamp": 1736870400000,
+    "hours": 4,
+    "project": "课程后台系统",
+    "description": "课程多导师信息编辑",
+    "personnel": ""
+  },
+  {
+    "date": "2025-1-16",
+    "timestamp": 1736956800000,
+    "hours": 4,
+    "project": "课程后台系统",
+    "description": "多复购佣金功能",
+    "personnel": ""
+  },
+  {
+    "date": "2025-1-17",
+    "timestamp": 1737043200000,
+    "hours": 1,
+    "project": "课程后台系统",
+    "description": "表单复杂度优化",
+    "personnel": ""
+  },
+  {
+    "date": "2025-1-18",
+    "timestamp": 1737129600000,
+    "hours": 2,
+    "project": "课程后台系统",
+    "description": "排课时区问题",
+    "personnel": ""
+  },
+  {
+    "date": "2025-1-19",
+    "timestamp": 1737216000000,
+    "hours": 1,
+    "project": "课程后台系统",
+    "description": "课程删除功能、预订单价格计算",
+    "personnel": ""
+  },
+  {
+    "date": "2025-1-22",
+    "timestamp": 1737475200000,
+    "hours": 4,
+    "project": "课程后台系统",
+    "description": "重构formlist",
+    "personnel": ""
+  },
+  {
+    "date": "2025-2-5",
+    "timestamp": 1738684800000,
+    "hours": 2,
+    "project": "课程后台系统",
+    "description": "预订单、订单多次退款操作",
+    "personnel": ""
+  },
+  {
+    "date": "2025-2-6",
+    "timestamp": 1738771200000,
+    "hours": 2,
+    "project": "课程后台系统",
+    "description": "退款信息回查表单、列表、记录",
+    "personnel": ""
+  },
+  {
+    "date": "2025-2-6",
+    "timestamp": 1738771200000,
+    "hours": 1,
+    "project": "课程后台系统",
+    "description": "架构通用按钮权限功能修复",
+    "personnel": ""
+  },
+  {
+    "date": "2025-2-6",
+    "timestamp": 1738771200000,
+    "hours": 1,
+    "project": "课程后台系统",
+    "description": "课程、导师...按钮权限配置",
+    "personnel": ""
+  },
+  {
+    "date": "2025-2-6",
+    "timestamp": 1738771200000,
+    "hours": 2,
+    "project": "课程后台系统",
+    "description": "佣金结算",
+    "personnel": ""
+  },
+  {
+    "date": "2025-2-7",
+    "timestamp": 1738857600000,
+    "hours": 2,
+    "project": "课程后台系统",
+    "description": "佣金结算列表、历史记录",
+    "personnel": ""
+  },
+  {
+    "date": "2025-2-7",
+    "timestamp": 1738857600000,
+    "hours": 1,
+    "project": "课程后台系统",
+    "description": "结算状态枚举补充",
+    "personnel": ""
+  },
+  {
+    "date": "2025-2-8",
+    "timestamp": 1738944000000,
+    "hours": 4,
+    "project": "课程后台系统",
+    "description": "退款审批列表、订单、预订单退款操作",
+    "personnel": ""
+  },
+  {
+    "date": "2025-2-8",
+    "timestamp": 1738944000000,
+    "hours": 2,
+    "project": "课程后台系统",
+    "description": "上传机构协议功能",
+    "personnel": ""
+  },
+  {
+    "date": "2025-2-9",
+    "timestamp": 1739030400000,
+    "hours": 3,
+    "project": "课程后台系统",
+    "description": "取消退款功能、退款历史、基础信息回显操作",
+    "personnel": ""
+  },
+  {
+    "date": "2025-2-7",
+    "timestamp": 1738857600000,
+    "hours": 1,
+    "project": "课程后台系统",
+    "description": "讲师注册商户",
+    "personnel": ""
+  },
+  {
+    "date": "2025-2-10",
+    "timestamp": 1739116800000,
+    "hours": 1,
+    "project": "课程后台系统",
+    "description": "退款金额各个字段调整修复",
+    "personnel": ""
+  },
+  {
+    "date": "2025-2-11",
+    "timestamp": 1739203200000,
+    "hours": 1,
+    "project": "课程后台系统",
+    "description": "佣金计提功能、状态新增",
+    "personnel": ""
+  },
+  {
+    "date": "2025-2-12",
+    "timestamp": 1739289600000,
+    "hours": 2,
+    "project": "课程后台系统",
+    "description": "课程评价：导师、课程联动",
+    "personnel": ""
+  },
+  {
+    "date": "2025-2-13",
+    "timestamp": 1739376000000,
+    "hours": 4,
+    "project": "课程后台系统",
+    "description": "新增分账相关列表页面、操作",
+    "personnel": ""
+  },
+  {
+    "date": "2025-2-15",
+    "timestamp": 1739548800000,
+    "hours": 1,
+    "project": "课程后台系统",
+    "description": "导师新增首页、列表标语录入",
+    "personnel": ""
+  },
+  {
+    "date": "2025-2-17",
+    "timestamp": 1739721600000,
+    "hours": 1,
+    "project": "课程后台系统",
+    "description": "部分退款支持佣金计提",
+    "personnel": ""
+  },
+  {
+    "date": "2025-2-18",
+    "timestamp": 1739808000000,
+    "hours": 1,
+    "project": "课程后台系统",
+    "description": "课程配置新增4大类配置",
+    "personnel": ""
+  },
+  {
+    "date": "2025-2-19",
+    "timestamp": 1739894400000,
+    "hours": 1,
+    "project": "课程后台系统",
+    "description": "导师新增内部称呼、所授专业",
+    "personnel": ""
+  },
+  {
+    "date": "2025-2-23",
+    "timestamp": 1740240000000,
+    "hours": 4,
+    "project": "课程后台系统",
+    "description": "课程配置多个讲师name、formlist独立作用域功能、优化合作伙伴学校页面表单布局",
+    "personnel": ""
+  },
+  {
+    "date": "2025-2-25",
+    "timestamp": 1740412800000,
+    "hours": 2,
+    "project": "课程后台系统",
+    "description": "优化重复请求处理逻辑、添加路由缓存功能",
+    "personnel": ""
+  },
+  {
+    "date": "2025-2-27",
+    "timestamp": 1740585600000,
+    "hours": 1,
+    "project": "课程后台系统",
+    "description": "新增教师擅长领域功能",
+    "personnel": ""
+  },
+  {
+    "date": "2025-2-28",
+    "timestamp": 1740672000000,
+    "hours": 1,
+    "project": "课程后台系统",
+    "description": "增加地区配置小程序展示选项",
+    "personnel": ""
+  },
+  {
+    "date": "2025-3-1",
+    "timestamp": 1740758400000,
+    "hours": 2,
+    "project": "课程后台系统",
+    "description": "使用富文本编辑器替换文本域、会员等级规则页面添加富文本编辑器",
+    "personnel": ""
+  },
+  {
+    "date": "2025-3-3",
+    "timestamp": 1740931200000,
+    "hours": 2,
+    "project": "课程后台系统",
+    "description": "评价管理新增会员等级规则相关功能、修改教师信息配置中的标签选择限制、logo替换",
+    "personnel": ""
+  },
+  {
+    "date": "2025-3-6",
+    "timestamp": 1741190400000,
+    "hours": 1,
+    "project": "课程后台系统",
+    "description": "会员等级规则增加可查看课程和讲师数量限制",
+    "personnel": ""
+  },
+  {
+    "date": "2025-3-10",
+    "timestamp": 1741536000000,
+    "hours": 1,
+    "project": "课程后台系统",
+    "description": "添加会员等级规则获取功能",
+    "personnel": ""
+  },
+  {
+    "date": "2025-3-11",
+    "timestamp": 1741622400000,
+    "hours": 4,
+    "project": "微信小程序",
+    "description": "我的课程页面样式和功能、积分页面样式和布局、更新教师卡片样式、调整教师列表项样式、优化教师卡片样式并添加字典数据匹配",
+    "personnel": ""
+  },
+  {
+    "date": "2025-3-12",
+    "timestamp": 1741708800000,
+    "hours": 1,
+    "project": "课程后台系统",
+    "description": "移除支付方式相关代码并调整课程详情展示 、修改教师管理基本信息字段",
+    "personnel": ""
+  },
+  {
+    "date": "2025-3-12",
+    "timestamp": 1741708800000,
+    "hours": 1,
+    "project": "微信小程序",
+    "description": "优化子账号页面样式和布局",
+    "personnel": ""
+  },
+  {
+    "date": "2025-3-13",
+    "timestamp": 1741795200000,
+    "hours": 1,
+    "project": "课程后台系统",
+    "description": "添加讲师管理功能",
+    "personnel": ""
+  },
+  {
+    "date": "2025-3-13",
+    "timestamp": 1741795200000,
+    "hours": 2,
+    "project": "微信小程序",
+    "description": "待分配课程",
+    "personnel": ""
+  },
+  {
+    "date": "2025-3-17",
+    "timestamp": 1742140800000,
+    "hours": 1,
+    "project": "课程后台系统",
+    "description": "添加小程序邀请码功能",
+    "personnel": ""
+  },
+  {
+    "date": "2025-3-18",
+    "timestamp": 1742227200000,
+    "hours": 1,
+    "project": "课程后台系统",
+    "description": "优化佣金结算表单填写和删除字段",
+    "personnel": ""
+  },
+  {
+    "date": "2025-3-19",
+    "timestamp": 1742313600000,
+    "hours": 2,
+    "project": "课程后台系统",
+    "description": "会员列表添加邀请人信息字段、课程和教师相关接口及页面增加搜索关键词功能",
+    "personnel": ""
+  },
+  {
+    "date": "2025-3-24",
+    "timestamp": 1742745600000,
+    "hours": 2,
+    "project": "课程后台系统",
+    "description": "增加导师海报功能和操作列、添加黑名单功能",
+    "personnel": ""
+  },
+  {
+    "date": "2025-3-25",
+    "timestamp": 1742832000000,
+    "hours": 1,
+    "project": "课程后台系统",
+    "description": "根据订单信息查询课程详情",
+    "personnel": ""
+  },
+  {
+    "date": "2025-3-26",
+    "timestamp": 1742918400000,
+    "hours": 2,
+    "project": "课程后台系统",
+    "description": "课程和教师管理功能，添加备注和展示详情设置，添加结算表单备注字段验证规则",
+    "personnel": ""
+  },
+  {
+    "date": "2025-3-31",
+    "timestamp": 1743350400000,
+    "hours": 2,
+    "project": "课程后台系统",
+    "description": "余额账户增加分账功能",
+    "personnel": ""
+  },
+  {
+    "date": "2025-4-2",
+    "timestamp": 1743523200000,
+    "hours": 1,
+    "project": "课程后台系统",
+    "description": "更新接口类型导入路径并机构添加level新字段",
+    "personnel": ""
+  },
+  {
+    "date": "2025-4-7",
+    "timestamp": 1743955200000,
+    "hours": 4,
+    "project": "课程后台系统",
+    "description": "积分详情",
+    "personnel": ""
+  },
+  {
+    "date": "2025-4-8",
+    "timestamp": 1744041600000,
+    "hours": 2,
+    "project": "课程后台系统",
+    "description": "订单编辑计算逻辑",
+    "personnel": ""
+  },
+  {
+    "date": "2025-4-10",
+    "timestamp": 1744214400000,
+    "hours": 1,
+    "project": "课程后台系统",
+    "description": "新增用户管理分销商ID等字段",
+    "personnel": ""
+  },
+  {
+    "date": "2025-4-14",
+    "timestamp": 1744560000000,
+    "hours": 2,
+    "project": "课程后台系统",
+    "description": "多页面修改表格列配置，添加机构等级、名称等字段",
+    "personnel": ""
+  },
+  {
+    "date": "2025-4-15",
+    "timestamp": 1744646400000,
+    "hours": 3,
+    "project": "课程后台系统",
+    "description": "新增渠道管理菜单页面-订单、会员；修复图标问题，替换为unocss使用本地svg icon方案",
+    "personnel": ""
+  },
+  {
+    "date": "2025-4-18",
+    "timestamp": 1744905600000,
+    "hours": 1,
+    "project": "课程后台系统",
+    "description": "订单表增加备注字段，在创建订单、预订单时录入备注信息在订单列表、预订单列表、佣金管理列表、佣金结算页面显示",
+    "personnel": ""
+  },
+  {
+    "date": "2025-4-19",
+    "timestamp": 1744992000000,
+    "hours": 4,
+    "project": "新项目环境搭建相关前端基建",
+    "description": "管理端CDN、nginx部署环境，uniapp微信小程序",
+    "personnel": ""
+  }
+]

@@ -1,10 +1,10 @@
 <script lang="ts" setup>
 import { computed, onMounted, ref } from 'vue'
 import DateRangeFilter from '@/components/work-visualization/DateRangeFilter.vue'
-import ProjectFilter from '@/components/work-visualization/ProjectFilter.vue'
-import WorkHoursTrend from '@/components/work-visualization/WorkHoursTrend.vue'
-import ProjectHoursDistribution from '@/components/work-visualization/ProjectHoursDistribution.vue'
 import MonthlyWorkHours from '@/components/work-visualization/MonthlyWorkHours.vue'
+import ProjectFilter from '@/components/work-visualization/ProjectFilter.vue'
+import ProjectHoursDistribution from '@/components/work-visualization/ProjectHoursDistribution.vue'
+import WorkHoursTrend from '@/components/work-visualization/WorkHoursTrend.vue'
 import type { FilterState, WorkData } from '@/types/work-visualization'
 
 // 数据加载和处理相关状态
@@ -25,8 +25,7 @@ const filters = ref<FilterState>({
 const availableProjects = computed(() => {
   const projects = new Set<string>()
   workData.value.forEach((item: WorkData) => {
-    if (item.project)
-      projects.add(item.project)
+    if (item.project) projects.add(item.project)
   })
   return Array.from(projects)
 })
@@ -35,12 +34,14 @@ const availableProjects = computed(() => {
 const filteredData = computed(() => {
   return workData.value.filter((item: WorkData) => {
     // 日期范围筛选（使用时间戳）
-    const isInDateRange = (!filters.value.startDate || item.timestamp >= filters.value.startDate)
-      && (!filters.value.endDate || item.timestamp <= filters.value.endDate)
+    const isInDateRange =
+      (!filters.value.startDate || item.timestamp >= filters.value.startDate) &&
+      (!filters.value.endDate || item.timestamp <= filters.value.endDate)
 
     // 项目筛选
-    const isProjectSelected = filters.value.selectedProjects.length === 0
-      || filters.value.selectedProjects.includes(item.project)
+    const isProjectSelected =
+      filters.value.selectedProjects.length === 0 ||
+      filters.value.selectedProjects.includes(item.project)
 
     return isInDateRange && isProjectSelected
   })
@@ -51,8 +52,7 @@ async function loadWorkData() {
   try {
     isLoading.value = true
     const response = await fetch('/data/work-data.json')
-    if (!response.ok)
-      throw new Error(`HTTP error! status: ${response.status}`)
+    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`)
 
     const data = await response.json()
     workData.value = data
@@ -68,17 +68,18 @@ async function loadWorkData() {
         filters.value.endDate = sortedData[sortedData.length - 1].timestamp
       }
     }
-  }
-  catch (error) {
+  } catch (error) {
     console.error('加载工时数据失败:', error)
-  }
-  finally {
+  } finally {
     isLoading.value = false
   }
 }
 
 // 处理日期范围变更
-function handleDateRangeChange(range: { start: number | null, end: number | null }) {
+function handleDateRangeChange(range: {
+  start: number | null
+  end: number | null
+}) {
   filters.value.startDate = range.start
   filters.value.endDate = range.end
 }

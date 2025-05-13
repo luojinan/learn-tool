@@ -41,8 +41,7 @@ export async function cacheDataOrUmd(globalName: string, url: string) {
   }
   try {
     const response = await fetch(url)
-    if (!response.ok)
-      throw new Error(`HTTP error! status: ${response.status}`)
+    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`)
 
     const data = await response.json()
     localStorage.setItem(globalName, JSON.stringify(data))
@@ -50,23 +49,26 @@ export async function cacheDataOrUmd(globalName: string, url: string) {
       data,
       msg: '来源网络',
     })
-  }
-  catch (error) {
+  } catch (error) {
     return Promise.reject(error)
   }
 }
 
 // 使用ts加载一个esm的cdn资源-会跨域
 // 创建一个工具函数用于通过<script>标签加载CDN上的ES模块并解决跨域问题
-export function loadCdnEsmModule(url: string, globalVariableName: string): Promise<void> {
+export function loadCdnEsmModule(
+  url: string,
+  globalVariableName: string,
+): Promise<void> {
   return new Promise((resolve, reject) => {
     // 创建一个新的script元素
     const script = document.createElement('script')
     script.type = 'module'
 
     script.onload = () => {
-    // 如果模块导出了default属性，则将default属性或整个模块对象赋值给全局变量
-      (window as any)[globalVariableName] = window[globalVariableName]?.default || window[globalVariableName]
+      // 如果模块导出了default属性，则将default属性或整个模块对象赋值给全局变量
+      ;(window as any)[globalVariableName] =
+        window[globalVariableName]?.default || window[globalVariableName]
       console.log(`${globalVariableName} loaded successfully`)
       resolve()
     }

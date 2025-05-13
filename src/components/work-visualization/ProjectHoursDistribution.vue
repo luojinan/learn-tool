@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 import Chart from 'chart.js/auto'
+import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 import type { ProjectDistribution, WorkData } from '@/types/work-visualization'
 
 const props = defineProps<{
@@ -24,19 +24,16 @@ function generateColors(count: number): string[] {
 
 // 计算项目分布数据
 const projectDistribution = computed((): ProjectDistribution[] => {
-  if (props.workData.length === 0)
-    return []
+  if (props.workData.length === 0) return []
 
   // 按项目名称分组并计算总工时
   const projectHoursMap: Record<string, number> = {}
   let totalHours = 0
 
   props.workData.forEach((item) => {
-    if (!item.project)
-      return
+    if (!item.project) return
 
-    if (!projectHoursMap[item.project])
-      projectHoursMap[item.project] = 0
+    if (!projectHoursMap[item.project]) projectHoursMap[item.project] = 0
 
     projectHoursMap[item.project] += item.hours
     totalHours += item.hours
@@ -46,35 +43,35 @@ const projectDistribution = computed((): ProjectDistribution[] => {
   const projects = Object.keys(projectHoursMap)
   const colors = generateColors(projects.length)
 
-  return projects.map((project, index) => {
-    const hours = projectHoursMap[project]
-    const percentage = totalHours > 0 ? (hours / totalHours) * 100 : 0
+  return projects
+    .map((project, index) => {
+      const hours = projectHoursMap[project]
+      const percentage = totalHours > 0 ? (hours / totalHours) * 100 : 0
 
-    return {
-      project,
-      hours,
-      percentage,
-      color: colors[index],
-    }
-  }).sort((a, b) => b.hours - a.hours) // 按工时降序排列
+      return {
+        project,
+        hours,
+        percentage,
+        color: colors[index],
+      }
+    })
+    .sort((a, b) => b.hours - a.hours) // 按工时降序排列
 })
 
 // 创建或更新图表
 function updateChart() {
-  if (!chartCanvas.value)
-    return
+  if (!chartCanvas.value) return
 
   const data = projectDistribution.value
 
-  if (chart)
-    chart.destroy()
+  if (chart) chart.destroy()
 
   const chartData = {
-    labels: data.map(item => item.project),
+    labels: data.map((item) => item.project),
     datasets: [
       {
-        data: data.map(item => item.hours),
-        backgroundColor: data.map(item => item.color),
+        data: data.map((item) => item.hours),
+        backgroundColor: data.map((item) => item.color),
         borderWidth: 1,
       },
     ],
@@ -83,8 +80,7 @@ function updateChart() {
   const isBarChart = chartType.value === 'bar'
 
   // 根据数据量自动判断图表类型
-  if (data.length > 8 && chartType.value === 'doughnut')
-    chartType.value = 'bar'
+  if (data.length > 8 && chartType.value === 'doughnut') chartType.value = 'bar'
 
   // 创建图表
   chart = new Chart(chartCanvas.value, {
@@ -112,25 +108,27 @@ function updateChart() {
           },
         },
       },
-      ...(isBarChart ? {
-        indexAxis: 'y', // 水平条形图
-        scales: {
-          y: {
-            ticks: {
-              autoSkip: false,
-              maxRotation: 0,
-              padding: 4,
+      ...(isBarChart
+        ? {
+            indexAxis: 'y', // 水平条形图
+            scales: {
+              y: {
+                ticks: {
+                  autoSkip: false,
+                  maxRotation: 0,
+                  padding: 4,
+                },
+              },
+              x: {
+                title: {
+                  display: true,
+                  text: '工时 (小时)',
+                },
+                beginAtZero: true,
+              },
             },
-          },
-          x: {
-            title: {
-              display: true,
-              text: '工时 (小时)',
-            },
-            beginAtZero: true,
-          },
-        },
-      } : {}),
+          }
+        : {}),
     },
   })
 }
@@ -146,8 +144,7 @@ watch(
 
 // 监听窗口尺寸变化，响应式调整图表
 function handleResize() {
-  if (chart)
-    chart.resize()
+  if (chart) chart.resize()
 }
 
 onMounted(() => {
@@ -156,8 +153,7 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
-  if (chart)
-    chart.destroy()
+  if (chart) chart.destroy()
 
   window.removeEventListener('resize', handleResize)
 })

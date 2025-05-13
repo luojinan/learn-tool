@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import { computed, onMounted, ref, watch } from 'vue'
 import type { ChartOptions } from 'chart.js'
 import { Chart, registerables } from 'chart.js'
+import { computed, onMounted, ref, watch } from 'vue'
 
 const props = defineProps<{
   labels: string[] // X 轴标签
@@ -29,13 +29,15 @@ const chartConfig = computed(() => {
     type: props.isHorizontal ? 'horizontalBar' : 'bar',
     data: {
       labels: props.labels,
-      datasets: [{
-        label: props.title || '数据统计',
-        data: props.data,
-        backgroundColor: finalBarColor.value,
-        borderColor: finalBarColor.value,
-        borderWidth: 1,
-      }],
+      datasets: [
+        {
+          label: props.title || '数据统计',
+          data: props.data,
+          backgroundColor: finalBarColor.value,
+          borderColor: finalBarColor.value,
+          borderWidth: 1,
+        },
+      ],
     },
     options: {
       responsive: props.responsive !== false, // 默认为 true
@@ -95,18 +97,13 @@ const chartConfig = computed(() => {
 
 // 初始化图表
 function initChart() {
-  if (!chartCanvas.value)
-    return
+  if (!chartCanvas.value) return
 
   // 销毁已有图表实例
-  if (chart)
-    chart.destroy()
+  if (chart) chart.destroy()
 
   // 创建新图表实例
-  chart = new Chart(
-    chartCanvas.value,
-    chartConfig.value as any,
-  )
+  chart = new Chart(chartCanvas.value, chartConfig.value as any)
 }
 
 // 监视数据变化，更新图表
@@ -115,8 +112,10 @@ watch(
   () => {
     if (chart) {
       // 当图表方向改变时，需要重新创建图表
-      if ((props.isHorizontal && (chart.options as any).indexAxis !== 'y')
-        || (!props.isHorizontal && (chart.options as any).indexAxis === 'y')) {
+      if (
+        (props.isHorizontal && (chart.options as any).indexAxis !== 'y') ||
+        (!props.isHorizontal && (chart.options as any).indexAxis === 'y')
+      ) {
         initChart()
         return
       }
@@ -139,8 +138,7 @@ defineExpose({
   updateChart: (newData: number[], newLabels?: string[]) => {
     if (chart) {
       chart.data.datasets[0].data = newData
-      if (newLabels)
-        chart.data.labels = newLabels
+      if (newLabels) chart.data.labels = newLabels
 
       chart.update()
     }

@@ -14,9 +14,8 @@ interface DataItem {
 function sumObj(obj: any) {
   let sum = 0
   for (const key in obj) {
-    if (obj.hasOwnProperty(key)) {
-      if (typeof obj[key] === 'number')
-        sum += Math.round(obj[key] * 100)
+    if (Object.hasOwn(obj, key)) {
+      if (typeof obj[key] === 'number') sum += Math.round(obj[key] * 100)
     }
   }
   return sum / 100
@@ -65,12 +64,19 @@ function init(odata) {
     }
   })
   const data = [...lostList, ...realIncomeList]
-  totalInfo.value.至今到手总收入 = sumNumArr(realIncomeList.map(item => item.value))
-  totalInfo.value.至今税前总收入 = totalInfo.value.至今到手总收入 + sumNumArr(lostList.map(item => item.value))
-  totalInfo.value.至今税金房租总支出 = totalInfo.value.至今税前总收入 - totalInfo.value.至今到手总收入
-  totalInfo.value.至今平均到手月入 = totalInfo.value.至今到手总收入 / odata.length
+  totalInfo.value.至今到手总收入 = sumNumArr(
+    realIncomeList.map((item) => item.value),
+  )
+  totalInfo.value.至今税前总收入 =
+    totalInfo.value.至今到手总收入 +
+    sumNumArr(lostList.map((item) => item.value))
+  totalInfo.value.至今税金房租总支出 =
+    totalInfo.value.至今税前总收入 - totalInfo.value.至今到手总收入
+  totalInfo.value.至今平均到手月入 =
+    totalInfo.value.至今到手总收入 / odata.length
   totalInfo.value.预计到手年入 = totalInfo.value.至今平均到手月入 * 12
-  totalInfo.value.预计税前年入 = (totalInfo.value.至今税前总收入 / odata.length) * 12
+  totalInfo.value.预计税前年入 =
+    (totalInfo.value.至今税前总收入 / odata.length) * 12
 
   if (area3) {
     area3.changeData(data)
@@ -85,14 +91,13 @@ function init(odata) {
     theme: 'dark',
     label: {
       callback: (text) => {
-        if (+text > 5000)
-          return { content: text }
+        if (+text > 5000) return { content: text }
       },
     },
     tooltip: {
       customItems: (originalItems) => {
         const res = originalItems.reduce((pre, next) => {
-          return pre + +(next.value)
+          return pre + +next.value
         }, 0)
         return [...originalItems, { name: '税前收入', value: res }]
       },
@@ -105,15 +110,17 @@ let area1 = null
 function initLostRef(odata) {
   const list: DataItem[] = []
   odata.forEach((element) => {
-    Object.entries(element).sort((item, nextItem) => nextItem[1] - item[1]).forEach(([key, val]) => {
-      if (typeof val === 'number' && val < 0) {
-        list.push({
-          time: element.time,
-          value: -val,
-          type: key,
-        })
-      }
-    })
+    Object.entries(element)
+      .sort((item, nextItem) => nextItem[1] - item[1])
+      .forEach(([key, val]) => {
+        if (typeof val === 'number' && val < 0) {
+          list.push({
+            time: element.time,
+            value: -val,
+            type: key,
+          })
+        }
+      })
   })
   if (!area1) {
     area1 = new G2Plot.Area(lostRef.value, {
@@ -125,7 +132,7 @@ function initLostRef(odata) {
       tooltip: {
         customItems: (originalItems) => {
           const res = originalItems.reduce((pre, next) => {
-            return pre + +(next.value)
+            return pre + +next.value
           }, 0)
           return [...originalItems, { name: '总支出', value: res }]
         },
@@ -140,15 +147,17 @@ let area2 = null
 function initInRef(odata) {
   const list: DataItem[] = []
   odata.forEach((element) => {
-    Object.entries(element).sort((item, nextItem) => item[1] - nextItem[1]).forEach(([key, val]) => {
-      if (typeof val === 'number' && val >= 0) {
-        list.push({
-          time: element.time,
-          value: val,
-          type: key,
-        })
-      }
-    })
+    Object.entries(element)
+      .sort((item, nextItem) => item[1] - nextItem[1])
+      .forEach(([key, val]) => {
+        if (typeof val === 'number' && val >= 0) {
+          list.push({
+            time: element.time,
+            value: val,
+            type: key,
+          })
+        }
+      })
   })
   // 数组的第一和第二项交换位置
   if (list.length > 1) {
@@ -172,7 +181,7 @@ function initInRef(odata) {
     tooltip: {
       customItems: (originalItems) => {
         const res = originalItems.reduce((pre, next) => {
-          return pre + +(next.value)
+          return pre + +next.value
         }, 0)
         return [...originalItems, { name: '税前收入', value: res }]
       },
@@ -195,8 +204,7 @@ async function getIncomeData() {
 }
 
 async function loadAntv() {
-  if (window.G2Plot)
-    return
+  if (window.G2Plot) return
   await loadScript(CDN_UMD_ANTV)
 }
 

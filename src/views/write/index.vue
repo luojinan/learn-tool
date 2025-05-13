@@ -1,12 +1,12 @@
 <script lang="ts" setup>
 import { computed, onMounted, reactive, ref, watch } from 'vue'
-import TabList from '@/components/TabList/index.vue'
 import { Japenese50yin } from '@/common/const'
 import { getRandomItem } from '@/common/utils'
+import TabList from '@/components/TabList/index.vue'
 
 const STORAGE_KEY = 'write-tablist'
 function dealList() {
-  const list: { question: string, answer: string }[] = []
+  const list: { question: string; answer: string }[] = []
   for (const [, item] of Object.entries(Japenese50yin)) {
     list.push({
       question: item.hiragana,
@@ -42,7 +42,7 @@ const TAB_CONST = [
 const active = ref('tab1')
 const tabList = reactive(TAB_CONST)
 const tabItem = computed(() => {
-  return tabList.find(item => item.value === active.value)
+  return tabList.find((item) => item.value === active.value)
 })
 const currentItem = computed(() => {
   return tabItem.value.obtainedValues[tabItem.value.currentIndex]
@@ -57,8 +57,11 @@ function initData() {
 }
 
 function onNext() {
-  const testindex = tabList.findIndex(item => item.value === active.value)
-  if (!tabItem.value?.obtainedValues.length && !tabItem.value?.remainingValues.length) {
+  const testindex = tabList.findIndex((item) => item.value === active.value)
+  if (
+    !tabItem.value?.obtainedValues.length &&
+    !tabItem.value?.remainingValues.length
+  ) {
     const { allValues, total } = initData()
     tabList[testindex] = {
       ...tabList[testindex],
@@ -74,8 +77,7 @@ function onNext() {
   if (tabItem.value.currentIndex === tabItem.value.obtainedValues.length - 1) {
     // 获取下一个前先校验
     const isPass = !tabItem.value.obtainedValues.length || checkAnswer()
-    if (!isPass)
-      return
+    if (!isPass) return
     getRandomItem(tabList[testindex])
     resetAnswer()
     return
@@ -85,7 +87,7 @@ function onNext() {
 }
 
 function onReset() {
-  const testindex = tabList.findIndex(item => item.value === active.value)
+  const testindex = tabList.findIndex((item) => item.value === active.value)
   tabList[testindex] = {
     ...tabList[testindex],
     remainingValues: [],
@@ -121,16 +123,14 @@ function checkAnswer() {
 }
 function onSubmit() {
   const isPass = checkAnswer()
-  if (!isPass)
-    return
+  if (!isPass) return
   onNext()
 }
 
 function onPre() {
-  if (tabItem.value.currentIndex <= 0)
-    return
+  if (tabItem.value.currentIndex <= 0) return
 
-  const testindex = tabList.findIndex(item => item.value === active.value)
+  const testindex = tabList.findIndex((item) => item.value === active.value)
   tabList[testindex].currentIndex -= 1
   resetAnswer()
   // showAnswer.value = true
@@ -145,8 +145,7 @@ onMounted(() => {
   // 取缓存
   try {
     Object.assign(tabList, JSON.parse(store))
-  }
-  catch (error) {
+  } catch (error) {
     console.log(error)
   }
 })

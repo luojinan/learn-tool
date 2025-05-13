@@ -39,9 +39,8 @@ interface OtherIncomeItem {
 function sumObj(obj: any) {
   let sum = 0
   for (const key in obj) {
-    if (obj.hasOwnProperty(key)) {
-      if (typeof obj[key] === 'number')
-        sum += obj[key]
+    if (Object.hasOwn(obj, key)) {
+      if (typeof obj[key] === 'number') sum += obj[key]
     }
   }
   return sum
@@ -109,7 +108,9 @@ function formatTime(isoTime: string): string {
 
 function init(odata: IncomeData[]) {
   // 将数据按时间正序排序
-  const sortedData = [...odata].sort((a, b) => new Date(a.time).getTime() - new Date(b.time).getTime())
+  const sortedData = [...odata].sort(
+    (a, b) => new Date(a.time).getTime() - new Date(b.time).getTime(),
+  )
 
   const realIncomeList = sortedData.map((item) => {
     return {
@@ -119,7 +120,9 @@ function init(odata: IncomeData[]) {
     }
   })
   const lostList = sortedData.map((item) => {
-    const list = Object.entries(item).filter(([_, val]) => typeof val === 'number' && val < 0)
+    const list = Object.entries(item).filter(
+      ([_, val]) => typeof val === 'number' && val < 0,
+    )
     const lostRes = list.reduce((pre, [, nextVal]) => {
       return pre + (nextVal as number)
     }, 0)
@@ -131,12 +134,20 @@ function init(odata: IncomeData[]) {
   })
   const data = [...lostList, ...realIncomeList]
 
-  totalInfo.value.totalIncomeAfterTax = sumNumArr(realIncomeList.map(item => item.value))
-  totalInfo.value.totalIncomeBeforeTax = totalInfo.value.totalIncomeAfterTax + sumNumArr(lostList.map(item => item.value))
-  totalInfo.value.totalExpenses = totalInfo.value.totalIncomeBeforeTax - totalInfo.value.totalIncomeAfterTax
-  totalInfo.value.averageMonthlyIncome = totalInfo.value.totalIncomeAfterTax / odata.length
-  totalInfo.value.estimatedAnnualIncomeAfterTax = totalInfo.value.averageMonthlyIncome * 12
-  totalInfo.value.estimatedAnnualIncomeBeforeTax = (totalInfo.value.totalIncomeBeforeTax / odata.length) * 12
+  totalInfo.value.totalIncomeAfterTax = sumNumArr(
+    realIncomeList.map((item) => item.value),
+  )
+  totalInfo.value.totalIncomeBeforeTax =
+    totalInfo.value.totalIncomeAfterTax +
+    sumNumArr(lostList.map((item) => item.value))
+  totalInfo.value.totalExpenses =
+    totalInfo.value.totalIncomeBeforeTax - totalInfo.value.totalIncomeAfterTax
+  totalInfo.value.averageMonthlyIncome =
+    totalInfo.value.totalIncomeAfterTax / odata.length
+  totalInfo.value.estimatedAnnualIncomeAfterTax =
+    totalInfo.value.averageMonthlyIncome * 12
+  totalInfo.value.estimatedAnnualIncomeBeforeTax =
+    (totalInfo.value.totalIncomeBeforeTax / odata.length) * 12
 
   const area = new G2Plot.Area(totalRef.value, {
     data,
@@ -146,14 +157,13 @@ function init(odata: IncomeData[]) {
     theme: 'dark',
     label: {
       callback: (text: string) => {
-        if (+text > 10000)
-          return { content: text }
+        if (+text > 10000) return { content: text }
       },
     },
     tooltip: {
       customItems: (originalItems: any[]) => {
         const res = originalItems.reduce((pre: number, next: any) => {
-          return pre + +(next.value)
+          return pre + +next.value
         }, 0)
         return [...originalItems, { name: '税前收入', value: res }]
       },
@@ -164,19 +174,25 @@ function init(odata: IncomeData[]) {
 
 function initLostRef(odata: IncomeData[]) {
   // 将数据按时间正序排序
-  const sortedData = [...odata].sort((a, b) => new Date(a.time).getTime() - new Date(b.time).getTime())
+  const sortedData = [...odata].sort(
+    (a, b) => new Date(a.time).getTime() - new Date(b.time).getTime(),
+  )
 
   const list: DataItem[] = []
   sortedData.forEach((element) => {
     Object.entries(element)
-      .filter(([key]) => !['id', 'owner', 'time', 'createdAt', 'updatedAt'].includes(key))
+      .filter(
+        ([key]) =>
+          !['id', 'owner', 'time', 'createdAt', 'updatedAt'].includes(key),
+      )
       .sort(([, val1], [, val2]) => (val2 as number) - (val1 as number))
       .forEach(([key, val]) => {
         if (typeof val === 'number' && val < 0) {
           list.push({
             time: formatTime(element.time),
             value: -val,
-            type: fieldTranslations[key as keyof typeof fieldTranslations] || key,
+            type:
+              fieldTranslations[key as keyof typeof fieldTranslations] || key,
           })
         }
       })
@@ -196,7 +212,7 @@ function initLostRef(odata: IncomeData[]) {
     tooltip: {
       customItems: (originalItems: any[]) => {
         const res = originalItems.reduce((pre: number, next: any) => {
-          return pre + +(next.value)
+          return pre + +next.value
         }, 0)
         return [...originalItems, { name: '总支出', value: res }]
       },
@@ -207,19 +223,32 @@ function initLostRef(odata: IncomeData[]) {
 
 function initInRef(odata: IncomeData[]) {
   // 将数据按时间正序排序
-  const sortedData = [...odata].sort((a, b) => new Date(a.time).getTime() - new Date(b.time).getTime())
+  const sortedData = [...odata].sort(
+    (a, b) => new Date(a.time).getTime() - new Date(b.time).getTime(),
+  )
 
   const list: DataItem[] = []
   sortedData.forEach((element) => {
     Object.entries(element)
-      .filter(([key]) => !['id', 'owner', 'time', 'createdAt', 'updatedAt', 'leaveDeduction'].includes(key))
+      .filter(
+        ([key]) =>
+          ![
+            'id',
+            'owner',
+            'time',
+            'createdAt',
+            'updatedAt',
+            'leaveDeduction',
+          ].includes(key),
+      )
       .sort(([, val1], [, val2]) => (val1 as number) - (val2 as number))
       .forEach(([key, val]) => {
         if (typeof val === 'number' && val >= 0) {
           list.push({
             time: formatTime(element.time),
             value: val,
-            type: fieldTranslations[key as keyof typeof fieldTranslations] || key,
+            type:
+              fieldTranslations[key as keyof typeof fieldTranslations] || key,
           })
         }
       })
@@ -242,7 +271,7 @@ function initInRef(odata: IncomeData[]) {
     tooltip: {
       customItems: (originalItems: any[]) => {
         const res = originalItems.reduce((pre: number, next: any) => {
-          return pre + +(next.value)
+          return pre + +next.value
         }, 0)
         return [...originalItems, { name: '税前收入', value: res }]
       },
@@ -268,8 +297,7 @@ async function getIncomeData() {
 }
 
 async function loadAntv() {
-  if (window.G2Plot)
-    return
+  if (window.G2Plot) return
   await loadScript(CDN_UMD_ANTV)
 }
 

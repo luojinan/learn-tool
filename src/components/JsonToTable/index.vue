@@ -20,22 +20,27 @@ const isShowToast = ref(false)
 
 // 解析 JSON 数据，获取表头和行数据
 function parseJsonData() {
-  if (!props.incomeDataList.length)
-    return
+  if (!props.incomeDataList.length) return
 
   // 获取第一个数据项的所有字段，并过滤掉不需要的字段
-  const allFields = Object.keys(props.incomeDataList[0])
-    .filter(field => !props.excludeFields.includes(field))
+  const allFields = Object.keys(props.incomeDataList[0]).filter(
+    (field) => !props.excludeFields.includes(field),
+  )
 
   // 使用翻译后的字段名作为表头
-  headers.value = allFields.map(field => props.fieldTranslations[field] || field)
+  headers.value = allFields.map(
+    (field) => props.fieldTranslations[field] || field,
+  )
 
   // 处理行数据
   rows.value = props.incomeDataList.map((item) => {
-    return allFields.reduce((res, field) => {
-      res[field] = item[field] ?? '-'
-      return res
-    }, {} as Record<string, any>)
+    return allFields.reduce(
+      (res, field) => {
+        res[field] = item[field] ?? '-'
+        return res
+      },
+      {} as Record<string, any>,
+    )
   })
 }
 
@@ -43,8 +48,7 @@ function parseJsonData() {
 async function exportImage() {
   const table = document.querySelector('table')
 
-  if (!window.htmlToImage)
-    await loadScript(CDN_ESM_HTML_TO_IMAGE)
+  if (!window.htmlToImage) await loadScript(CDN_ESM_HTML_TO_IMAGE)
 
   const dataUrl = await htmlToImage.toPng(table)
 
@@ -62,8 +66,7 @@ function exportMarkdown() {
 
   rows.value.forEach((row) => {
     const values = Object.values(row).map((value) => {
-      if (typeof value === 'number')
-        return value.toLocaleString()
+      if (typeof value === 'number') return value.toLocaleString()
 
       return value
     })

@@ -11,7 +11,10 @@ import { loadScript } from '@/common/utils'
  * @param url umd资源的oss全路径
  * @returns 返回一个数组，包含数据引用、数据来源信息和重新获取数据的方法。
  */
-export function useUmdDataCacheOrFetch<F>(globalName: string, url: string): [Ref<F | null>, string, () => Promise<void>] {
+export function useUmdDataCacheOrFetch<F>(
+  globalName: string,
+  url: string,
+): [Ref<F | null>, string, () => Promise<void>] {
   // 初始化数据引用，用于存储最终的数据值。
   const data = ref(null)
   // 初始化数据来源信息引用，用于指示数据是来自缓存还是网络。
@@ -24,18 +27,19 @@ export function useUmdDataCacheOrFetch<F>(globalName: string, url: string): [Ref
     // 如果有缓存数据，解析并设置数据值，同时标记数据来源为缓存。
     data.value = JSON.parse(cacheData)
     dataFromMsg.value = '来源缓存'
-  }
-  else {
+  } else {
     // 如果没有缓存数据，加载脚本并尝试从URL获取数据。
-    loadScript(url).then(() => {
-      // 脚本加载成功后，将数据存储到本地，并更新数据值和数据来源标记。
-      localStorage.setItem(globalName, JSON.stringify(window[globalName]))
-      data.value = window[globalName]
-      dataFromMsg.value = '来源网络'
-    }).catch((error) => {
-      // 脚本加载失败时，记录错误。
-      console.log(error)
-    })
+    loadScript(url)
+      .then(() => {
+        // 脚本加载成功后，将数据存储到本地，并更新数据值和数据来源标记。
+        localStorage.setItem(globalName, JSON.stringify(window[globalName]))
+        data.value = window[globalName]
+        dataFromMsg.value = '来源网络'
+      })
+      .catch((error) => {
+        // 脚本加载失败时，记录错误。
+        console.log(error)
+      })
   }
 
   // 定义重新获取数据的方法。
@@ -50,17 +54,12 @@ export function useUmdDataCacheOrFetch<F>(globalName: string, url: string): [Ref
       localStorage.setItem(globalName, JSON.stringify(window[globalName]))
       data.value = window[globalName]
       dataFromMsg.value = '来源网络'
-    }
-    catch (error) {
+    } catch (error) {
       // 加载失败时，记录错误。
       console.log(error)
     }
   }
 
   // 返回数据引用、数据来源信息引用和重新获取数据的方法。
-  return [
-    data,
-    dataFromMsg,
-    reFetch,
-  ]
+  return [data, dataFromMsg, reFetch]
 }

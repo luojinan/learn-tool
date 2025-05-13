@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 import Chart from 'chart.js/auto'
+import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 import type { AggregatedDataPoint, WorkData } from '@/types/work-visualization'
 
 const props = defineProps<{
@@ -19,29 +19,31 @@ function formatMonthLabel(yearMonth: string): string {
 
 // 按月份聚合数据
 function aggregateMonthlyData(data: WorkData[]): AggregatedDataPoint[] {
-  if (data.length === 0)
-    return []
+  if (data.length === 0) return []
 
   // 按时间戳排序
   const sortedData = [...data].sort((a, b) => a.timestamp - b.timestamp)
 
   // 按月份分组
-  const grouped = sortedData.reduce((acc, curr) => {
-    const date = new Date(curr.timestamp)
-    const key = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`
+  const grouped = sortedData.reduce(
+    (acc, curr) => {
+      const date = new Date(curr.timestamp)
+      const key = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`
 
-    if (!acc[key]) {
-      acc[key] = {
-        label: key,
-        value: 0,
-        timestamp: new Date(date.getFullYear(), date.getMonth(), 1).getTime(),
+      if (!acc[key]) {
+        acc[key] = {
+          label: key,
+          value: 0,
+          timestamp: new Date(date.getFullYear(), date.getMonth(), 1).getTime(),
+        }
       }
-    }
 
-    acc[key].value += curr.hours
+      acc[key].value += curr.hours
 
-    return acc
-  }, {} as Record<string, AggregatedDataPoint>)
+      return acc
+    },
+    {} as Record<string, AggregatedDataPoint>,
+  )
 
   // 转换为数组并按时间排序
   return Object.values(grouped).sort((a, b) => a.timestamp - b.timestamp)
@@ -54,21 +56,19 @@ const monthlyData = computed(() => {
 
 // 创建或更新图表
 function updateChart() {
-  if (!chartCanvas.value)
-    return
+  if (!chartCanvas.value) return
 
   const data = monthlyData.value
 
-  if (chart)
-    chart.destroy()
+  if (chart) chart.destroy()
 
   // 准备图表数据
   const chartData = {
-    labels: data.map(item => formatMonthLabel(item.label)),
+    labels: data.map((item) => formatMonthLabel(item.label)),
     datasets: [
       {
         label: '月度工时',
-        data: data.map(item => item.value),
+        data: data.map((item) => item.value),
         backgroundColor: 'rgba(54, 162, 235, 0.6)',
         borderColor: 'rgba(54, 162, 235, 1)',
         borderWidth: 1,
@@ -130,8 +130,7 @@ watch(
 
 // 监听窗口尺寸变化，响应式调整图表
 function handleResize() {
-  if (chart)
-    chart.resize()
+  if (chart) chart.resize()
 }
 
 onMounted(() => {
@@ -140,8 +139,7 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
-  if (chart)
-    chart.destroy()
+  if (chart) chart.destroy()
 
   window.removeEventListener('resize', handleResize)
 })

@@ -3,7 +3,13 @@
  * 负责加载和准备工时可视化所需的所有数据
  */
 import type { WorkEntry } from './csvParser'
-import { aggregateHoursByDate, aggregateHoursByMonth, getHoursOrNull, getProjectDistribution, loadWorkDataFromCSV } from './csvParser'
+import {
+  aggregateHoursByDate,
+  aggregateHoursByMonth,
+  getHoursOrNull,
+  getProjectDistribution,
+  loadWorkDataFromCSV,
+} from './csvParser'
 
 // CSV 文件路径
 const CSV_FILE_PATH = '/日期-工作表1.csv'
@@ -36,7 +42,8 @@ export interface DashboardData {
   monthlyHours: MonthlyHoursData // 月度工时数据
   filteredData: WorkEntry[] // 筛选后的数据
   availableProjects: string[] // 可用的项目列表
-  dateRange: { // 数据的日期范围
+  dateRange: {
+    // 数据的日期范围
     start: string
     end: string
   }
@@ -65,15 +72,13 @@ function generateColors(count: number): string[] {
   ]
 
   // 如果预定义颜色足够，直接使用
-  if (count <= baseColors.length)
-    return baseColors.slice(0, count)
+  if (count <= baseColors.length) return baseColors.slice(0, count)
 
   // 如果预定义颜色不够，生成随机颜色
   for (let i = 0; i < count; i++) {
     if (i < baseColors.length) {
       colors.push(baseColors[i])
-    }
-    else {
+    } else {
       // 生成随机颜色
       const r = Math.floor(Math.random() * 200 + 55)
       const g = Math.floor(Math.random() * 200 + 55)
@@ -97,7 +102,7 @@ function prepareHoursTrendData(entries: WorkEntry[]): HoursTrendData {
   const sortedDates = Object.keys(hoursByDate).sort()
 
   const labels = sortedDates
-  const data = sortedDates.map(date => getHoursOrNull(hoursByDate[date]))
+  const data = sortedDates.map((date) => getHoursOrNull(hoursByDate[date]))
 
   return { labels, data }
 }
@@ -107,12 +112,14 @@ function prepareHoursTrendData(entries: WorkEntry[]): HoursTrendData {
  * @param entries 工时条目数组
  * @returns 项目分布数据
  */
-function prepareProjectDistributionData(entries: WorkEntry[]): ProjectDistributionData {
+function prepareProjectDistributionData(
+  entries: WorkEntry[],
+): ProjectDistributionData {
   const distribution = getProjectDistribution(entries)
 
-  const labels = distribution.map(item => item.name)
-  const data = distribution.map(item => item.hours)
-  const percentages = distribution.map(item => item.percentage)
+  const labels = distribution.map((item) => item.name)
+  const data = distribution.map((item) => item.hours)
+  const percentages = distribution.map((item) => item.percentage)
   const backgroundColor = generateColors(labels.length)
 
   return { labels, data, percentages, backgroundColor }
@@ -130,7 +137,7 @@ function prepareMonthlyHoursData(entries: WorkEntry[]): MonthlyHoursData {
   const sortedMonths = Object.keys(hoursByMonth).sort()
 
   const labels = sortedMonths
-  const data = sortedMonths.map(month => hoursByMonth[month])
+  const data = sortedMonths.map((month) => hoursByMonth[month])
 
   return { labels, data }
 }
@@ -140,16 +147,14 @@ function prepareMonthlyHoursData(entries: WorkEntry[]): MonthlyHoursData {
  * @param entries 工时条目数组
  * @returns 日期范围对象
  */
-function getDateRange(entries: WorkEntry[]): { start: string, end: string } {
+function getDateRange(entries: WorkEntry[]): { start: string; end: string } {
   let start = '9999-12-31'
   let end = '0000-01-01'
 
   for (const entry of entries) {
-    if (entry.date < start)
-      start = entry.date
+    if (entry.date < start) start = entry.date
 
-    if (entry.date > end)
-      end = entry.date
+    if (entry.date > end) end = entry.date
   }
 
   return { start, end }
@@ -162,14 +167,18 @@ function getDateRange(entries: WorkEntry[]): { start: string, end: string } {
  * @returns Promise<DashboardData> 仪表盘数据
  */
 export async function loadDashboardData(
-  dateRangeFilter?: { start: string, end: string },
+  dateRangeFilter?: { start: string; end: string },
   projectFilter?: string[],
 ): Promise<DashboardData> {
   // 加载原始数据
   const rawData = await loadWorkDataFromCSV(CSV_FILE_PATH)
 
   // 获取所有可用项目
-  const availableProjects = Array.from(new Set(rawData.map(entry => entry.project))).filter(Boolean).sort()
+  const availableProjects = Array.from(
+    new Set(rawData.map((entry) => entry.project)),
+  )
+    .filter(Boolean)
+    .sort()
 
   // 获取数据日期范围
   const dateRange = getDateRange(rawData)
@@ -180,7 +189,9 @@ export async function loadDashboardData(
   // 应用日期范围筛选
   if (dateRangeFilter) {
     filteredData = filteredData.filter((entry) => {
-      return entry.date >= dateRangeFilter.start && entry.date <= dateRangeFilter.end
+      return (
+        entry.date >= dateRangeFilter.start && entry.date <= dateRangeFilter.end
+      )
     })
   }
 

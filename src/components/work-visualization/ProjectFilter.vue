@@ -21,10 +21,9 @@ function toggleProject(project: string) {
 
   if (isSelected) {
     // 取消选择
-    const newSelection = props.selectedProjects.filter(p => p !== project)
+    const newSelection = props.selectedProjects.filter((p) => p !== project)
     emit('update:selected-projects', newSelection)
-  }
-  else {
+  } else {
     // 选择项目
     const newSelection = [...props.selectedProjects, project]
     emit('update:selected-projects', newSelection)

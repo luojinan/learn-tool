@@ -11,19 +11,22 @@ interface Book {
 const ossPath = 'book'
 const dataName = 'book'
 const dataUrl = `${ossDataUrl}/${ossPath}.js`
-const [books, dataFromMsg, reFetch] = useUmdDataCacheOrFetch<Book[]>(dataName, dataUrl)
+const [books, dataFromMsg, reFetch] = useUmdDataCacheOrFetch<Book[]>(
+  dataName,
+  dataUrl,
+)
 
 // 用户输入的搜索关键词
 const searchQuery = ref('')
 
 // 计算属性，根据搜索关键词过滤图书列表
 const filteredBooks = computed(() => {
-  if (!books.value)
-    return []
+  if (!books.value) return []
   const query = searchQuery.value.toLowerCase()
-  return books.value.filter(book =>
-    book.title.toLowerCase().includes(query)
-    || book.author.toLowerCase().includes(query),
+  return books.value.filter(
+    (book) =>
+      book.title.toLowerCase().includes(query) ||
+      book.author.toLowerCase().includes(query),
   )
 })
 </script>

@@ -17,12 +17,10 @@ export interface WorkEntry {
  * @returns 标准化的日期字符串 YYYY-MM-DD
  */
 function normalizeDate(dateStr: string): string {
-  if (!dateStr)
-    return ''
+  if (!dateStr) return ''
 
   // 如果已经是 YYYY-MM-DD 格式，直接返回
-  if (/^\d{4}-\d{1,2}-\d{1,2}$/.test(dateStr))
-    return dateStr
+  if (/^\d{4}-\d{1,2}-\d{1,2}$/.test(dateStr)) return dateStr
 
   // 处理 YYYY/MM/DD 格式
   if (/^\d{4}\/\d{1,2}\/\d{1,2}$/.test(dateStr))
@@ -38,12 +36,10 @@ function normalizeDate(dateStr: string): string {
  */
 function isSummaryLine(line: string): boolean {
   // 处理仅包含单个数字的汇总行，如 ",68,,,,"
-  if (/^,\d+,,,,\s*$/.test(line))
-    return true
+  if (/^,\d+,,,,\s*$/.test(line)) return true
 
   // 处理以 "总" 开头的汇总行，如 "总27,,,,,"
-  if (/^总\d+,,,,,\s*$/.test(line))
-    return true
+  if (/^总\d+,,,,,\s*$/.test(line)) return true
 
   return false
 }
@@ -63,12 +59,10 @@ function isEmptyLine(line: string): boolean {
  * @returns 工时条目对象
  */
 function parseStandardRow(row: string[]): WorkEntry | null {
-  if (row.length < 5)
-    return null
+  if (row.length < 5) return null
 
   const date = normalizeDate(row[0]?.trim() || '')
-  if (!date)
-    return null
+  if (!date) return null
 
   const hours = parseFloat(row[1]?.trim() || '0')
   const project = row[2]?.trim() || ''
@@ -95,12 +89,10 @@ function parseSpecialRow(line: string): WorkEntry | null {
 
   // 按空格分割，获取前三个部分（日期、工时、项目）
   const parts = content.split(' ')
-  if (parts.length < 3)
-    return null
+  if (parts.length < 3) return null
 
   const date = normalizeDate(parts[0])
-  if (!date)
-    return null
+  if (!date) return null
 
   const hours = parseFloat(parts[1])
   const project = parts[2]
@@ -123,8 +115,7 @@ function parseSpecialRow(line: string): WorkEntry | null {
  * @returns 解析后的工时数据数组
  */
 export function parseCSV(csvContent: string): WorkEntry[] {
-  if (!csvContent)
-    return []
+  if (!csvContent) return []
 
   const lines = csvContent.split('\n')
   const entries: WorkEntry[] = []
@@ -134,14 +125,12 @@ export function parseCSV(csvContent: string): WorkEntry[] {
     const line = lines[i].trim()
 
     // 跳过空行和汇总行
-    if (!line || isEmptyLine(line) || isSummaryLine(line))
-      continue
+    if (!line || isEmptyLine(line) || isSummaryLine(line)) continue
 
     // 处理特殊格式行（引号内的空格分隔数据）
     if (line.startsWith('"') && line.endsWith('"')) {
       const entry = parseSpecialRow(line)
-      if (entry)
-        entries.push(entry)
+      if (entry) entries.push(entry)
 
       continue
     }
@@ -149,8 +138,7 @@ export function parseCSV(csvContent: string): WorkEntry[] {
     // 处理标准 CSV 行
     const row = line.split(',')
     const entry = parseStandardRow(row)
-    if (entry)
-      entries.push(entry)
+    if (entry) entries.push(entry)
   }
 
   return entries
@@ -161,16 +149,19 @@ export function parseCSV(csvContent: string): WorkEntry[] {
  * @param filePath CSV 文件路径
  * @returns Promise<WorkEntry[]> 解析后的工时数据数组
  */
-export async function loadWorkDataFromCSV(filePath: string): Promise<WorkEntry[]> {
+export async function loadWorkDataFromCSV(
+  filePath: string,
+): Promise<WorkEntry[]> {
   try {
     const response = await fetch(filePath)
     if (!response.ok)
-      throw new Error(`Failed to load CSV file: ${response.status} ${response.statusText}`)
+      throw new Error(
+        `Failed to load CSV file: ${response.status} ${response.statusText}`,
+      )
 
     const csvContent = await response.text()
     return parseCSV(csvContent)
-  }
-  catch (error) {
+  } catch (error) {
     console.error('Error loading or parsing CSV:', error)
     return []
   }
@@ -182,8 +173,7 @@ export async function loadWorkDataFromCSV(filePath: string): Promise<WorkEntry[]
  * @returns 处理后的工时值，为零时返回 null
  */
 export function getHoursOrNull(hours: number | null): number | null {
-  if (hours === null || hours === 0)
-    return null
+  if (hours === null || hours === 0) return null
 
   return hours
 }
@@ -193,13 +183,14 @@ export function getHoursOrNull(hours: number | null): number | null {
  * @param entries 工时条目数组
  * @returns 以日期为键，工时为值的对象
  */
-export function aggregateHoursByDate(entries: WorkEntry[]): Record<string, number> {
+export function aggregateHoursByDate(
+  entries: WorkEntry[],
+): Record<string, number> {
   const result: Record<string, number> = {}
 
   for (const entry of entries) {
     if (entry.date && entry.hours !== null) {
-      if (!result[entry.date])
-        result[entry.date] = 0
+      if (!result[entry.date]) result[entry.date] = 0
 
       result[entry.date] += entry.hours
     }
@@ -213,7 +204,9 @@ export function aggregateHoursByDate(entries: WorkEntry[]): Record<string, numbe
  * @param entries 工时条目数组
  * @returns 以月份(YYYY-MM)为键，工时为值的对象
  */
-export function aggregateHoursByMonth(entries: WorkEntry[]): Record<string, number> {
+export function aggregateHoursByMonth(
+  entries: WorkEntry[],
+): Record<string, number> {
   const result: Record<string, number> = {}
 
   for (const entry of entries) {
@@ -221,8 +214,7 @@ export function aggregateHoursByMonth(entries: WorkEntry[]): Record<string, numb
       // 提取月份 (YYYY-MM)
       const month = entry.date.substring(0, 7)
 
-      if (!result[month])
-        result[month] = 0
+      if (!result[month]) result[month] = 0
 
       result[month] += entry.hours
     }
@@ -236,13 +228,14 @@ export function aggregateHoursByMonth(entries: WorkEntry[]): Record<string, numb
  * @param entries 工时条目数组
  * @returns 以项目为键，工时为值的对象
  */
-export function aggregateHoursByProject(entries: WorkEntry[]): Record<string, number> {
+export function aggregateHoursByProject(
+  entries: WorkEntry[],
+): Record<string, number> {
   const result: Record<string, number> = {}
 
   for (const entry of entries) {
     if (entry.project && entry.hours !== null) {
-      if (!result[entry.project])
-        result[entry.project] = 0
+      if (!result[entry.project]) result[entry.project] = 0
 
       result[entry.project] += entry.hours
     }
@@ -256,13 +249,20 @@ export function aggregateHoursByProject(entries: WorkEntry[]): Record<string, nu
  * @param entries 工时条目数组
  * @returns 项目工时分布数据数组
  */
-export function getProjectDistribution(entries: WorkEntry[]): { name: string, hours: number, percentage: number }[] {
+export function getProjectDistribution(
+  entries: WorkEntry[],
+): { name: string; hours: number; percentage: number }[] {
   const projectHours = aggregateHoursByProject(entries)
-  const totalHours = Object.values(projectHours).reduce((sum, hours) => sum + hours, 0)
+  const totalHours = Object.values(projectHours).reduce(
+    (sum, hours) => sum + hours,
+    0,
+  )
 
-  return Object.entries(projectHours).map(([project, hours]) => ({
-    name: project,
-    hours,
-    percentage: totalHours > 0 ? (hours / totalHours) * 100 : 0,
-  })).sort((a, b) => b.hours - a.hours) // 按工时降序排列
+  return Object.entries(projectHours)
+    .map(([project, hours]) => ({
+      name: project,
+      hours,
+      percentage: totalHours > 0 ? (hours / totalHours) * 100 : 0,
+    }))
+    .sort((a, b) => b.hours - a.hours) // 按工时降序排列
 }

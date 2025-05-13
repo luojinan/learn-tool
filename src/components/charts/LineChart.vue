@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import { computed, onMounted, ref, watch } from 'vue'
 import type { ChartOptions } from 'chart.js'
 import { Chart, registerables } from 'chart.js'
+import { computed, onMounted, ref, watch } from 'vue'
 
 const props = defineProps<{
   labels: string[] // X 轴标签
@@ -28,17 +28,19 @@ const chartConfig = computed(() => {
     type: 'line',
     data: {
       labels: props.labels,
-      datasets: [{
-        label: props.title || '工时趋势',
-        data: props.data,
-        borderColor: finalMainColor.value,
-        backgroundColor: `${finalMainColor.value}40`, // 添加透明度
-        tension: 0.1,
-        fill: true,
-        spanGaps: false, // 不连接 null 数据点
-        pointRadius: 4,
-        pointHoverRadius: 6,
-      }],
+      datasets: [
+        {
+          label: props.title || '工时趋势',
+          data: props.data,
+          borderColor: finalMainColor.value,
+          backgroundColor: `${finalMainColor.value}40`, // 添加透明度
+          tension: 0.1,
+          fill: true,
+          spanGaps: false, // 不连接 null 数据点
+          pointRadius: 4,
+          pointHoverRadius: 6,
+        },
+      ],
     },
     options: {
       responsive: props.responsive !== false, // 默认为 true
@@ -85,8 +87,7 @@ const chartConfig = computed(() => {
             },
             label: (context: any) => {
               const value = context.raw
-              if (value === null)
-                return '无工时记录'
+              if (value === null) return '无工时记录'
               return `工时: ${value} 小时`
             },
           },
@@ -102,18 +103,13 @@ const chartConfig = computed(() => {
 
 // 初始化图表
 function initChart() {
-  if (!chartCanvas.value)
-    return
+  if (!chartCanvas.value) return
 
   // 销毁已有图表实例
-  if (chart)
-    chart.destroy()
+  if (chart) chart.destroy()
 
   // 创建新图表实例
-  chart = new Chart(
-    chartCanvas.value,
-    chartConfig.value as any,
-  )
+  chart = new Chart(chartCanvas.value, chartConfig.value as any)
 }
 
 // 监视数据变化，更新图表
@@ -139,8 +135,7 @@ defineExpose({
   updateChart: (newData: (number | null)[], newLabels?: string[]) => {
     if (chart) {
       chart.data.datasets[0].data = newData
-      if (newLabels)
-        chart.data.labels = newLabels
+      if (newLabels) chart.data.labels = newLabels
 
       chart.update()
     }

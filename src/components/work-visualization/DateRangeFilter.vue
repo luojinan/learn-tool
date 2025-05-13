@@ -7,13 +7,12 @@ const props = defineProps<{
 }>()
 
 const emit = defineEmits<{
-  'update:date-range': [{ start: number | null, end: number | null }]
+  'update:date-range': [{ start: number | null; end: number | null }]
 }>()
 
 // 将时间戳转换为YYYY-MM-DD格式
 function timestampToDateString(timestamp: number | null): string {
-  if (!timestamp)
-    return ''
+  if (!timestamp) return ''
 
   const date = new Date(timestamp)
   const year = date.getFullYear()
@@ -25,12 +24,10 @@ function timestampToDateString(timestamp: number | null): string {
 
 // 将YYYY-MM-DD格式转换为时间戳（当天0:00的时间戳）
 function dateStringToTimestamp(dateString: string): number | null {
-  if (!dateString)
-    return null
+  if (!dateString) return null
 
   const [year, month, day] = dateString.split('-').map(Number)
-  if (!year || !month || !day)
-    return null
+  if (!year || !month || !day) return null
 
   // 创建日期（当天0:00）
   const date = new Date(year, month - 1, day, 0, 0, 0, 0)
@@ -39,8 +36,7 @@ function dateStringToTimestamp(dateString: string): number | null {
 
 // 将结束日期调整为当天的23:59:59.999
 function adjustEndDateToEndOfDay(timestamp: number | null): number | null {
-  if (!timestamp)
-    return null
+  if (!timestamp) return null
 
   const date = new Date(timestamp)
   date.setHours(23, 59, 59, 999)

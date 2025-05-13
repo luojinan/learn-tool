@@ -1,9 +1,10 @@
 import {
-  type RouteLocationNormalized,
   createRouter,
   createWebHashHistory,
+  type RouteLocationNormalized,
 } from 'vue-router'
 import routes from './routes'
+
 // import setPageTitle from "@/utils/set-page-title";
 
 const router = createRouter({
@@ -24,7 +25,6 @@ router.beforeEach((to: toRouteType, from, next) => {
   next()
 })
 
-router.afterEach(() => {
-})
+router.afterEach(() => {})
 
 export default router

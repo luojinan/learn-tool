@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 import Chart from 'chart.js/auto'
+import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 import type { AggregatedDataPoint, WorkData } from '@/types/work-visualization'
 
 const props = defineProps<{
@@ -22,7 +22,10 @@ function updateAggregation(newAggregation: 'day' | 'week' | 'month') {
 }
 
 // 将日期格式化为指定的格式
-function formatDate(timestamp: number, format: 'day' | 'week' | 'month'): string {
+function formatDate(
+  timestamp: number,
+  format: 'day' | 'week' | 'month',
+): string {
   const date = new Date(timestamp)
 
   switch (format) {
@@ -50,29 +53,34 @@ function getWeekNumber(date: Date): number {
 }
 
 // 聚合数据
-function aggregateData(data: WorkData[], aggregationType: 'day' | 'week' | 'month'): AggregatedDataPoint[] {
-  if (data.length === 0)
-    return []
+function aggregateData(
+  data: WorkData[],
+  aggregationType: 'day' | 'week' | 'month',
+): AggregatedDataPoint[] {
+  if (data.length === 0) return []
 
   // 按时间戳排序
   const sortedData = [...data].sort((a, b) => a.timestamp - b.timestamp)
 
   // 按聚合类型分组
-  const grouped = sortedData.reduce((acc, curr) => {
-    const key = formatDate(curr.timestamp, aggregationType)
+  const grouped = sortedData.reduce(
+    (acc, curr) => {
+      const key = formatDate(curr.timestamp, aggregationType)
 
-    if (!acc[key]) {
-      acc[key] = {
-        label: key,
-        value: 0,
-        timestamp: curr.timestamp,
+      if (!acc[key]) {
+        acc[key] = {
+          label: key,
+          value: 0,
+          timestamp: curr.timestamp,
+        }
       }
-    }
 
-    acc[key].value += curr.hours
+      acc[key].value += curr.hours
 
-    return acc
-  }, {} as Record<string, AggregatedDataPoint>)
+      return acc
+    },
+    {} as Record<string, AggregatedDataPoint>,
+  )
 
   // 转换为数组并按时间排序
   return Object.values(grouped).sort((a, b) => a.timestamp - b.timestamp)
@@ -85,21 +93,19 @@ const aggregatedData = computed(() => {
 
 // 创建或更新图表
 function updateChart() {
-  if (!chartCanvas.value)
-    return
+  if (!chartCanvas.value) return
 
   const data = aggregatedData.value
 
-  if (chart)
-    chart.destroy()
+  if (chart) chart.destroy()
 
   // 准备图表数据
   const chartData = {
-    labels: data.map(item => item.label),
+    labels: data.map((item) => item.label),
     datasets: [
       {
         label: '工时',
-        data: data.map(item => item.value),
+        data: data.map((item) => item.value),
         fill: false,
         borderColor: 'rgb(75, 192, 192)',
         tension: 0.1,
@@ -125,9 +131,12 @@ function updateChart() {
         x: {
           title: {
             display: true,
-            text: props.aggregation === 'day'
-              ? '日期'
-              : props.aggregation === 'week' ? '周' : '月份',
+            text:
+              props.aggregation === 'day'
+                ? '日期'
+                : props.aggregation === 'week'
+                  ? '周'
+                  : '月份',
           },
         },
       },
@@ -155,8 +164,7 @@ watch(
 
 // 监听窗口尺寸变化，响应式调整图表
 function handleResize() {
-  if (chart)
-    chart.resize()
+  if (chart) chart.resize()
 }
 
 onMounted(() => {
@@ -165,8 +173,7 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
-  if (chart)
-    chart.destroy()
+  if (chart) chart.destroy()
 
   window.removeEventListener('resize', handleResize)
 })

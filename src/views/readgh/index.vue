@@ -3,8 +3,8 @@
 import { useStorage } from '@vueuse/core'
 import { computed, onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { cacheDataOrUmd } from '@/common/utils.js'
 import { ossDataUrl } from '@/common/const.js'
+import { cacheDataOrUmd } from '@/common/utils.js'
 
 const router = useRouter()
 
@@ -40,22 +40,27 @@ const hasSize = computed(() => datalist.value[0]?.size)
 async function getList() {
   const dataPath = `ghnew-${month.value}`
   const dataUrl = `${ossDataUrl}/${dataPath}.js`
-  const { data, msg } = await cacheDataOrUmd(dataPath, dataUrl) as { data: PostItem[], msg: string }
-  datalist.value = data.filter(({ title }) => !title.includes('每日一语')).map(({ title, size }, index) => {
-    let from, name
-    [from, name] = title.split('｜')
-    if (!name) {
-      [from, name] = title.split('】')
-      from += '】'
-    }
-    return {
-      id: index,
-      from,
-      name: name && name.replace('.md', ''),
-      title,
-      size: +(size / 1000).toFixed(2),
-    }
-  })
+  const { data, msg } = (await cacheDataOrUmd(dataPath, dataUrl)) as {
+    data: PostItem[]
+    msg: string
+  }
+  datalist.value = data
+    .filter(({ title }) => !title.includes('每日一语'))
+    .map(({ title, size }, index) => {
+      let from, name
+      ;[from, name] = title.split('｜')
+      if (!name) {
+        ;[from, name] = title.split('】')
+        from += '】'
+      }
+      return {
+        id: index,
+        from,
+        name: name && name.replace('.md', ''),
+        title,
+        size: +(size / 1000).toFixed(2),
+      }
+    })
   dataMsg.value = msg
   cacheMonth.value = month.value
 }

@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
+
 // TODO: 从路由配置中读取
 // 动态路由目录生成
 const entryList = [
@@ -51,7 +52,9 @@ function search(work: string, keyworklist: string[]) {
 const weiboList = ref<Weibo[]>([])
 
 function filterKeywork() {
-  return fetch('https://kingan-md-img.oss-cn-guangzhou.aliyuncs.com/data/startKeyWorks.json').then(r => r.json())
+  return fetch(
+    'https://kingan-md-img.oss-cn-guangzhou.aliyuncs.com/data/startKeyWorks.json',
+  ).then((r) => r.json())
 }
 
 onMounted(async () => {
@@ -60,19 +63,20 @@ onMounted(async () => {
   // https://hot.imsyy.top/#/list?type=weibo&page=1
   // fetch('https://weibo.com/ajax/side/hotSearch') // 😡 跨域
   // fetch('https://api-hot.imsyy.top/weibo?cache=true') // 😡 跨域
-  fetch('https://proxy.5675675.xyz/?url=https%3A%2F%2Fapi-hot.imsyy.top%2Fweibo%3Fcache%3Dtrue')
-    .then(r => r.json())
+  fetch(
+    'https://proxy.5675675.xyz/?url=https%3A%2F%2Fapi-hot.imsyy.top%2Fweibo%3Fcache%3Dtrue',
+  )
+    .then((r) => r.json())
     .then((res) => {
       console.log(res)
       if (res.code === 200) {
         weiboList.value = res.data.filter((item: Weibo) => {
           return !(
-            /剧集|综艺|电影/.test(item?.author || '')
-            || search(item.title, filterKeyworkList)
+            /剧集|综艺|电影/.test(item?.author || '') ||
+            search(item.title, filterKeyworkList)
           )
         })
-      }
-      else {
+      } else {
         weiboList.value = [{ title: '加载失败' }]
       }
     })
@@ -82,8 +86,7 @@ onMounted(async () => {
 })
 
 function goout(item: Weibo) {
-  if (!item.url)
-    return
+  if (!item.url) return
   window.open(item.url, '_blank')
 }
 </script>

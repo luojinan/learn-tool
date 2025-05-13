@@ -4,10 +4,12 @@ import { computed } from 'vue'
 const props = defineProps<{
   startDate: number | null
   endDate: number | null
+  allDatesAvailable?: boolean // 是否可以选择所有日期
 }>()
 
 const emit = defineEmits<{
   'update:date-range': [{ start: number | null; end: number | null }]
+  'select-all-dates': [] // 添加选择所有日期的事件
 }>()
 
 // 将时间戳转换为YYYY-MM-DD格式
@@ -71,6 +73,11 @@ function handleEndDateChange(event: Event) {
     end: adjustedEndDate,
   })
 }
+
+// 选择所有日期
+function handleSelectAllDates() {
+  emit('select-all-dates')
+}
 </script>
 
 <template>
@@ -103,6 +110,16 @@ function handleEndDateChange(event: Event) {
           @input="handleEndDateChange"
         >
       </div>
+    </div>
+    <div class="mt-2">
+      <button
+        type="button"
+        class="btn btn-sm btn-outline"
+        :disabled="!allDatesAvailable"
+        @click="handleSelectAllDates"
+      >
+        选择所有日期
+      </button>
     </div>
   </div>
 </template>

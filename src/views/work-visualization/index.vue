@@ -21,6 +21,47 @@ const filters = ref<FilterState>({
   aggregation: 'day', // 默认按天聚合
 })
 
+// 计算默认日期范围：最新数据的近半年，开始日期为1号
+function calculateDefaultDateRange(sortedData: WorkData[]): {
+  startDate: number
+  endDate: number
+} {
+  // 获取最新数据的日期作为结束日期
+  const latestData = sortedData[sortedData.length - 1]
+  const endDate = latestData.timestamp
+
+  // 计算半年前的日期
+  const startDateObj = new Date(endDate)
+  startDateObj.setMonth(startDateObj.getMonth() - 6) // 往前推6个月
+
+  // 将开始日期设置为当月的1号
+  startDateObj.setDate(1)
+  startDateObj.setHours(0, 0, 0, 0)
+
+  return {
+    startDate: startDateObj.getTime(),
+    endDate: endDate,
+  }
+}
+
+// 选择所有日期范围
+function selectAllDates() {
+  if (workData.value.length > 0) {
+    // 按时间戳排序
+    const sortedData = [...workData.value].sort(
+      (a, b) => a.timestamp - b.timestamp,
+    )
+
+    // 获取最早和最晚的日期
+    const earliestDate = sortedData[0].timestamp
+    const latestDate = sortedData[sortedData.length - 1].timestamp
+
+    // 更新筛选状态
+    filters.value.startDate = earliestDate
+    filters.value.endDate = latestDate
+  }
+}
+
 // 计算所有可用项目
 const availableProjects = computed(() => {
   const projects = new Set<string>()
@@ -47,6 +88,24 @@ const filteredData = computed(() => {
   })
 })
 
+// 计算总工时和总收入
+const totalStats = computed(() => {
+  // 计算总工时
+  const totalHours = filteredData.value.reduce(
+    (sum, item) => sum + item.hours,
+    0,
+  )
+
+  // 计算总收入（单价为62.5）
+  const hourlyRate = 62.5
+  const totalIncome = totalHours * hourlyRate
+
+  return {
+    hours: totalHours.toFixed(1), // 保留一位小数
+    income: totalIncome.toFixed(2), // 保留两位小数
+  }
+})
+
 // 加载JSON数据
 async function loadWorkData() {
   try {
@@ -64,8 +123,9 @@ async function loadWorkData() {
 
       // 如果还没有设置日期范围，则使用数据的范围
       if (!filters.value.startDate && !filters.value.endDate) {
-        filters.value.startDate = sortedData[0].timestamp
-        filters.value.endDate = sortedData[sortedData.length - 1].timestamp
+        const defaultRange = calculateDefaultDateRange(sortedData)
+        filters.value.startDate = defaultRange.startDate
+        filters.value.endDate = defaultRange.endDate
       }
     }
   } catch (error) {
@@ -97,10 +157,6 @@ onMounted(() => {
 
 <template>
   <div class="work-visualization-container p-4">
-    <h1 class="text-2xl font-bold mb-6">
-      工时数据可视化
-    </h1>
-
     <div v-if="isLoading" class="loading-container flex justify-center items-center py-8">
       <div class="loading">
         加载中...
@@ -118,7 +174,9 @@ onMounted(() => {
           <DateRangeFilter
             :start-date="filters.startDate"
             :end-date="filters.endDate"
+            :all-dates-available="!isLoading && workData.length > 0"
             @update:date-range="handleDateRangeChange"
+            @select-all-dates="selectAllDates"
           />
 
           <!-- 项目选择器 -->
@@ -130,10 +188,32 @@ onMounted(() => {
         </div>
       </div>
 
+      <!-- 总工时和收入统计 -->
+      <div class="stats-container mb-8 p-4 bg-base-100 rounded-lg shadow">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="stat-card p-4 bg-base-100 rounded-lg border-l-4 border-primary">
+            <div class="stat-title text-base font-medium text-gray-600">
+              总工时
+            </div>
+            <div class="stat-value text-3xl font-bold text-primary mt-1">
+              {{ totalStats.hours }} 小时
+            </div>
+          </div>
+          <div class="stat-card p-4 bg-base-100 rounded-lg border-l-4 border-success">
+            <div class="stat-title text-base font-medium text-gray-600">
+              总收入 (单价：¥62.5/小时)
+            </div>
+            <div class="stat-value text-3xl font-bold text-success mt-1">
+              ¥{{ totalStats.income }}
+            </div>
+          </div>
+        </div>
+      </div>
+
       <!-- 图表区域 -->
       <div class="charts-container grid grid-cols-1 md:grid-cols-2 gap-6">
         <!-- 工时趋势分析 -->
-        <div class="chart-card p-4 bg-white rounded-lg shadow">
+        <div class="chart-card p-4 bg-base-100 rounded-lg shadow">
           <h2 class="text-lg font-semibold mb-2">
             工时趋势分析
           </h2>
@@ -147,7 +227,7 @@ onMounted(() => {
         </div>
 
         <!-- 项目工时分布 -->
-        <div class="chart-card p-4 bg-white rounded-lg shadow">
+        <div class="chart-card p-4 bg-base-100 rounded-lg shadow">
           <h2 class="text-lg font-semibold mb-2">
             项目工时分布
           </h2>
@@ -157,7 +237,7 @@ onMounted(() => {
         </div>
 
         <!-- 月度工时统计 -->
-        <div class="chart-card p-4 bg-white rounded-lg shadow md:col-span-2">
+        <div class="chart-card p-4 bg-base-100 rounded-lg shadow md:col-span-2">
           <h2 class="text-lg font-semibold mb-2">
             月度工时统计
           </h2>

@@ -12,6 +12,7 @@ export default defineConfig({
     tailwindcss(),
     vue(),
     VitePWA({
+      registerType: 'autoUpdate',
       manifest: {
         name: 'tool',
         short_name: 'tool',
@@ -39,6 +40,9 @@ export default defineConfig({
           },
         ],
       },
+      workbox: {
+        globPatterns: ['**/*.{css,js,html,svg,png,ico,txt,woff2,json}'],
+      }
     }),
     // visualizer(),
   ],

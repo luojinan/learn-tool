@@ -86,7 +86,7 @@ const fieldTranslations: Record<string, string> = {
   unemploymentInsurance: '失业保险',
   tax: '个人所得税',
   rent: '房租',
-  time: '时间',
+  time: '时间-年月',
   基本工资: '基本工资',
   绩效: '绩效',
   通讯费: '通讯费',

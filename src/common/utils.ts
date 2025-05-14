@@ -67,7 +67,7 @@ export function loadCdnEsmModule(
 
     script.onload = () => {
       // 如果模块导出了default属性，则将default属性或整个模块对象赋值给全局变量
-      ;(window as any)[globalVariableName] =
+      ; (window as any)[globalVariableName] =
         window[globalVariableName]?.default || window[globalVariableName]
       console.log(`${globalVariableName} loaded successfully`)
       resolve()

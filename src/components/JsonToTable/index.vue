@@ -95,7 +95,7 @@ onMounted(() => {
     </button>
   </div>
   <div class="overflow-x-auto mb-4">
-    <table class="table" style="background-color: #141414;">
+    <table class="table bg-base-100">
       <thead>
         <tr>
           <th v-for="(header, index) in headers" :key="index" class="border-solid border-slate-700">
@@ -105,7 +105,7 @@ onMounted(() => {
       </thead>
       <tbody>
         <tr v-for="(row, index) in rows" :key="index">
-          <td v-for="(value, key) in row" :key="key" class="border-solid text-white border-slate-700 px-2 text-center">
+          <td v-for="(value, key) in row" :key="key" class="border-solid border-slate-700 px-2 text-center">
             {{ typeof value === 'number' ? value.toLocaleString() : value }}
           </td>
         </tr>

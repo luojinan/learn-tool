@@ -1,8 +1,16 @@
 <script setup lang="ts">
-import { onBeforeMount, ref } from 'vue'
+import { onBeforeMount, onMounted, ref, watch } from 'vue'
 import { CDN_UMD_ANTV, ossDataUrl } from '@/common/const'
 import { cacheDataOrUmd, loadScript } from '@/common/utils'
 import JsonToTable from '@/components/JsonToTable/index.vue'
+
+// 响应式主题变量
+const currentTheme = ref(localStorage.getItem('theme') || 'light')
+
+// 获取当前主题的方法
+function getCurrentTheme(): string {
+  return document.documentElement.getAttribute('data-theme') || 'light'
+}
 
 interface DataItem {
   time: string
@@ -255,7 +263,7 @@ function init(odata: IncomeXinData[]) {
       xField: 'time',
       yField: 'value',
       seriesField: 'type',
-      theme: 'dark',
+      theme: currentTheme.value,
       label: {
         callback: (text: string) => {
           if (+text > 5000) return { content: text }
@@ -300,7 +308,7 @@ function initLostRef(odata: IncomeXinData[]) {
       data: list,
       xField: 'time',
       yField: 'value',
-      theme: 'dark',
+      theme: currentTheme.value,
       seriesField: 'type',
       tooltip: {
         customItems: (originalItems: any[]) => {
@@ -355,7 +363,7 @@ function initInRef(odata: IncomeXinData[]) {
       xField: 'time',
       yField: 'value',
       seriesField: 'type',
-      theme: 'dark',
+      theme: currentTheme.value,
       yAxis: {
         min: 5000,
       },
@@ -444,6 +452,37 @@ declare global {
     G2Plot: any
   }
 }
+
+// 监听主题变化并更新图表
+watch(currentTheme, (newTheme) => {
+  // 只有在图表已经初始化的情况下才更新
+  if (area3) {
+    area3.update({ theme: newTheme })
+  }
+  if (area1) {
+    area1.update({ theme: newTheme })
+  }
+  if (area2) {
+    area2.update({ theme: newTheme })
+  }
+})
+
+// 初始化主题监听
+onMounted(() => {
+  // 设置初始主题
+  currentTheme.value = getCurrentTheme()
+
+  // 监听主题变化
+  const observer = new MutationObserver(() => {
+    currentTheme.value = getCurrentTheme()
+  })
+
+  // 观察 html 元素的 data-theme 属性变化
+  observer.observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ['data-theme'],
+  })
+})
 </script>
 
 <template>

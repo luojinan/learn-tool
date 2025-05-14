@@ -1,8 +1,23 @@
 <script setup lang="ts">
-import { onBeforeMount, ref } from 'vue'
+import { onBeforeMount, onMounted, ref, watch } from 'vue'
 import { CDN_UMD_ANTV } from '@/common/const'
 import { cacheDataOrUmd, loadScript } from '@/common/utils'
 import JsonToTable from '@/components/JsonToTable/index.vue'
+
+// 为 TypeScript 声明 window.G2Plot
+declare global {
+  interface Window {
+    G2Plot: any
+  }
+}
+
+// 响应式主题变量
+const currentTheme = ref(localStorage.getItem('theme') || 'light')
+
+// 获取当前主题的方法
+function getCurrentTheme(): string {
+  return document.documentElement.getAttribute('data-theme') || 'light'
+}
 
 interface DataItem {
   time: string
@@ -87,6 +102,7 @@ const keyTranslations = {
 }
 
 const fieldTranslations = {
+  time: '时间-年月',
   baseSalary: '基本工资',
   overtimeMeal: '加班餐补',
   housingFund: '公积金',
@@ -105,6 +121,11 @@ function formatTime(isoTime: string): string {
   const month = String(date.getMonth() + 1).padStart(2, '0')
   return `${year}-${month}`
 }
+
+// 保存图表实例的变量
+let totalAreaChart: any = null
+let lostAreaChart: any = null
+let inAreaChart: any = null
 
 function init(odata: IncomeData[]) {
   // 将数据按时间正序排序
@@ -149,27 +170,35 @@ function init(odata: IncomeData[]) {
   totalInfo.value.estimatedAnnualIncomeBeforeTax =
     (totalInfo.value.totalIncomeBeforeTax / odata.length) * 12
 
-  const area = new G2Plot.Area(totalRef.value, {
-    data,
-    xField: 'time',
-    yField: 'value',
-    seriesField: 'type',
-    theme: 'dark',
-    label: {
-      callback: (text: string) => {
-        if (+text > 10000) return { content: text }
+  // 判断图表实例是否已存在
+  if (totalAreaChart) {
+    // 如果图表实例已存在，使用 changeData 方法更新数据
+    totalAreaChart.changeData(data)
+  } else {
+    const area = new window.G2Plot.Area(totalRef.value, {
+      data,
+      xField: 'time',
+      yField: 'value',
+      seriesField: 'type',
+      theme: currentTheme.value,
+      label: {
+        callback: (text: string) => {
+          if (+text > 10000) return { content: text }
+        },
       },
-    },
-    tooltip: {
-      customItems: (originalItems: any[]) => {
-        const res = originalItems.reduce((pre: number, next: any) => {
-          return pre + +next.value
-        }, 0)
-        return [...originalItems, { name: '税前收入', value: res }]
+      tooltip: {
+        customItems: (originalItems: any[]) => {
+          const res = originalItems.reduce((pre: number, next: any) => {
+            return pre + +next.value
+          }, 0)
+          return [...originalItems, { name: '税前收入', value: res }]
+        },
       },
-    },
-  })
-  area.render()
+    })
+    area.render()
+    // 保存图表实例
+    totalAreaChart = area
+  }
 }
 
 function initLostRef(odata: IncomeData[]) {
@@ -203,22 +232,31 @@ function initLostRef(odata: IncomeData[]) {
     list[0] = list[1]
     list[1] = first
   }
-  const area = new G2Plot.Area(lostRef.value, {
-    data: list,
-    xField: 'time',
-    yField: 'value',
-    theme: 'dark',
-    seriesField: 'type',
-    tooltip: {
-      customItems: (originalItems: any[]) => {
-        const res = originalItems.reduce((pre: number, next: any) => {
-          return pre + +next.value
-        }, 0)
-        return [...originalItems, { name: '总支出', value: res }]
+
+  // 判断图表实例是否已存在
+  if (lostAreaChart) {
+    // 如果图表实例已存在，使用 changeData 方法更新数据
+    lostAreaChart.changeData(list)
+  } else {
+    const area = new window.G2Plot.Area(lostRef.value, {
+      data: list,
+      xField: 'time',
+      yField: 'value',
+      theme: currentTheme.value,
+      seriesField: 'type',
+      tooltip: {
+        customItems: (originalItems: any[]) => {
+          const res = originalItems.reduce((pre: number, next: any) => {
+            return pre + +next.value
+          }, 0)
+          return [...originalItems, { name: '总支出', value: res }]
+        },
       },
-    },
-  })
-  area.render()
+    })
+    area.render()
+    // 保存图表实例
+    lostAreaChart = area
+  }
 }
 
 function initInRef(odata: IncomeData[]) {
@@ -259,25 +297,35 @@ function initInRef(odata: IncomeData[]) {
     list[0] = list[1]
     list[1] = first
   }
-  const area = new G2Plot.Area(inRef.value, {
-    data: list,
-    xField: 'time',
-    yField: 'value',
-    seriesField: 'type',
-    theme: 'dark',
-    yAxis: {
-      min: 20000,
-    },
-    tooltip: {
-      customItems: (originalItems: any[]) => {
-        const res = originalItems.reduce((pre: number, next: any) => {
-          return pre + +next.value
-        }, 0)
-        return [...originalItems, { name: '税前收入', value: res }]
+
+  // 判断图表实例是否已存在
+  if (inAreaChart) {
+    // 如果图表实例已存在，使用 changeData 方法更新数据
+    inAreaChart.changeData(list)
+  } else {
+    // 如果图表实例不存在，创建新的图表实例
+    const area = new window.G2Plot.Area(inRef.value, {
+      data: list,
+      xField: 'time',
+      yField: 'value',
+      seriesField: 'type',
+      theme: currentTheme.value,
+      yAxis: {
+        min: 20000,
       },
-    },
-  })
-  area.render()
+      tooltip: {
+        customItems: (originalItems: any[]) => {
+          const res = originalItems.reduce((pre: number, next: any) => {
+            return pre + +next.value
+          }, 0)
+          return [...originalItems, { name: '税前收入', value: res }]
+        },
+      },
+    })
+    area.render()
+    // 保存图表实例
+    inAreaChart = area
+  }
 }
 
 const dataMsg = ref('')
@@ -301,6 +349,20 @@ async function loadAntv() {
   await loadScript(CDN_UMD_ANTV)
 }
 
+// 监听主题变化并更新图表
+watch(currentTheme, (newTheme) => {
+  // 只有在图表已经初始化的情况下才更新
+  if (totalAreaChart) {
+    totalAreaChart.update({ theme: newTheme })
+  }
+  if (lostAreaChart) {
+    lostAreaChart.update({ theme: newTheme })
+  }
+  if (inAreaChart) {
+    inAreaChart.update({ theme: newTheme })
+  }
+})
+
 async function onCreated() {
   const [incomeDataList] = await Promise.all([getIncomeData(), loadAntv()])
   init(incomeDataList)
@@ -313,6 +375,23 @@ function onRefresh() {
   localStorage.removeItem(dataName)
   onCreated()
 }
+
+// 初始化主题监听
+onMounted(() => {
+  // 设置初始主题
+  currentTheme.value = getCurrentTheme()
+
+  // 监听主题变化
+  const observer = new MutationObserver(() => {
+    currentTheme.value = getCurrentTheme()
+  })
+
+  // 观察 html 元素的 data-theme 属性变化
+  observer.observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ['data-theme'],
+  })
+})
 
 onBeforeMount(() => {
   onCreated()

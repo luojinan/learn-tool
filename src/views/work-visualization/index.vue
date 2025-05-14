@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { computed, onMounted, ref } from 'vue'
+import { cacheDataOrUmd } from '@/common/utils'
 import DateRangeFilter from '@/components/work-visualization/DateRangeFilter.vue'
 import MonthlyWorkHours from '@/components/work-visualization/MonthlyWorkHours.vue'
 import ProjectFilter from '@/components/work-visualization/ProjectFilter.vue'
@@ -9,7 +10,7 @@ import type { FilterState, WorkData } from '@/types/work-visualization'
 
 // 数据加载和处理相关状态
 const isLoading = ref(true)
-
+const dataMsg = ref('')
 // 初始化数据和状态
 const workData = ref<WorkData[]>([])
 
@@ -110,10 +111,10 @@ const totalStats = computed(() => {
 async function loadWorkData() {
   try {
     isLoading.value = true
-    const response = await fetch('/data/work-data.json')
-    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`)
-
-    const data = await response.json()
+    const dataName = 'workDataList'
+    const dataUrl = 'https://monkey.5675675.xyz/api/part-time'
+    const { data, msg } = await cacheDataOrUmd(dataName, dataUrl)
+    dataMsg.value = msg
     workData.value = data
 
     // 初始化日期范围为全部数据的范围
@@ -153,16 +154,30 @@ function handleProjectsChange(projects: string[]) {
 onMounted(() => {
   loadWorkData()
 })
+
+// 刷新数据，清除缓存并重新加载
+function refreshWorkData() {
+  const dataName = 'workDataList'
+  localStorage.removeItem(dataName)
+  loadWorkData()
+}
 </script>
 
 <template>
   <div class="work-visualization-container p-4">
+    <div class="text-right mr-2">
+      {{ dataMsg }}
+      <div class="btn btn-primary btn-square btn-sm" @click="refreshWorkData">
+        <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M18.364 5.636L16.95 7.05A7 7 0 1 0 19 12h2a9 9 0 1 1-2.636-6.364" /></svg>
+      </div>
+    </div>
+    
     <div v-if="isLoading" class="loading-container flex justify-center items-center py-8">
       <div class="loading">
         加载中...
       </div>
     </div>
-
+    
     <template v-else>
       <!-- 全局筛选器 -->
       <div class="filters-container mb-8 p-4 bg-base-200 rounded-lg shadow-sm">

@@ -289,7 +289,7 @@ const otherIncomeList = ref<OtherIncomeItem[]>([
 
 async function getIncomeData() {
   const dataName = 'incomeDataList'
-  const dataUrl = 'https://monkey.5675675.xyz/api/income/?owner=luo'
+  const dataUrl = 'https://monkey.5675675.xyz/api/income?owner=luo'
   const { data, msg } = await cacheDataOrUmd(dataName, dataUrl)
   dataMsg.value = msg
   incomeDataList.value = data

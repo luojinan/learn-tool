@@ -2,15 +2,24 @@
 import { themeChange } from 'theme-change'
 import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { supabase } from '@/hook/fetch'
 
 const router = useRouter()
 function back() {
   router.back()
 }
 
+const test = ref([{ title: 'loading...' }])
+
+const init = async () => {
+  const { data, error } = await supabase.from('test').select('*')
+  test.value = data
+}
+
 // 在组件挂载后初始化主题切换功能
 onMounted(() => {
   themeChange(false)
+  init()
 })
 </script>
 
@@ -61,6 +70,9 @@ onMounted(() => {
         </div>
       </button>
     </div>
+  </div>
+  <div class="mt-40" v-for="item in test" :key="item.id">
+    {{ item.title }}
   </div>
   <router-view v-slot="{ Component }">
     <div class="mt-20">

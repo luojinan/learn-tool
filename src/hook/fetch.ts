@@ -1,3 +1,4 @@
+import { createClient } from '@supabase/supabase-js'
 import type { Ref } from 'vue'
 import { ref } from 'vue'
 import { loadScript } from '@/common/utils'
@@ -63,3 +64,8 @@ export function useUmdDataCacheOrFetch<F>(
   // 返回数据引用、数据来源信息引用和重新获取数据的方法。
   return [data, dataFromMsg, reFetch]
 }
+
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY
+
+export const supabase = createClient(supabaseUrl, supabaseAnonKey)
